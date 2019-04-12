@@ -1,24 +1,30 @@
-﻿/*==========================================================================================*
-* Get (set rectangleSource), draw (set rectangleDestination) sprites from texture atlasses  *
-*                                                                                           *
-* ==========================================================================================*/
+﻿/*==========================================================================*
+* Handle sprite atlas textures, drawing sprites from atlases                *
+*===========================================================================*
+* 1. Draw sprite from sprite atlas texture:                                 *
+*   - Set sprite scale                                                      *
+*   - Get sprite from sprite atlas texture, set rectangleSource             *
+*   - Set rectangleDestination sprite from texture atlasses, draw sprite    *
+* 2. Apply scaling to sprite                                                *
+* ==========================================================================*/
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Text.RegularExpressions;
 
 namespace WordSearch
 {
     class Sprite
     {
-        // Fields
-        private Texture2D texture;
+        // Fields: sprite atlas setup
         private int columns;
         private int rows;
         private int numberSprites;
         private int heightSprite;
         private int widthSprite;
+        // Field: scale sprite
         private float scaleSprite;
 
-        // Properties: scaled height, width
+        // Properties: scaled height, width for Draw() callers
         public int HeightSprite
         {
             get { return Scale(heightSprite, scaleSprite); }
@@ -28,8 +34,10 @@ namespace WordSearch
             get { return Scale(widthSprite, scaleSprite); }
         }
 
-        private DictionaryTextures dictionaryCharacters = new DictionaryTextures();
+        // Private class
+        private Texture2D texture;
 
+        // Constructor
         public Sprite(Texture2D texture, int rows, int columns)
         {
             this.texture = texture;
@@ -40,37 +48,43 @@ namespace WordSearch
             numberSprites = rows * columns;
         }
 
-        // Draw 
         public void Draw(SpriteBatch spriteBatch, char letter, Vector2 location, float scale)
         {
             // set sprite draw scale
             scaleSprite = scale;
+            int heightScaled = Scale(heightSprite, scale);
+            int widthScaled = Scale(widthSprite, scale);
 
-            // convert letter to index value through dictionary
-            dictionaryCharacters.characters.TryGetValue(letter, out int letterIndex);
-            // single texture (letter) dimensions
-            int posRow = (letterIndex) / (numberSprites / rows) * heightSprite;
-            int posCol = ((letterIndex + 1 * letterIndex) / (numberSprites / columns) * widthSprite) - texture.Width * (posRow / heightSprite);
-            // for last texture in spriteAlphabet cols; pos becomes Texture.Width, defaults to 0-with; manually reset to end pos
-            if (posCol < 0)
+            // select, convert letter to index value through, dictionary
+            int indexSprite;
+            if (char.IsLetter(letter))
             {
-                posCol = texture.Width - widthSprite;
+                indexSprite = DictionaryTextures.KeyLetters(letter);
+            }
+            else
+            {
+                indexSprite = DictionaryTextures.KeyLines(letter);
             }
 
-            // Select rectangle within texture to draw, rectangle where texture is drawn
-            Rectangle rectangleSource = new Rectangle(posCol, posRow, heightSprite, widthSprite);
-            Rectangle rectangleDesination = new Rectangle((int)location.Y, (int)location.X, Scale(widthSprite, scaleSprite), Scale(heightSprite, scaleSprite));
+            // Set position of sprite to get from sprite atlas texture
+            int posRow = (indexSprite) / (numberSprites / rows) * heightSprite;
+            int posCol = indexSprite * widthSprite;
 
-            // draw texture on screen
+            // Set rectangle from sprite atlas texture to draw, rectangle where texture is drawn
+            Rectangle rectangleSource = new Rectangle(posCol, posRow, heightSprite, widthSprite);
+            Rectangle rectangleDesination = new Rectangle((int)location.Y, (int)location.X, HeightSprite, WidthSprite);
+
+            // Draw sprite
             spriteBatch.Begin(SpriteSortMode.Texture,
             BlendState.AlphaBlend, SamplerState.PointWrap);
             spriteBatch.Draw(texture, rectangleDesination, rectangleSource, Color.White);
             spriteBatch.End();
         }
 
+        // Apply scale to sprite
         private int Scale(int dimension, float scaler)
         {               
-            return (int)((float)dimension * scaler);
+            return (int)(dimension * scaler);
         }
     }
 }
