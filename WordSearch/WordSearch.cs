@@ -7,7 +7,7 @@ namespace WordSearch
     public class WordSearch : Microsoft.Xna.Framework.Game
     {
         private GraphicsDeviceManager graphics;
-        private SpriteBatch spriteBatch;
+        private SpriteBatch sb;
 
         private Sprite spriteAlphabet;
         private Sprite spriteLines;
@@ -26,7 +26,7 @@ namespace WordSearch
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            sb = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
             Texture2D textureAlphabet = Content.Load<Texture2D>("alphabet");
@@ -55,49 +55,50 @@ namespace WordSearch
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Test draw all sprites in both sprite atlasses
-            spriteAlphabet.Draw(spriteBatch, 'a', new Vector2(0f * 84f, 0 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'b', new Vector2(0f * 84f, 1 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'c', new Vector2(0f * 84f, 2 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'd', new Vector2(0f * 84f, 3 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'e', new Vector2(0f * 84f, 4 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'f', new Vector2(0f * 84f, 5 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'g', new Vector2(0f * 84f, 6 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'h', new Vector2(0f * 84f, 7 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'i', new Vector2(0f * 84f, 8 * 84f));
+            spriteAlphabet.Draw(sb, 'a', new Vector2(0f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'b', new Vector2(0f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'c', new Vector2(0f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'd', new Vector2(0f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'e', new Vector2(0f * spriteAlphabet.HeightSprite, 4f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'f', new Vector2(0f * spriteAlphabet.HeightSprite, 5f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'g', new Vector2(0f * spriteAlphabet.HeightSprite, 6f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'h', new Vector2(0f * spriteAlphabet.HeightSprite, 7f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'i', new Vector2(0f * spriteAlphabet.HeightSprite, 8f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'j', new Vector2(0f * spriteAlphabet.HeightSprite, 9f * spriteAlphabet.WidthSprite), 0.5f);
 
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 0 * 84f));
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 1 * 84f));
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 2 * 84f));
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 3 * 84f));
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 4 * 84f));
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 5 * 84f));
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 6 * 84f));
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 7 * 84f));
-            spriteLines.Draw(spriteBatch, '-', new Vector2(0f * 84f, 8 * 84f));
+            spriteAlphabet.Draw(sb, 'k', new Vector2(1f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'l', new Vector2(1f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'm', new Vector2(1f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'n', new Vector2(1f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'o', new Vector2(1f * spriteAlphabet.HeightSprite, 4f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'p', new Vector2(1f * spriteAlphabet.HeightSprite, 5f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'q', new Vector2(1f * spriteAlphabet.HeightSprite, 6f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'r', new Vector2(1f * spriteAlphabet.HeightSprite, 7f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 's', new Vector2(1f * spriteAlphabet.HeightSprite, 8f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 't', new Vector2(1f * spriteAlphabet.HeightSprite, 9f * spriteAlphabet.WidthSprite), 0.5f);
 
-            spriteAlphabet.Draw(spriteBatch, 'j', new Vector2(1f * 84f, 0 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'k', new Vector2(1f * 84f, 1 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'l', new Vector2(1f * 84f, 2 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'm', new Vector2(1f * 84f, 3 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'n', new Vector2(1f * 84f, 4 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'o', new Vector2(1f * 84f, 5 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'p', new Vector2(1f * 84f, 6 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'q', new Vector2(1f * 84f, 7 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'r', new Vector2(1f * 84f, 8 * 84f));
+            spriteAlphabet.Draw(sb, 'u', new Vector2(2f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'v', new Vector2(2f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'w', new Vector2(2f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'x', new Vector2(2f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'y', new Vector2(2f * spriteAlphabet.HeightSprite, 4f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteAlphabet.Draw(sb, 'z', new Vector2(2f * spriteAlphabet.HeightSprite, 5f * spriteAlphabet.WidthSprite), 0.5f);
 
-            spriteAlphabet.Draw(spriteBatch, 's', new Vector2(2f * 84f, 0 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 't', new Vector2(2f * 84f, 1 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'u', new Vector2(2f * 84f, 2 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'v', new Vector2(2f * 84f, 3 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'w', new Vector2(2f * 84f, 4 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'x', new Vector2(2f * 84f, 5 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'y', new Vector2(2f * 84f, 6 * 84f));
-            spriteAlphabet.Draw(spriteBatch, 'z', new Vector2(2f * 84f, 7 * 84f));
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 4f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 5f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 6f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 7f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 8f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 9f * spriteAlphabet.WidthSprite), 0.5f);
 
-            spriteLines.Draw(spriteBatch, '-', new Vector2(3f * 84f, 0 * 84f));
-            spriteLines.Draw(spriteBatch, '|', new Vector2(3f * 84f, 1 * 84f));
-            spriteLines.Draw(spriteBatch, '\\', new Vector2(3f * 84f, 2 * 84f));
-            spriteLines.Draw(spriteBatch, '/', new Vector2(3f * 84f, 3 * 84f));
+            spriteLines.Draw(sb, '-', new Vector2(3f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '|', new Vector2(3f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '\\', new Vector2(3f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
+            spriteLines.Draw(sb, '/', new Vector2(3f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
 
             base.Draw(gameTime);
         }

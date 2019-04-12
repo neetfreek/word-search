@@ -9,22 +9,23 @@ namespace WordSearch
 {
     class Sprite
     {
+        // Fields
         private Texture2D texture;
         private int columns;
         private int rows;
         private int numberSprites;
+        private int heightSprite;
+        private int widthSprite;
+        private float scaleSprite;
 
-        public Texture2D Texture
+        // Properties: scaled height, width
+        public int HeightSprite
         {
-            get { return texture; }
+            get { return Scale(heightSprite, scaleSprite); }
         }
-        public int Columns
+        public int WidthSprite
         {
-            get { return columns; }
-        }
-        public int Rows
-        {
-            get { return rows; }
+            get { return Scale(widthSprite, scaleSprite); }
         }
 
         private DictionaryTextures dictionaryCharacters = new DictionaryTextures();
@@ -34,36 +35,42 @@ namespace WordSearch
             this.texture = texture;
             this.rows = rows;
             this.columns = columns;
-            numberSprites = Rows * Columns;
+            heightSprite = texture.Height / rows;
+            widthSprite = texture.Width / columns;
+            numberSprites = rows * columns;
         }
 
         // Draw 
-        public void Draw(SpriteBatch spriteBatch, char letter, Vector2 location)
+        public void Draw(SpriteBatch spriteBatch, char letter, Vector2 location, float scale)
         {
+            // set sprite draw scale
+            scaleSprite = scale;
+
             // convert letter to index value through dictionary
             dictionaryCharacters.characters.TryGetValue(letter, out int letterIndex);
-            // single texture (letter) dimensions            
-            int height = Texture.Height / Rows;
-            int width = Texture.Width / Columns;
-            int posRow = (letterIndex) / (numberSprites / Rows) * height;
-            int posCol = ((letterIndex + 1 * letterIndex) / (numberSprites / Columns) * width) - Texture.Width * (posRow / height);
-            System.Console.WriteLine($"letter: {letter}, letterIndex: {letterIndex}");
-            System.Console.WriteLine($"Texture.Height: {Texture.Height}, Texture.Width: {Texture.Width}");
-            // for last texture in spriteAlphabet, pos = Texture.Width, defaults to 0-with; manually reset to end
+            // single texture (letter) dimensions
+            int posRow = (letterIndex) / (numberSprites / rows) * heightSprite;
+            int posCol = ((letterIndex + 1 * letterIndex) / (numberSprites / columns) * widthSprite) - texture.Width * (posRow / heightSprite);
+            // for last texture in spriteAlphabet cols; pos becomes Texture.Width, defaults to 0-with; manually reset to end pos
             if (posCol < 0)
             {
-                posCol = Texture.Width - width;
+                posCol = texture.Width - widthSprite;
             }
 
             // Select rectangle within texture to draw, rectangle where texture is drawn
-            Rectangle rectangleSource = new Rectangle(posCol, posRow, height, width);
-            Rectangle rectangleDesination = new Rectangle((int)location.Y, (int)location.X, width, height);
+            Rectangle rectangleSource = new Rectangle(posCol, posRow, heightSprite, widthSprite);
+            Rectangle rectangleDesination = new Rectangle((int)location.Y, (int)location.X, Scale(widthSprite, scaleSprite), Scale(heightSprite, scaleSprite));
 
             // draw texture on screen
             spriteBatch.Begin(SpriteSortMode.Texture,
             BlendState.AlphaBlend, SamplerState.PointWrap);
-            spriteBatch.Draw(Texture, rectangleDesination, rectangleSource, Color.White);
+            spriteBatch.Draw(texture, rectangleDesination, rectangleSource, Color.White);
             spriteBatch.End();
+        }
+
+        private int Scale(int dimension, float scaler)
+        {               
+            return (int)((float)dimension * scaler);
         }
     }
 }
