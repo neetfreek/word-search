@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace WordSearch
 {
-    public class WordSearch : Microsoft.Xna.Framework.Game
+    public class WordSearch : Game
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch sb;
@@ -25,13 +25,13 @@ namespace WordSearch
 
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
+            // SpriteBatch for drawing multiple sprites at once
             sb = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // Setup sprite atlas textures for drawing sprites
             Texture2D textureAlphabet = Content.Load<Texture2D>("alphabet");
             spriteAlphabet = new Sprite(textureAlphabet, 2, 13);
-            Texture2D textureLines = Content.Load<Texture2D>("lines");
+            Texture2D textureLines = Content.Load<Texture2D>("Lines");
             spriteLines = new Sprite(textureLines, 1, 4);
         }
 
@@ -55,52 +55,72 @@ namespace WordSearch
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Test draw all sprites in both sprite atlasses
-            spriteAlphabet.Draw(sb, 'a', new Vector2(0f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'b', new Vector2(0f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'c', new Vector2(0f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'd', new Vector2(0f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'e', new Vector2(0f * spriteAlphabet.HeightSprite, 4f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'f', new Vector2(0f * spriteAlphabet.HeightSprite, 5f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'g', new Vector2(0f * spriteAlphabet.HeightSprite, 6f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'h', new Vector2(0f * spriteAlphabet.HeightSprite, 7f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'i', new Vector2(0f * spriteAlphabet.HeightSprite, 8f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'j', new Vector2(0f * spriteAlphabet.HeightSprite, 9f * spriteAlphabet.WidthSprite), 0.5f);
-
-            spriteAlphabet.Draw(sb, 'k', new Vector2(1f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'l', new Vector2(1f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'm', new Vector2(1f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'n', new Vector2(1f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'o', new Vector2(1f * spriteAlphabet.HeightSprite, 4f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'p', new Vector2(1f * spriteAlphabet.HeightSprite, 5f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'q', new Vector2(1f * spriteAlphabet.HeightSprite, 6f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'r', new Vector2(1f * spriteAlphabet.HeightSprite, 7f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 's', new Vector2(1f * spriteAlphabet.HeightSprite, 8f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 't', new Vector2(1f * spriteAlphabet.HeightSprite, 9f * spriteAlphabet.WidthSprite), 0.5f);
-
-            spriteAlphabet.Draw(sb, 'u', new Vector2(2f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'v', new Vector2(2f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'w', new Vector2(2f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'x', new Vector2(2f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'y', new Vector2(2f * spriteAlphabet.HeightSprite, 4f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteAlphabet.Draw(sb, 'z', new Vector2(2f * spriteAlphabet.HeightSprite, 5f * spriteAlphabet.WidthSprite), 0.5f);
-
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 4f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 5f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 6f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 7f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 8f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '-', new Vector2(1f * spriteAlphabet.HeightSprite, 9f * spriteAlphabet.WidthSprite), 0.5f);
-
-            spriteLines.Draw(sb, '-', new Vector2(3f * spriteAlphabet.HeightSprite, 0f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '|', new Vector2(3f * spriteAlphabet.HeightSprite, 1f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '\\', new Vector2(3f * spriteAlphabet.HeightSprite, 2f * spriteAlphabet.WidthSprite), 0.5f);
-            spriteLines.Draw(sb, '/', new Vector2(3f * spriteAlphabet.HeightSprite, 3f * spriteAlphabet.WidthSprite), 0.5f);
+            TestDrawLetters(sb, spriteAlphabet, 0.5f);
+            TestDrawLines(sb, spriteLines, 0.5f);
 
             base.Draw(gameTime);
+        }
+
+        // Test methods for drawing all letters, lines; to become base drawing methods
+        private void TestDrawLetters(SpriteBatch sb, Sprite spriteAlphabet, float scale)
+        {
+            int numberColumns = 10;
+
+            int counterNewLine = 0;
+            int counterRow = 0;
+            int counterCol = 0;
+            for (int counter = 0; counter < DictionaryTextures.Letters.Count; counter++)
+            {
+                //Fix counterRow for moving to next rown once enumerated enough columns
+                if (counter == 0)
+                {
+                    counterRow = 1;
+                }
+
+                spriteAlphabet.Draw(sb, DictionaryTextures.ValueLetters(counter),
+                    new Vector2((counterRow - 1) * spriteAlphabet.HeightSprite, counterCol * spriteAlphabet.WidthSprite),
+                    scale);
+
+                counterCol++;
+                counterNewLine++;
+
+                // Move to next row once enumerated enough columns
+                if (counterNewLine % numberColumns == 0)
+                {
+                    counterCol = 0;
+                    counterRow++;
+                }
+            }
+        }
+        private void TestDrawLines(SpriteBatch sb, Sprite spriteLines, float scale)
+        {
+            int sizeRow = 10;
+
+            int counterNewLine = 0;
+            int counterRow = 0;
+            int counterCol = 0;
+            for (int counter = 0; counter < DictionaryTextures.Lines.Count; counter++)
+            {
+                //Fix counterRow for moving to next rown once enumerated enough columns
+                if (counter == 0)
+                {
+                    counterRow = 1;
+                }
+
+                spriteLines.Draw(sb, DictionaryTextures.ValueLines(counter),
+                    new Vector2((counterRow - 1) * spriteLines.HeightSprite, counterCol * spriteLines.WidthSprite),
+                    scale);
+
+                counterCol++;
+                counterNewLine++;
+
+                // Move to next row once enumerated enough columns
+                if (counterNewLine % sizeRow == 0)
+                {
+                    counterCol = 0;
+                    counterRow++;
+                }
+            }
         }
     }
 }
