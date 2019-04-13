@@ -7,7 +7,7 @@ namespace WordSearch
         [STAThread]
         static void Main()
         {
-            using (var game = new WordSearch())
+            using (var game = new MainGame())
                 game.Run();
         }
     }

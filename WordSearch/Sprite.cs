@@ -9,12 +9,13 @@
 * ==========================================================================*/
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System.Text.RegularExpressions;
 
 namespace WordSearch
 {
     class Sprite
     {
+        private ManagerDisplay managerDisplay; // handle resolution, scaling
+
         // Fields: sprite atlas setup
         private int columns;
         private int rows;
@@ -24,7 +25,7 @@ namespace WordSearch
         // Field: scale sprite
         private float scaleSprite;
 
-        // Properties: scaled height, width for Draw() callers
+        // Properties: Scale()-scaled height, width for Draw() callers
         public int HeightSprite
         {
             get { return Scale(heightSprite, scaleSprite); }
@@ -46,11 +47,18 @@ namespace WordSearch
             heightSprite = texture.Height / rows;
             widthSprite = texture.Width / columns;
             numberSprites = rows * columns;
+
+            SetupScale();
+        }
+
+        private void SetupScale()
+        {
+            managerDisplay = MainGame.managerDisplay;
         }
 
         public void Draw(SpriteBatch spriteBatch, char letter, Vector2 location, float scale)
         {
-            // set sprite draw scale
+            // Set base sprite draw scale
             scaleSprite = scale;
             int heightScaled = Scale(heightSprite, scale);
             int widthScaled = Scale(widthSprite, scale);
@@ -66,17 +74,19 @@ namespace WordSearch
                 indexSprite = DictionaryTextures.KeyLines(letter);
             }
 
-            // Set position of sprite to get from sprite atlas texture
+            // Set position in sprite atlas texture to get sprite to get from
             int posRow = (indexSprite) / (numberSprites / rows) * heightSprite;
             int posCol = indexSprite * widthSprite;
 
-            // Set rectangle from sprite atlas texture to draw, rectangle where texture is drawn
+            // Set rectangle from sprite atlas texture to draw
             Rectangle rectangleSource = new Rectangle(posCol, posRow, heightSprite, widthSprite);
+            // Set rectangle on screen where texture is drawn
             Rectangle rectangleDesination = new Rectangle((int)location.Y, (int)location.X, HeightSprite, WidthSprite);
 
-            // Draw sprite
+            // Setup spriteBatch
             spriteBatch.Begin(SpriteSortMode.Texture,
-            BlendState.AlphaBlend, SamplerState.PointWrap);
+            BlendState.AlphaBlend, SamplerState.PointWrap, transformMatrix: managerDisplay.ScaleMatrix);
+            // Draw sprite on screen
             spriteBatch.Draw(texture, rectangleDesination, rectangleSource, Color.White);
             spriteBatch.End();
         }

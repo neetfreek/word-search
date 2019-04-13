@@ -75,7 +75,6 @@ namespace WordSearch
         public static char ValueLines(int key)
         {
             Lines.TryGetValue(key, out char value);
-            System.Console.WriteLine($"key {key}: value {value}");
 
             return value;
         }

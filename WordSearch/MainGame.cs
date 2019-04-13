@@ -4,18 +4,28 @@ using Microsoft.Xna.Framework.Input;
 
 namespace WordSearch
 {
-    public class WordSearch : Game
+    public class MainGame : Game
     {
-        private GraphicsDeviceManager graphics;
+        public static ManagerDisplay managerDisplay; // handle resolution, scaling
+
+        //private GraphicsDevice gd;
+        private GraphicsDeviceManager gdManager;
         private SpriteBatch sb;
 
         private Sprite spriteAlphabet;
         private Sprite spriteLines;
 
-        public WordSearch()
+        public MainGame()
         {
-            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Display();
+        }
+
+        private void Display()
+        {
+            gdManager = new GraphicsDeviceManager(this);
+            gdManager.ApplyChanges();
+            DisplaySetup();
         }
 
         protected override void Initialize()
@@ -23,12 +33,18 @@ namespace WordSearch
             base.Initialize();
         }
 
+        private void DisplaySetup()
+        {
+            managerDisplay = new ManagerDisplay(gdManager);
+        }
+
+
         protected override void LoadContent()
         {
             // SpriteBatch for drawing multiple sprites at once
             sb = new SpriteBatch(GraphicsDevice);
 
-            // Setup sprite atlas textures for drawing sprites
+            // SetupScale sprite atlas textures for drawing sprites
             Texture2D textureAlphabet = Content.Load<Texture2D>("alphabet");
             spriteAlphabet = new Sprite(textureAlphabet, 2, 13);
             Texture2D textureLines = Content.Load<Texture2D>("Lines");
@@ -56,7 +72,9 @@ namespace WordSearch
 
             // Test draw all sprites in both sprite atlasses
             TestDrawLetters(sb, spriteAlphabet, 0.5f);
-            TestDrawLines(sb, spriteLines, 0.5f);
+            //TestDrawLines(sb, spriteLines, 0.5f);
+            spriteAlphabet.Draw(sb, 'z',new Vector2(gdManager.GraphicsDevice.Viewport.Height - spriteAlphabet.HeightSprite,
+                gdManager.GraphicsDevice.Viewport.Width - spriteAlphabet.WidthSprite), 0.5f);
 
             base.Draw(gameTime);
         }
@@ -64,7 +82,7 @@ namespace WordSearch
         // Test methods for drawing all letters, lines; to become base drawing methods
         private void TestDrawLetters(SpriteBatch sb, Sprite spriteAlphabet, float scale)
         {
-            int numberColumns = 10;
+            int numberColumns = 11;
 
             int counterNewLine = 0;
             int counterRow = 0;
