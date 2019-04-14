@@ -22,19 +22,19 @@ namespace WordSearch.Common
         private static Random random = new Random();
 
         /*======================================*
-        *  1. Return capitalised Words array1D  *
+        *  1. Return lower case Words array1D  *
         *=======================================*/
-        public static string[] CapitaliseWordsAll(string[] array)
+        public static string[] LowerCase(string[] array)
         {
-            string[] arrayCapitalised = new string[array.Length];
-            string wordCapitalised = "";
+            string[] arrayLowerCase = new string[array.Length];
+            string wordLowerCase = "";
 
             for (int word = 0; word < array.Length; word++)
             {
-                wordCapitalised = array[word].ToUpper();
-                arrayCapitalised[word] = wordCapitalised;
+                wordLowerCase = array[word].ToLower();
+                arrayLowerCase[word] = wordLowerCase;
             }
-            return arrayCapitalised;
+            return arrayLowerCase;
         }
 
         /*==================*
@@ -85,6 +85,30 @@ namespace WordSearch.Common
             return longestWord;
         }
 
+        /*======================================*
+        *  Return CHARACTER matrix as vector    *
+        *=======================================*/
+        public static char[] MatrixToVector(char[,] matrix)
+        {
+            // Declare, initialise vector with default (0) values
+            char[] vector = new char[matrix.Length];
+
+            int counter = 0;
+
+            // Iterate rows
+            for (int row = 0; row < matrix.GetLength(0); row++)
+            {   // Iterate columns (elements)
+                for (int col = 0; col < matrix.GetLength(1); col++)
+                {
+                    // Assign col value to vector
+                    vector[counter] = matrix[row, col];
+                    counter++;
+                }
+            }
+
+            return vector;
+        }
+
         /*==========================*
         *  4. Return random values  *
         *===========================*/
@@ -96,9 +120,9 @@ namespace WordSearch.Common
         }
         public static char Random(char min, char max)
         {
-            char minFixed = char.ToUpper(min);
-            char maxFixed = char.ToUpper(max);
-            string charSetTotal = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            char minFixed = char.ToLower(min);
+            char maxFixed = char.ToLower(max);
+            string charSetTotal = "abcdefghijklmnopqrstuvwxyz";
             int indexStart = charSetTotal.IndexOf(minFixed);
             int indexEnd = charSetTotal.IndexOf(maxFixed);
             int charsToInsertLength = (indexEnd - indexStart) + 1;

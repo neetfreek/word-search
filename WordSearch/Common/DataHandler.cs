@@ -27,7 +27,7 @@ namespace WordSearch.Common
             string wordsStringSanitised = SanitiseWords(wordsString);
             string[] wordsSeperated = SeperateWords(wordsStringSanitised);
             string[] wordsSelected = SetSizeList(wordsSeperated, sizeList);
-            string[] words = Helper.CapitaliseWordsAll(wordsSelected);
+            string[] words = Helper.LowerCase(wordsSelected);
 
             return words;
         }
