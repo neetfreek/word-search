@@ -2,7 +2,7 @@
 *  Manage and hold word list, grid                                                  *
 *===================================================================================*
 * 1. Contain words to find and GridGame properties, set via fields                      *
-* 2. Handle setup of words to find array, DataHandler called to return words array  *
+* 2. Handle setup of words to find array, ManagerData called to return words array  *
 * 3. ROUTINE: Handle setup of grid:                                                 *
 *   a. Handle setup empty grid                                                      *
 *       i. Size based on 1) total number characters in words 2) longest word        *
@@ -54,7 +54,7 @@ namespace WordSearch
         *===================================*/
         private void HandleSetupWords(string listSelected, int listSize)
         {
-            wordsGame = DataHandler.HandleListLoad(listSelected, listSize);
+            wordsGame = ManagerData.HandleListLoad(listSelected, listSize);
         }
 
         /*======================================*

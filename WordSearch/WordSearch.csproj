@@ -44,7 +44,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Common\DataHandler.cs" />
+    <Compile Include="Common\ManagerData.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="DictionaryTextures.cs" />
     <Compile Include="Grid.cs" />

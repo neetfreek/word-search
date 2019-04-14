@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace WordSearch.Common
 {
-    public static class DataHandler
+    public static class ManagerData
     {
         /*==========================================*
         *  1. Handle get, modify, return word list  *
