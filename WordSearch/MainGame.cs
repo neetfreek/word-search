@@ -8,28 +8,31 @@ namespace WordSearch
 {
     public class MainGame : Game
     {
-        // handle resolution, scaling, scale matrix for sprites
-        public static ManagerDisplay managerDisplay; 
-
+        // Display
         private GraphicsDeviceManager gdManager;
         private SpriteBatch sb;
-
+        public static ManagerDisplay managerDisplay;
+        // Textures
         private Sprite spriteLetters;
         private Sprite spriteLines;
-
-        public XmlDocument dataWords;
+        // Grid
+        private Grid grid;
 
         public MainGame()
         {
             Content.RootDirectory = "Content";
-            SetupDisplay();
+            Setup();
+            StartGame();
         }
 
-        private void SetupDisplay()
+        private void Setup()
         {
+            // Setup display
             gdManager = new GraphicsDeviceManager(this);
             gdManager.ApplyChanges();
             managerDisplay = new ManagerDisplay(gdManager);
+            // setup grid
+            grid = new Grid();
         }
 
         protected override void Initialize()
@@ -54,6 +57,11 @@ namespace WordSearch
             // TODO: Unload any non ContentManager content here
         }
 
+        private void StartGame()
+        {
+            grid.SetupGridGame("Mammals", 16);
+        }
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -68,17 +76,49 @@ namespace WordSearch
         {   
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // Test draw all sprites in both sprite atlasses
-            //TestDrawLetters(sb, spriteLetters, 1f);
-            //TestDrawLines(sb, spriteLines, 1f);
-            //TestDrawCornersMid(sb, spriteLetters, 1f);
-            TestDrawGrid(sb, spriteLetters, 1f);
+            DrawGrid(sb, spriteLetters, grid.GridGame, 0.6f);
 
             base.Draw(gameTime);
         }
 
-        // Test methods for drawing all letters, lines; to become base drawing methods
-        private void TestDrawLetters(SpriteBatch sb, Sprite spriteAlphabet, float scale)
+        private void DrawGrid(SpriteBatch sb, Sprite spriteLetters, char[,] grid, float scale)
+        {
+            int numCols = grid.GetLength(0);
+            int numRows = grid.GetLength(1);
+            char[] gridElements = Helper.MatrixToVector(grid);
+            int counterNewLine = 0;
+            int counterRow = 0;
+            int counterCol = 0;
+
+            float posModifierW = (gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (numCols * spriteLetters.WidthSprite / 2);
+            float posModifierH = (gdManager.GraphicsDevice.Viewport.Height * 0.5f) - (numRows * spriteLetters.HeightSprite / 2);
+
+            for (int counter = 0; counter < gridElements.Length; counter++)
+            {
+                //Fix counterRow for moving to next rown once enumerated enough columns
+                if (counter == 0)
+                {
+                    counterRow = 1;
+                }
+
+                spriteLetters.Draw(sb, gridElements[counter],
+                    new Vector2(posModifierW + counterCol * spriteLetters.WidthSprite, posModifierH + (counterRow - 1) * spriteLetters.HeightSprite),
+                    scale);
+
+                counterCol++;
+                counterNewLine++;
+
+                // Move to next row once enumerated enough columns
+                if (counterNewLine % numCols == 0)
+                {
+                    counterCol = 0;
+                    counterRow++;
+                }
+            }
+        }
+
+        // Test draw sprites
+        private void TestDrawLetters(SpriteBatch sb, Sprite spriteLetters, float scale)
         {
             int numberColumns = 11;
 
@@ -93,8 +133,8 @@ namespace WordSearch
                     counterRow = 1;
                 }
 
-                spriteAlphabet.Draw(sb, DictionaryTextures.ValueLetters(counter),
-                    new Vector2(counterCol * spriteAlphabet.WidthSprite, (counterRow-1)  * spriteAlphabet.HeightSprite),
+                spriteLetters.Draw(sb, DictionaryTextures.ValueLetters(counter),
+                    new Vector2(counterCol * spriteLetters.WidthSprite, (counterRow-1)  * spriteLetters.HeightSprite),
                     scale);
 
                 counterCol++;
@@ -138,26 +178,18 @@ namespace WordSearch
                 }
             }
         }
-        private void TestDrawCornersMid(SpriteBatch sb, Sprite spriteLetters, float scale)
+        // Test draw word
+        private void TestDrawWord(string word, SpriteBatch sb, Sprite spriteLetters, float scale)
         {
-            spriteLetters.Draw(sb, 'a', new Vector2(0, managerDisplay.HeightTargetScaled - spriteLetters.HeightSprite), 1f);
-            spriteLetters.Draw(sb, 'x', new Vector2((gdManager.GraphicsDevice.Viewport.Width / 2) - spriteLetters.WidthSprite / 2, (gdManager.GraphicsDevice.Viewport.Height / 2) - spriteLetters.HeightSprite / 2), 1f);
-            spriteLetters.Draw(sb, 'z', new Vector2(1920 - spriteLetters.WidthSprite, 1080 - spriteLetters.HeightSprite), 1f);
-        }
-        // Test draw method for grid; to become method for drawing letters from data
-        private void TestDrawGrid(SpriteBatch sb, Sprite spriteAlphabet, float scale)
-        {
-            // GET FROM MATRIX
-            int numberColumns = 10;
+            string toDraw = word;
+
             // Counter variables
             int counterNewLine = 0;
             int counterRow = 0;
             int counterCol = 0;
-            // Positioning variables
-            float posModifierW = (gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (numberColumns * spriteAlphabet.WidthSprite / 2);
-            float posModifierH = (gdManager.GraphicsDevice.Viewport.Height * .2f);
-            // Draw grid
-            for (int counter = 0; counter < DictionaryTextures.Letters.Count; counter++)
+            int sizeRow = 10;
+
+            for (int counter = 0; counter < toDraw.Length; counter++)
             {
                 //Fix counterRow for moving to next rown once enumerated enough columns
                 if (counter == 0)
@@ -165,15 +197,17 @@ namespace WordSearch
                     counterRow = 1;
                 }
 
-                spriteAlphabet.Draw(sb, DictionaryTextures.ValueLetters(counter),
-                    new Vector2(posModifierW + counterCol * spriteAlphabet.WidthSprite, posModifierH + (counterRow - 1) * spriteAlphabet.HeightSprite),
+                System.Console.WriteLine($"Test draw: {toDraw}");
+
+                spriteLetters.Draw(sb, toDraw[counter],
+                    new Vector2(counterCol * spriteLetters.WidthSprite, (counterRow - 1) * spriteLetters.HeightSprite),
                     scale);
 
                 counterCol++;
                 counterNewLine++;
 
                 // Move to next row once enumerated enough columns
-                if (counterNewLine % numberColumns == 0)
+                if (counterNewLine % sizeRow == 0)
                 {
                     counterCol = 0;
                     counterRow++;
