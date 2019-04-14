@@ -76,9 +76,10 @@ namespace WordSearch
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Test draw all sprites in both sprite atlasses
-            TestDrawLetters(sb, spriteLetters, 1f);
-            TestDrawLines(sb, spriteLines, 1f);
-            TestDrawCornersMid(sb, spriteLetters, 1f);
+            //TestDrawLetters(sb, spriteLetters, 1f);
+            //TestDrawLines(sb, spriteLines, 1f);
+            //TestDrawCornersMid(sb, spriteLetters, 1f);
+            TestDrawGrid(sb, spriteLetters, 1f);
 
             base.Draw(gameTime);
         }
@@ -149,6 +150,42 @@ namespace WordSearch
             spriteLetters.Draw(sb, 'a', new Vector2(0, managerDisplay.HeightTargetScaled - spriteLetters.HeightSprite), 1f);
             spriteLetters.Draw(sb, 'x', new Vector2((gdManager.GraphicsDevice.Viewport.Width / 2) - spriteLetters.WidthSprite / 2, (gdManager.GraphicsDevice.Viewport.Height / 2) - spriteLetters.HeightSprite / 2), 1f);
             spriteLetters.Draw(sb, 'z', new Vector2(1920 - spriteLetters.WidthSprite, 1080 - spriteLetters.HeightSprite), 1f);
+        }
+
+        private void TestDrawGrid(SpriteBatch sb, Sprite spriteAlphabet, float scale)
+        {
+            // GET FROM MATRIX
+            int numberColumns = 10;
+            // Counter variables
+            int counterNewLine = 0;
+            int counterRow = 0;
+            int counterCol = 0;
+            // Positioning variables
+            float posModifierW = (gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (numberColumns * spriteAlphabet.WidthSprite / 2);
+            float posModifierH = (gdManager.GraphicsDevice.Viewport.Height * .2f);
+            // Draw grid
+            for (int counter = 0; counter < DictionaryTextures.Letters.Count; counter++)
+            {
+                //Fix counterRow for moving to next rown once enumerated enough columns
+                if (counter == 0)
+                {
+                    counterRow = 1;
+                }
+
+                spriteAlphabet.Draw(sb, DictionaryTextures.ValueLetters(counter),
+                    new Vector2(posModifierW + counterCol * spriteAlphabet.WidthSprite, posModifierH + (counterRow - 1) * spriteAlphabet.HeightSprite),
+                    scale);
+
+                counterCol++;
+                counterNewLine++;
+
+                // Move to next row once enumerated enough columns
+                if (counterNewLine % numberColumns == 0)
+                {
+                    counterCol = 0;
+                    counterRow++;
+                }
+            }
         }
     }
 }
