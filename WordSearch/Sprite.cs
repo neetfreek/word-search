@@ -81,7 +81,7 @@ namespace WordSearch
             // Set rectangle from sprite atlas texture to draw
             Rectangle rectangleSource = new Rectangle(posCol, posRow, heightSprite, widthSprite);
             // Set rectangle on screen where texture is drawn
-            Rectangle rectangleDesination = new Rectangle((int)location.Y, (int)location.X, HeightSprite, WidthSprite);
+            Rectangle rectangleDesination = new Rectangle((int)location.X, (int)location.Y, HeightSprite, WidthSprite);
 
             // Setup spriteBatch
             spriteBatch.Begin(SpriteSortMode.Texture,

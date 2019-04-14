@@ -12,7 +12,7 @@ namespace WordSearch
         private GraphicsDeviceManager gdManager;
         private SpriteBatch sb;
 
-        private Sprite spriteAlphabet;
+        private Sprite spriteLetters;
         private Sprite spriteLines;
 
         public MainGame()
@@ -35,6 +35,11 @@ namespace WordSearch
 
         private void DisplaySetup()
         {
+            //gdManager.PreferredBackBufferHeight = 1080;
+            //gdManager.PreferredBackBufferWidth = 1920;
+
+
+
             managerDisplay = new ManagerDisplay(gdManager);
         }
 
@@ -45,8 +50,8 @@ namespace WordSearch
             sb = new SpriteBatch(GraphicsDevice);
 
             // SetupScale sprite atlas textures for drawing sprites
-            Texture2D textureAlphabet = Content.Load<Texture2D>("alphabet");
-            spriteAlphabet = new Sprite(textureAlphabet, 2, 13);
+            Texture2D textureLetters = Content.Load<Texture2D>("alphabet");
+            spriteLetters = new Sprite(textureLetters, 2, 13);
             Texture2D textureLines = Content.Load<Texture2D>("Lines");
             spriteLines = new Sprite(textureLines, 1, 4);
         }
@@ -67,14 +72,13 @@ namespace WordSearch
         }
 
         protected override void Draw(GameTime gameTime)
-        {
+        {   
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Test draw all sprites in both sprite atlasses
-            TestDrawLetters(sb, spriteAlphabet, 0.5f);
-            //TestDrawLines(sb, spriteLines, 0.5f);
-            spriteAlphabet.Draw(sb, 'z',new Vector2(gdManager.GraphicsDevice.Viewport.Height - spriteAlphabet.HeightSprite,
-                gdManager.GraphicsDevice.Viewport.Width - spriteAlphabet.WidthSprite), 0.5f);
+            TestDrawLetters(sb, spriteLetters, 1f);
+            TestDrawLines(sb, spriteLines, 1f);
+            TestDrawCornersMid(sb, spriteLetters, 1f);
 
             base.Draw(gameTime);
         }
@@ -96,7 +100,7 @@ namespace WordSearch
                 }
 
                 spriteAlphabet.Draw(sb, DictionaryTextures.ValueLetters(counter),
-                    new Vector2((counterRow - 1) * spriteAlphabet.HeightSprite, counterCol * spriteAlphabet.WidthSprite),
+                    new Vector2(counterCol * spriteAlphabet.WidthSprite, (counterRow-1)  * spriteAlphabet.HeightSprite),
                     scale);
 
                 counterCol++;
@@ -126,7 +130,7 @@ namespace WordSearch
                 }
 
                 spriteLines.Draw(sb, DictionaryTextures.ValueLines(counter),
-                    new Vector2((counterRow - 1) * spriteLines.HeightSprite, counterCol * spriteLines.WidthSprite),
+                    new Vector2(counterCol * spriteLines.WidthSprite, (counterRow - 1) * spriteLines.HeightSprite),
                     scale);
 
                 counterCol++;
@@ -139,6 +143,12 @@ namespace WordSearch
                     counterRow++;
                 }
             }
+        }
+        private void TestDrawCornersMid(SpriteBatch sb, Sprite spriteLetters, float scale)
+        {
+            spriteLetters.Draw(sb, 'a', new Vector2(0, managerDisplay.HeightTargetScaled - spriteLetters.HeightSprite), 1f);
+            spriteLetters.Draw(sb, 'x', new Vector2((gdManager.GraphicsDevice.Viewport.Width / 2) - spriteLetters.WidthSprite / 2, (gdManager.GraphicsDevice.Viewport.Height / 2) - spriteLetters.HeightSprite / 2), 1f);
+            spriteLetters.Draw(sb, 'z', new Vector2(1920 - spriteLetters.WidthSprite, 1080 - spriteLetters.HeightSprite), 1f);
         }
     }
 }
