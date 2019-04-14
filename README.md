@@ -13,4 +13,4 @@ This project a word search game written in C# using MonoGame (a C# framework imp
 ## So Far
 - FRONT END:
 	- Resolution-independent scaling: screen and sprites scale to fit a variety of different resolutions without letter/pillarboxing
-	- Basic draw functionality for sprites on screen in relation to width/height
+	- Draw grid of words to find, random letters, in center of screen
