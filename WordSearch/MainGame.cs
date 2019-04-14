@@ -1,48 +1,41 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Xml;
+using WordSearch.Common;
 
 namespace WordSearch
 {
     public class MainGame : Game
     {
-        public static ManagerDisplay managerDisplay; // handle resolution, scaling
+        // handle resolution, scaling, scale matrix for sprites
+        public static ManagerDisplay managerDisplay; 
 
-        //private GraphicsDevice gd;
         private GraphicsDeviceManager gdManager;
         private SpriteBatch sb;
 
         private Sprite spriteLetters;
         private Sprite spriteLines;
 
+        public XmlDocument dataWords;
+
         public MainGame()
         {
             Content.RootDirectory = "Content";
-            Display();
+            SetupDisplay();
         }
 
-        private void Display()
+        private void SetupDisplay()
         {
             gdManager = new GraphicsDeviceManager(this);
             gdManager.ApplyChanges();
-            DisplaySetup();
+            managerDisplay = new ManagerDisplay(gdManager);
         }
 
         protected override void Initialize()
         {
             base.Initialize();
         }
-
-        private void DisplaySetup()
-        {
-            //gdManager.PreferredBackBufferHeight = 1080;
-            //gdManager.PreferredBackBufferWidth = 1920;
-
-
-
-            managerDisplay = new ManagerDisplay(gdManager);
-        }
-
 
         protected override void LoadContent()
         {
@@ -151,7 +144,7 @@ namespace WordSearch
             spriteLetters.Draw(sb, 'x', new Vector2((gdManager.GraphicsDevice.Viewport.Width / 2) - spriteLetters.WidthSprite / 2, (gdManager.GraphicsDevice.Viewport.Height / 2) - spriteLetters.HeightSprite / 2), 1f);
             spriteLetters.Draw(sb, 'z', new Vector2(1920 - spriteLetters.WidthSprite, 1080 - spriteLetters.HeightSprite), 1f);
         }
-
+        // Test draw method for grid; to become method for drawing letters from data
         private void TestDrawGrid(SpriteBatch sb, Sprite spriteAlphabet, float scale)
         {
             // GET FROM MATRIX
