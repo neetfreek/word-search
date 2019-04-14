@@ -65,10 +65,17 @@ namespace WordSearch
 
             // select, convert letter to index value through, dictionary
             int indexSprite;
+            // letter character
             if (char.IsLetter(letter))
             {
                 indexSprite = DictionaryTextures.KeyLetters(letter);
             }
+            // mouse (only image in sprite atlas texture)
+            else if (char.IsNumber(letter))
+            {
+                indexSprite = 0;
+            }
+            // line character
             else
             {
                 indexSprite = DictionaryTextures.KeyLines(letter);
