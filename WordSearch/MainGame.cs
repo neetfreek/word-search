@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Xml;
 using WordSearch.Common;
 
 namespace WordSearch
@@ -12,7 +11,10 @@ namespace WordSearch
         private GraphicsDeviceManager gdManager;
         private SpriteBatch sb;
         public static ManagerDisplay managerDisplay;
+        // Mouse
+        Vector2 posMouse;
         // Textures
+        private Sprite spriteCursor;
         private Sprite spriteLetters;
         private Sprite spriteLines;
         // Grid
@@ -20,9 +22,9 @@ namespace WordSearch
 
         public MainGame()
         {
-            Content.RootDirectory = "Content";
             Setup();
-            StartGame();
+
+            Content.RootDirectory = "Content";
         }
 
         private void Setup()
@@ -31,12 +33,17 @@ namespace WordSearch
             gdManager = new GraphicsDeviceManager(this);
             gdManager.ApplyChanges();
             managerDisplay = new ManagerDisplay(gdManager);
-            // setup grid
+            // Setup mouse
+            posMouse = new Vector2(gdManager.GraphicsDevice.Viewport.Width * 0.5f,
+                gdManager.GraphicsDevice.Viewport.Height * 0.5f);
+            // Setup grid
             grid = new Grid();
         }
 
         protected override void Initialize()
         {
+            StartGame();
+
             base.Initialize();
         }
 
@@ -46,9 +53,11 @@ namespace WordSearch
             sb = new SpriteBatch(GraphicsDevice);
 
             // SetupScale sprite atlas textures for drawing sprites
+            Texture2D textureCursor = Content.Load<Texture2D>("cursor");
+            spriteCursor = new Sprite(textureCursor, 1, 1);
             Texture2D textureLetters = Content.Load<Texture2D>("alphabet");
             spriteLetters = new Sprite(textureLetters, 2, 13);
-            Texture2D textureLines = Content.Load<Texture2D>("Lines");
+            Texture2D textureLines = Content.Load<Texture2D>("lines");
             spriteLines = new Sprite(textureLines, 1, 4);
         }
 
@@ -64,20 +73,34 @@ namespace WordSearch
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
+            UpdateInput();
 
             base.Update(gameTime);
         }
 
+        private void UpdateInput()
+        {
+            MouseState mouseState = Mouse.GetState();
+            posMouse.X = mouseState.X;
+            posMouse.Y = mouseState.Y;
+
+            if (mouseState.RightButton == ButtonState.Pressed)
+            {
+                //
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Exit();
+            }
+        }
+
         protected override void Draw(GameTime gameTime)
         {   
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.SlateGray);
 
             DrawGrid(sb, spriteLetters, grid.GridGame, 0.6f);
-
+            DrawMouse(sb, spriteCursor, 0.3f);
             base.Draw(gameTime);
         }
 
@@ -90,8 +113,10 @@ namespace WordSearch
             int counterRow = 0;
             int counterCol = 0;
 
-            float posModifierW = (gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (numCols * spriteLetters.WidthSprite / 2);
-            float posModifierH = (gdManager.GraphicsDevice.Viewport.Height * 0.5f) - (numRows * spriteLetters.HeightSprite / 2);
+            float posModifierW = (gdManager.GraphicsDevice.Viewport.Width * 0.5f)
+                - (numCols * spriteLetters.WidthSprite / 2);
+            float posModifierH = (gdManager.GraphicsDevice.Viewport.Height * 0.5f)
+                - (numRows * spriteLetters.HeightSprite / 2);
 
             for (int counter = 0; counter < gridElements.Length; counter++)
             {
@@ -102,7 +127,8 @@ namespace WordSearch
                 }
 
                 spriteLetters.Draw(sb, gridElements[counter],
-                    new Vector2(posModifierW + counterCol * spriteLetters.WidthSprite, posModifierH + (counterRow - 1) * spriteLetters.HeightSprite),
+                    new Vector2(posModifierW + counterCol * spriteLetters.WidthSprite,
+                    posModifierH + (counterRow - 1) * spriteLetters.HeightSprite),
                     scale);
 
                 counterCol++;
@@ -116,7 +142,13 @@ namespace WordSearch
                 }
             }
         }
-
+        private void DrawMouse(SpriteBatch sb, Sprite textureCursor, float scale)
+        {
+            textureCursor.Draw(sb, '0',
+                new Vector2(posMouse.X, posMouse.Y),
+                scale);
+        }
+        
         // Test draw sprites
         private void TestDrawLetters(SpriteBatch sb, Sprite spriteLetters, float scale)
         {
@@ -134,7 +166,8 @@ namespace WordSearch
                 }
 
                 spriteLetters.Draw(sb, DictionaryTextures.ValueLetters(counter),
-                    new Vector2(counterCol * spriteLetters.WidthSprite, (counterRow-1)  * spriteLetters.HeightSprite),
+                    new Vector2(counterCol * spriteLetters.WidthSprite,
+                    (counterRow-1)  * spriteLetters.HeightSprite),
                     scale);
 
                 counterCol++;
@@ -164,7 +197,8 @@ namespace WordSearch
                 }
 
                 spriteLines.Draw(sb, DictionaryTextures.ValueLines(counter),
-                    new Vector2(counterCol * spriteLines.WidthSprite, (counterRow - 1) * spriteLines.HeightSprite),
+                    new Vector2(counterCol * spriteLines.WidthSprite,
+                    (counterRow - 1) * spriteLines.HeightSprite),
                     scale);
 
                 counterCol++;
@@ -200,7 +234,8 @@ namespace WordSearch
                 System.Console.WriteLine($"Test draw: {toDraw}");
 
                 spriteLetters.Draw(sb, toDraw[counter],
-                    new Vector2(counterCol * spriteLetters.WidthSprite, (counterRow - 1) * spriteLetters.HeightSprite),
+                    new Vector2(counterCol * spriteLetters.WidthSprite,
+                    (counterRow - 1) * spriteLetters.HeightSprite),
                     scale);
 
                 counterCol++;
