@@ -24,7 +24,8 @@ namespace WordSearch.Common
         public static string[] HandleListLoad(string nameList, int sizeList)
         {
             string wordsString = LoadListWords(nameList);
-            string wordsStringSanitised = SanitiseWords(wordsString);
+            string wordsStringSanitised = Helper.RemoveNonLetters(wordsString);
+            //string wordsStringSanitised = SanitiseWords(wordsString);
             string[] wordsSeperated = SeperateWords(wordsStringSanitised);
             string[] wordsSelected = SetSizeList(wordsSeperated, sizeList);
             string[] words = Helper.LowerCase(wordsSelected);

@@ -10,6 +10,7 @@
 *  4. Return random (inclusive) CHARACTERS (a-z), INTEGERS  *
 *===========================================================*/
 using System;
+using System.Text.RegularExpressions;
 
 namespace WordSearch.Common
 {
@@ -137,6 +138,16 @@ namespace WordSearch.Common
             char charToInsert = charSet[Random(0, charSet.Length - 1)];
 
             return charToInsert;
+        }
+
+        /*======================================*
+        *  Return CHARACTER matrix as vector    *
+        *=======================================*/
+        public static string RemoveNonLetters(string word)
+        {
+            string wordsSanitised = Regex.Replace(word, "[^A-Za-z ]", "");
+
+            return wordsSanitised;
         }
     }
 }

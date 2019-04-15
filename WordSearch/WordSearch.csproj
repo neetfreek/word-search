@@ -44,11 +44,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ButtonLetter.cs" />
     <Compile Include="Common\ManagerData.cs" />
     <Compile Include="Common\Helper.cs" />
-    <Compile Include="DictionaryTextures.cs" />
+    <Compile Include="Common\DictionaryTextures.cs" />
     <Compile Include="Grid.cs" />
-    <Compile Include="ManagerDisplay.cs" />
+    <Compile Include="Graphics\ManagerDisplay.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,7 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Sprite.cs" />
+    <Compile Include="Graphics\Sprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
