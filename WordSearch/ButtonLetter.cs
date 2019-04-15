@@ -40,5 +40,16 @@ namespace WordSearch
             this.pos.X = pos.X;
             this.pos.Y = pos.Y;
         }
+
+        public bool MouseOver(Vector2 posMouse)
+        {
+            if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + MainGame.spriteLetters.WidthSprite
+                && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.X + MainGame.spriteLetters.HeightSprite)
+            {
+                System.Console.WriteLine($"Mouse over {Name}");
+                return true;
+            }
+            return false;
+        }
     }
 }

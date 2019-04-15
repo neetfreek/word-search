@@ -95,15 +95,22 @@ namespace WordSearch
         }
         private void UpdateInput()
         {
+            // Mouse input
             MouseState mouseState = Mouse.GetState();
             posMouse.X = mouseState.X;
             posMouse.Y = mouseState.Y;
+
+            foreach (ButtonLetter button in lettersGrid)
+            {
+                button.MouseOver(posMouse);
+            }
 
             if (mouseState.RightButton == ButtonState.Pressed)
             {
                 //
             }
 
+            // Keyboard input
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Exit();
@@ -155,7 +162,7 @@ namespace WordSearch
                 // Update letter pos
                 lettersGrid[counter].Pos = position;
 
-                System.Console.WriteLine($"Button {lettersGrid[counter].Name} rectangle: w={lettersGrid[counter].Rectangle.Width}, h={lettersGrid[counter].Rectangle.Height}, rectangle: x={lettersGrid[counter].Rectangle.X}, y={lettersGrid[counter].Rectangle.Y}, loc={lettersGrid[counter].Rectangle.Location}");
+                //System.Console.WriteLine($"Button {lettersGrid[counter].Name} rectangle: w={lettersGrid[counter].Rectangle.Width}, h={lettersGrid[counter].Rectangle.Height}, rectangle: x={lettersGrid[counter].Rectangle.X}, y={lettersGrid[counter].Rectangle.Y}, loc={lettersGrid[counter].Rectangle.Location}");
 
             counterCol++;
             counterNewLine++;
