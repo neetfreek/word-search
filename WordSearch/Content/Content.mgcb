@@ -37,6 +37,20 @@
 /processorParam:TextureFormat=Color
 /build:cursor.png
 
+#begin font.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:font.spritefont;fontWords.spritefont
+
+#begin fontHeadings.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fontHeadings.spritefont
+
 #begin lines.png
 /importer:TextureImporter
 /processor:TextureProcessor
