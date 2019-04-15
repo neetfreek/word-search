@@ -56,7 +56,6 @@ namespace WordSearch
             float scaleHeightSprite = ((float)heightTarget / (float)heightVirtual);
             float scaleWidthSprite = ((float)widthTarget / (float)widthVirtual);
 
-
             // Reset viewport with new BackBuffer dimensions
             gdManager.PreferredBackBufferHeight = HeightTargetScaled;
             gdManager.PreferredBackBufferWidth = WidthTargetScaled;

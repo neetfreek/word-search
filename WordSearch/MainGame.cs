@@ -137,7 +137,7 @@ namespace WordSearch
         {
             GraphicsDevice.Clear(Color.Teal);
             //GraphicsDevice.Clear(Color.LightSkyBlue);
-
+            System.Console.WriteLine($"VP: {gdManager.GraphicsDevice.Viewport.Width}, {gdManager.GraphicsDevice.Viewport.Height}");
             DrawGrid(sb, spriteLetters, SCALE_TILES);
             DrawHeadings(sb);
             DrawWordsList(sb);
@@ -148,14 +148,18 @@ namespace WordSearch
 
         private void DrawHeadings(SpriteBatch sb)
         {
-            sb.Begin();
+            sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
+                SamplerState.PointWrap, transformMatrix: managerDisplay.ScaleMatrix);
 
+            // For aligning heading to all words in list (see DrawWordsList)
             string wordLongest = Helper.LongestWord(grid.WordsGame);
 
-            headingNameListPos = new Vector2((gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (fontHeadings.MeasureString(headingNameList).X / 2),
-            (gdManager.GraphicsDevice.Viewport.Height / 2) - (grid.GridGame.GetLength(1) * spriteLetters.HeightSprite / 2) - fontHeadings.MeasureString(headingNameList).Y);
+            // name above grid (name of the list)
+            headingNameListPos = new Vector2(((gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (fontHeadings.MeasureString(headingNameList).X / 2)),
+            ((gdManager.GraphicsDevice.Viewport.Height / 2) - (grid.GridGame.GetLength(1) * spriteLetters.HeightSprite / 2) - fontHeadings.MeasureString(headingNameList).Y));
             sb.DrawString(fontHeadings, headingNameList, headingNameListPos, Color.Cornsilk);
 
+            // name above words to find list (above words to find)
             headingWordsPos = new Vector2((gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (grid.GridGame.GetLength(0) * spriteLetters.WidthSprite) + fontHeadings.MeasureString(wordLongest).X/2,
                 gdManager.GraphicsDevice.Viewport.Height * 0.1f);
             sb.DrawString(fontHeadings, headingWords, headingWordsPos, Color.Cornsilk);
@@ -164,17 +168,18 @@ namespace WordSearch
         }
         private void DrawWordsList(SpriteBatch sb)
         {
+            // For aligning all words in list
+            string wordLongest = $"  .{Helper.LongestWord(grid.WordsGame)}";
             // Position details
             Vector2 position = new Vector2(0f, 0f);
-            string wordLongest = $"  .{Helper.LongestWord(grid.WordsGame)}";
-
             float posWidth = ((gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (grid.GridGame.GetLength(0) * spriteLetters.WidthSprite)) + fontWords.MeasureString(wordLongest).X / 2;
             float posHeight = (gdManager.GraphicsDevice.Viewport.Height * 0.175f);
-            // longest word (to center)
 
             int counter = 0;
 
-            sb.Begin();
+            sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
+                SamplerState.PointWrap, transformMatrix: managerDisplay.ScaleMatrix);
+
             foreach (string word in grid.WordsGame)
             {
                 position = new Vector2(posWidth,
