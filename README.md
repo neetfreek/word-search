@@ -12,7 +12,7 @@ This project a word search game written in C# using MonoGame (a C# framework imp
 
 ## So Far
 - FRONT END:
-	- Resolution-independent scaling: screen and sprites scale to fit a variety of different resolutions without letter/pillarboxing
+	- Screen size independent scaling, placement for 16:9 (not resolution independent!) 
 	- Draw grid of words to find, random letters, in center of screen
 	- Cursor to move about, detects mousing over different letters
 	- Draw list of words to find (only from Mammals category, 16 words
