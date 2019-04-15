@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using WordSearch.Common;
+using System.Collections.Generic;
 
 namespace WordSearch
 {
@@ -11,14 +12,19 @@ namespace WordSearch
         private GraphicsDeviceManager gdManager;
         private SpriteBatch sb;
         public static ManagerDisplay managerDisplay;
+        public const float SCALE_TILES = 0.6f; 
+        public const float SCALE_CURSOR = 0.3f; 
         // Mouse
         Vector2 posMouse;
         // Textures
-        private Sprite spriteCursor;
-        private Sprite spriteLetters;
-        private Sprite spriteLines;
+        public static Sprite spriteCursor;
+        public static Sprite spriteLetters;
+        public static Sprite spriteLines;
+        // Buttons
+        public static List<ButtonLetter> lettersGrid = new List<ButtonLetter>();
         // Grid
         private Grid grid;
+        // States
 
         public MainGame()
         {
@@ -69,6 +75,16 @@ namespace WordSearch
         private void StartGame()
         {
             grid.SetupGridGame("Mammals", 16);
+
+            // Create buttons, place in lettersGrid list
+            int counter = 0;
+            foreach (char letter in grid.GridGame)
+            {
+                ButtonLetter button = new ButtonLetter(letter.ToString() + counter.ToString(),
+                    new Vector2(0f, 0f));
+                lettersGrid.Add(button);
+                counter++;
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -77,7 +93,6 @@ namespace WordSearch
 
             base.Update(gameTime);
         }
-
         private void UpdateInput()
         {
             MouseState mouseState = Mouse.GetState();
@@ -99,12 +114,61 @@ namespace WordSearch
         {   
             GraphicsDevice.Clear(Color.SlateGray);
 
-            DrawGrid(sb, spriteLetters, grid.GridGame, 0.6f);
-            DrawMouse(sb, spriteCursor, 0.3f);
+            DrawGrid(sb, spriteLetters, SCALE_TILES);
+            //DrawGridOLD(sb, spriteLetters, grid.GridGame, SCALE_TILES);
+            DrawMouse(sb, spriteCursor, SCALE_CURSOR);
+
             base.Draw(gameTime);
         }
 
-        private void DrawGrid(SpriteBatch sb, Sprite spriteLetters, char[,] grid, float scale)
+        private void DrawGrid(SpriteBatch sb, Sprite spriteLetters, float scale)
+        {
+            int numCols = grid.GridGame.GetLength(0);
+            int numRows = grid.GridGame.GetLength(1);
+
+            int counterNewLine = 0;
+            int counterRow = 0;
+            int counterCol = 0;
+
+            // Position details
+            Vector2 position = new Vector2(0f, 0f);
+            float posModifierW = (gdManager.GraphicsDevice.Viewport.Width * 0.5f)
+                - (numCols * spriteLetters.WidthSprite / 2);
+            float posModifierH = (gdManager.GraphicsDevice.Viewport.Height * 0.5f)
+                - (numRows * spriteLetters.HeightSprite / 2);
+
+            for (int counter = 0; counter < lettersGrid.Count; counter++)
+            {
+                //Fix counterRow for moving to next rown once enumerated enough columns
+                if (counter == 0)
+                {
+                    counterRow = 1;
+                }
+
+                // Convert letter NameDraw to char
+                char.TryParse(lettersGrid[counter].NameDraw, out char toDraw);
+                // Get position to place letter
+                position = new Vector2(posModifierW + counterCol * spriteLetters.WidthSprite,
+                    posModifierH + (counterRow - 1) * spriteLetters.HeightSprite);
+                // Draw sprite
+                spriteLetters.Draw(sb, toDraw, position, scale);
+                // Update letter pos
+                lettersGrid[counter].Pos = position;
+
+                System.Console.WriteLine($"Button {lettersGrid[counter].Name} rectangle: w={lettersGrid[counter].Rectangle.Width}, h={lettersGrid[counter].Rectangle.Height}, rectangle: x={lettersGrid[counter].Rectangle.X}, y={lettersGrid[counter].Rectangle.Y}, loc={lettersGrid[counter].Rectangle.Location}");
+
+            counterCol++;
+            counterNewLine++;
+
+            // Move to next row once enumerated enough columns
+            if (counterNewLine % numCols == 0)
+            {
+                counterCol = 0;
+                counterRow++;
+            }
+        }
+    }
+        private void DrawGridOLD(SpriteBatch sb, Sprite spriteLetters, char[,] grid, float scale)
         {
             int numCols = grid.GetLength(0);
             int numRows = grid.GetLength(1);
@@ -125,7 +189,7 @@ namespace WordSearch
                 {
                     counterRow = 1;
                 }
-
+                // Draw sprite
                 spriteLetters.Draw(sb, gridElements[counter],
                     new Vector2(posModifierW + counterCol * spriteLetters.WidthSprite,
                     posModifierH + (counterRow - 1) * spriteLetters.HeightSprite),
