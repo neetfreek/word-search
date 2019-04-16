@@ -66,7 +66,7 @@ namespace WordSearch
             gdManager.IsFullScreen = true;
             gdManager.ApplyChanges();
 
-            // Used in Tile.cs to draw sprites in scale
+            // Used in SpriteTile.cs to draw sprites in scale
             ScaleMatrix = Matrix.CreateScale(scaleWidthSprite, scaleHeightSprite, 1f);
         }
     }

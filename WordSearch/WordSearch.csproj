@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Common\Utility.cs" />
     <Compile Include="Graphics\ButtonTile.cs" />
-    <Compile Include="Graphics\ButtonMenu.cs" />
+    <Compile Include="Graphics\SpriteRectangle.cs" />
     <Compile Include="Common\ManagerData.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\DictionaryTextures.cs" />
@@ -60,7 +60,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\Tile.cs" />
+    <Compile Include="Graphics\SpriteTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

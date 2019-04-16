@@ -1,10 +1,12 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WordSearch.Common;
-
+/*==========================================================*
+*  Clickable rectangle sprites for drawing buttons, menus   *
+*===========================================================*/
 namespace WordSearch
 {
-    public class ButtonMenu
+    public class SpriteRectangle
     {
         private readonly string name;
         private string nameDraw;
@@ -14,6 +16,7 @@ namespace WordSearch
         {
             get { return name; }
         }
+        private Color color = Color.White;
         // Name without letters, used for Draw calls
         public string NameDraw
         {
@@ -35,17 +38,26 @@ namespace WordSearch
         {
             get { return rectangle; }
         }
-
         public Texture2D TextureButtonMenu;
         // Field: scale sprite
-        private float scaleSprite;
+        public Vector2 Scale;
 
-        public ButtonMenu(string name, Texture2D texture)
+        public SpriteRectangle(string name, Texture2D texture , Vector2 scale)
         {
             this.name = name;
             nameDraw = Helper.RemoveNonLetters(Name);
             TextureButtonMenu = texture;
             Pos = new Vector2(0f, 0f);
+            this.Scale = scale;
+
+            if (Name == Utility.nameBackground)
+            {
+                color = Color.CadetBlue;
+            }
+            else
+            {
+                color = Color.BlanchedAlmond;
+            }
         }
 
         public bool Update(Vector2 posMouse)
@@ -59,21 +71,19 @@ namespace WordSearch
             return false;
         }
 
-        public void Draw(SpriteBatch sb, Vector2 position, float scale)
+        public void Draw(SpriteBatch sb, Vector2 position)
         {
-            // Set base sprite draw scale
-            scaleSprite = scale;
+            // Set base sprite draw Scale
             Pos = position;
             // Set rectangle from sprite atlas texture to draw
             Rectangle rectangleSource = new Rectangle(0, 0, TextureButtonMenu.Width, TextureButtonMenu.Height);
             // Set rectangle on screen where texture is drawn
-            Rectangle rectangleDesination = new Rectangle((int)Pos.X, (int)Pos.Y, TextureButtonMenu.Width, TextureButtonMenu.Height);
-
+            Rectangle rectangleDesination = new Rectangle((int)Pos.X, (int)Pos.Y, TextureButtonMenu.Width * (int)Scale.X, TextureButtonMenu.Height * (int)Scale.Y);
             // Setup spriteBatch
             sb.Begin(SpriteSortMode.Texture,
             BlendState.AlphaBlend, SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
             // Draw sprite on screen
-            sb.Draw(TextureButtonMenu, rectangleDesination, rectangleSource, Color.White);
+            sb.Draw(TextureButtonMenu, rectangleDesination, rectangleSource, color);
             sb.End();
         }
     }

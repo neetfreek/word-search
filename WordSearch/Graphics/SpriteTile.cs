@@ -1,5 +1,6 @@
 ﻿/*==========================================================================*
-* Handle sprite atlas textures, drawing sprites from atlases                *
+* Non-clickable sprites for game grid letters, lines.                       *
+* Click functionality in ButtonTile.cs                                      *
 *===========================================================================*
 * 1. Draw sprite from sprite atlas texture:                                 *
 *   - Set sprite scale                                                      *
@@ -12,7 +13,7 @@ using Microsoft.Xna.Framework;
 
 namespace WordSearch
 {
-    public class Tile
+    public class SpriteTile
     {
         // Fields: sprite atlas setup
         private int columns;
@@ -37,7 +38,7 @@ namespace WordSearch
         private Texture2D texture;
 
         // Constructor
-        public Tile(Texture2D texture, int rows, int columns)
+        public SpriteTile(Texture2D texture, int rows, int columns)
         {
             this.texture = texture;
             this.rows = rows;
