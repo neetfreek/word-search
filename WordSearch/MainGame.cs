@@ -12,26 +12,41 @@ namespace WordSearch
         private GraphicsDeviceManager gdManager;
         private SpriteBatch sb;
         public static ManagerDisplay managerDisplay;
-        public const float SCALE_TILES = 0.6f; 
-        public const float SCALE_CURSOR = 0.3f; 
+        // Global constants
+        public const float SCALE_CURSOR = 0.3f, SCALE_TILES = 0.6f; 
         // Mouse
         Vector2 posMouse;
         // Textures
-        public static Sprite spriteCursor;
-        public static Sprite spriteLetters;
-        public static Sprite spriteLines;
-        // Text
+        private Texture2D textureCursor;
+        private Texture2D textureLetters;
+        private Texture2D textureLines;
+        private Texture2D textureButtonMenu;
         private SpriteFont fontWords;
         private SpriteFont fontHeadings;
-        private Vector2 headingNameListPos;
-        private Vector2 headingWordsPos; 
-        private string headingNameList = "";
-        private readonly string headingWords = "Your List of Words:";
-        // Buttons
-        public static List<ButtonLetter> listLettersGrid = new List<ButtonLetter>();
+        // Texture Managers
+        public static ButtonMenu spriteButton;
+        public static Tile spriteCursor;
+        public static Tile spriteLetters;
+        public static Tile spriteLines;
+        // Positions
+        private Vector2 buttonStartPos;
+        private Vector2 gridStartPos;
+        private Vector2 midScreen;
+        private Vector2 sizeScreen;
+        private Vector2 posHeadingNameList;
+        private Vector2 posHeadingWordsList;
+        // Dimensions
+        private int widthGrid, heightGrid;
+        // menu, headings
+        private string nameHeadingNameList = "";
+        private const string nameHeadingWordsList = "List of Words:",
+            promptCategory = "Select a category", promptSize = "Select a Size:";
+        private const string nameButtonStart = "Start Game", nameButtonQuit = "Quit Game";
+        // Button Lists
+        public static List<ButtonTile> listLettersGrid = new List<ButtonTile>();
+        public static List<ButtonMenu> listButtonsMenu = new List<ButtonMenu>();
         // Grid
         private Grid grid;
-        // States
 
         public MainGame()
         {
@@ -55,8 +70,6 @@ namespace WordSearch
 
         protected override void Initialize()
         {
-            SetupGame();
-
             base.Initialize();
         }
 
@@ -66,14 +79,18 @@ namespace WordSearch
             sb = new SpriteBatch(GraphicsDevice);
 
             // SetupScale sprite atlas textures for drawing sprites
-            Texture2D textureCursor = Content.Load<Texture2D>("cursor");
-            spriteCursor = new Sprite(textureCursor, 1, 1);
-            Texture2D textureLetters = Content.Load<Texture2D>("alphabet");
-            spriteLetters = new Sprite(textureLetters, 2, 13);
-            Texture2D textureLines = Content.Load<Texture2D>("lines");
-            spriteLines = new Sprite(textureLines, 1, 4);
+            textureButtonMenu = Content.Load<Texture2D>("button");
+            textureCursor = Content.Load<Texture2D>("cursor");
+            spriteCursor = new Tile(textureCursor, 1, 1);
+            textureLetters = Content.Load<Texture2D>("alphabet");
+            spriteLetters = new Tile(textureLetters, 2, 13);
+            textureLines = Content.Load<Texture2D>("lines");
+            spriteLines = new Tile(textureLines, 1, 4);
             fontWords = Content.Load<SpriteFont>("fontWords");
             fontHeadings = Content.Load<SpriteFont>("fontHeadings");
+
+            SetupGame();
+
         }
 
         protected override void UnloadContent()
@@ -85,10 +102,11 @@ namespace WordSearch
         private void SetupGame()
         {
             grid.SetupGridGame("Mammals", 16);
-            headingNameList = "Mammals";
+            nameHeadingNameList = "Mammals";
 
             // Create buttons, place in listLettersGrid list
             SetupListLettersGrid();
+            SetupListButtonsMenu();
         }
         private void SetupListLettersGrid()
         {
@@ -96,18 +114,42 @@ namespace WordSearch
 
             foreach (char letter in grid.GridGame)
             {
-                ButtonLetter button = new ButtonLetter(letter.ToString() + counter.ToString(),
+                ButtonTile button = new ButtonTile(letter.ToString() + counter.ToString(),
                     new Vector2(0f, 0f));
                 listLettersGrid.Add(button);
                 counter++;
             }
         }
+        private void SetupListButtonsMenu()
+        {
+            // Set up game menu buttons
+            ButtonMenu buttonStart = new ButtonMenu(nameButtonStart, textureButtonMenu);
+            listButtonsMenu.Add(buttonStart);
+            ButtonMenu buttonQuit = new ButtonMenu(nameButtonQuit, textureButtonMenu);
+            listButtonsMenu.Add(buttonQuit);
+            // Set up game customisation menu buttons
+
+        }
 
         protected override void Update(GameTime gameTime)
         {
+            UpdatePositions();
             UpdateInput();
 
             base.Update(gameTime);
+        }
+        private void UpdatePositions()
+        {
+            sizeScreen.X = gdManager.GraphicsDevice.Viewport.Width;
+            sizeScreen.Y = gdManager.GraphicsDevice.Viewport.Height;
+            midScreen.X = (sizeScreen.X * 0.5f);
+            midScreen.Y = (sizeScreen.Y * 0.5f);
+            widthGrid = grid.GridGame.GetLength(0) * spriteLetters.WidthSprite;
+            heightGrid = grid.GridGame.GetLength(1) * spriteLetters.HeightSprite;
+
+            // screen width - (quarter difference between screen width and grid width) - half width of texture
+            buttonStartPos.X = (sizeScreen.X - ((sizeScreen.X - widthGrid) * 0.25f)) - (textureButtonMenu.Width * 0.5f) * managerDisplay.ScaleWidth;
+
         }
         private void UpdateInput()
         {
@@ -116,9 +158,13 @@ namespace WordSearch
             posMouse.X = mouseState.X;
             posMouse.Y = mouseState.Y;
 
-            foreach (ButtonLetter button in listLettersGrid)
+            foreach (ButtonTile button in listLettersGrid)
             {
-                button.MouseOver(posMouse);
+                button.Update(posMouse);
+            }
+            foreach (ButtonMenu button in listButtonsMenu)
+            {
+                button.Update(posMouse);
             }
 
             if (mouseState.RightButton == ButtonState.Pressed)
@@ -136,9 +182,8 @@ namespace WordSearch
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Teal);
-            //GraphicsDevice.Clear(Color.LightSkyBlue);
-            System.Console.WriteLine($"VP: {gdManager.GraphicsDevice.Viewport.Width}, {gdManager.GraphicsDevice.Viewport.Height}");
             DrawGrid(sb, spriteLetters, SCALE_TILES);
+            DrawButtonsMenu(sb);
             DrawHeadings(sb);
             DrawWordsList(sb);
             DrawMouse(sb, spriteCursor, SCALE_CURSOR);
@@ -148,21 +193,21 @@ namespace WordSearch
 
         private void DrawHeadings(SpriteBatch sb)
         {
-            sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
-                SamplerState.PointWrap, transformMatrix: managerDisplay.ScaleMatrix);
-
-            // For aligning heading to all words in list (see DrawWordsList)
             string wordLongest = Helper.LongestWord(grid.WordsGame);
+            // screen width - grid width + half length of longest word
+            posHeadingWordsList.X = (midScreen.X - widthGrid) + fontHeadings.MeasureString(wordLongest).X / 2;
+            // 10% screen height
+            posHeadingWordsList.Y = sizeScreen.Y * 0.1f;
+            // half screen width - half heading text width
+            posHeadingNameList.X = midScreen.X - (fontHeadings.MeasureString(nameHeadingNameList).X * 0.5f);
+            // half screen height - half height of grid - half heading text height
+            posHeadingNameList.Y = midScreen.Y - (heightGrid * 0.5f) - fontHeadings.MeasureString(nameHeadingNameList).Y;
 
-            // name above grid (name of the list)
-            headingNameListPos = new Vector2(((gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (fontHeadings.MeasureString(headingNameList).X / 2)),
-            ((gdManager.GraphicsDevice.Viewport.Height / 2) - (grid.GridGame.GetLength(1) * spriteLetters.HeightSprite / 2) - fontHeadings.MeasureString(headingNameList).Y));
-            sb.DrawString(fontHeadings, headingNameList, headingNameListPos, Color.Cornsilk);
-
-            // name above words to find list (above words to find)
-            headingWordsPos = new Vector2((gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (grid.GridGame.GetLength(0) * spriteLetters.WidthSprite) + fontHeadings.MeasureString(wordLongest).X/2,
-                gdManager.GraphicsDevice.Viewport.Height * 0.1f);
-            sb.DrawString(fontHeadings, headingWords, headingWordsPos, Color.Cornsilk);
+            // Draw
+            sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
+                SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
+            sb.DrawString(fontHeadings, nameHeadingNameList, posHeadingNameList, Color.Cornsilk);
+            sb.DrawString(fontHeadings, nameHeadingWordsList, posHeadingWordsList, Color.Cornsilk);
 
             sb.End();
         }
@@ -170,27 +215,41 @@ namespace WordSearch
         {
             // For aligning all words in list
             string wordLongest = $"  .{Helper.LongestWord(grid.WordsGame)}";
-            // Position details
+            // Set up position
             Vector2 position = new Vector2(0f, 0f);
-            float posWidth = ((gdManager.GraphicsDevice.Viewport.Width * 0.5f) - (grid.GridGame.GetLength(0) * spriteLetters.WidthSprite)) + fontWords.MeasureString(wordLongest).X / 2;
-            float posHeight = (gdManager.GraphicsDevice.Viewport.Height * 0.175f);
+            float posWidth = (midScreen.X - (widthGrid)) + fontWords.MeasureString(wordLongest).X / 2;
+            float posHeight = (sizeScreen.Y * 0.175f);
 
-            int counter = 0;
-
+            // Draw
             sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
-                SamplerState.PointWrap, transformMatrix: managerDisplay.ScaleMatrix);
-
+                SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
+            int counter = 0;
             foreach (string word in grid.WordsGame)
             {
-                position = new Vector2(posWidth,
-                    posHeight + (fontWords.LineSpacing * counter));
+                // Modify position for each word in list
+                position.X = posWidth;
+                position.Y = posHeight + (fontWords.LineSpacing * counter);
+
                 sb.DrawString(fontWords, $"{(counter + 1).ToString()}. {word}" , position, Color.Cornsilk);
 
                 counter++;
             }
             sb.End();
         }
-        private void DrawGrid(SpriteBatch sb, Sprite spriteLetters, float scale)
+        private void DrawButtonsMenu(SpriteBatch sb)
+        {
+            // Set up position
+            float posHeightStart = (sizeScreen.Y * 0.1f);
+            float posHeightQuit = (sizeScreen.Y * 0.825f);
+
+            // Draw
+
+            // To center buttons between grid, screen end:
+            // screenWidth - ((screenWidth - widthGrid) / 2) - buttonWidth
+            listButtonsMenu[0].Draw(sb, new Vector2(buttonStartPos.X, posHeightStart), 1f);
+            listButtonsMenu[1].Draw(sb, new Vector2(buttonStartPos.X, posHeightQuit), 1f);
+        }
+        private void DrawGrid(SpriteBatch sb, Tile spriteLetters, float scale)
         {
             int numCols = grid.GridGame.GetLength(0);
             int numRows = grid.GridGame.GetLength(1);
@@ -201,10 +260,8 @@ namespace WordSearch
 
             // Position details
             Vector2 position = new Vector2(0f, 0f);
-            float posModifierW = (gdManager.GraphicsDevice.Viewport.Width * 0.5f)
-                - (numCols * spriteLetters.WidthSprite / 2);
-            float posModifierH = (gdManager.GraphicsDevice.Viewport.Height * 0.5f)
-                - (numRows * spriteLetters.HeightSprite / 2);
+            float gridStartX = (sizeScreen.X * 0.5f)- (numCols * spriteLetters.WidthSprite * 0.5f);
+            float gridStartY = (sizeScreen.Y * 0.5f) - (numRows * spriteLetters.HeightSprite * 0.5f);
 
             for (int counter = 0; counter < listLettersGrid.Count; counter++)
             {
@@ -217,8 +274,8 @@ namespace WordSearch
                 // Convert letter NameDraw to char
                 char.TryParse(listLettersGrid[counter].NameDraw, out char toDraw);
                 // Get position to place letter
-                position = new Vector2(posModifierW + counterCol * spriteLetters.WidthSprite,
-                    posModifierH + (counterRow - 1) * spriteLetters.HeightSprite);
+                position = new Vector2(gridStartX + counterCol * spriteLetters.WidthSprite,
+                    gridStartY + (counterRow - 1) * spriteLetters.HeightSprite);
                 // Draw sprite
                 spriteLetters.Draw(sb, toDraw, position, scale);
                 // Update letter pos
@@ -235,11 +292,10 @@ namespace WordSearch
                 }
             }
         }
-        private void DrawMouse(SpriteBatch sb, Sprite textureCursor, float scale)
+        private void DrawMouse(SpriteBatch sb, Tile textureCursor, float scale)
         {
-            textureCursor.Draw(sb, '0',
-                new Vector2(posMouse.X, posMouse.Y),
-                scale);
+            // Draw
+            textureCursor.Draw(sb, '0', new Vector2(posMouse.X, posMouse.Y), scale);
         }       
     }
 }
