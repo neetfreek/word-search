@@ -3,7 +3,7 @@ using WordSearch.Common;
 
 namespace WordSearch
 {
-    public class ButtonLetter
+    public class ButtonTile
     {
         private readonly string name;
         private string nameDraw;
@@ -24,8 +24,8 @@ namespace WordSearch
             get { return pos; }
             set { pos = value;
                 rectangle = new Rectangle((int)pos.X, (int)pos.Y,
-                    (int)(MainGame.spriteLetters.HeightSprite),
-                    (int)(MainGame.spriteLetters.WidthSprite));
+                    (int)(MainGame.spriteLetters.WidthSprite),
+                    (int)(MainGame.spriteLetters.HeightSprite));
             }
         }
         public Rectangle Rectangle
@@ -33,7 +33,7 @@ namespace WordSearch
             get { return rectangle;}
         }
 
-        public ButtonLetter(string name, Vector2 pos)
+        public ButtonTile(string name, Vector2 pos)
         {
             this.name = name;
             nameDraw = Helper.RemoveNonLetters(Name);
@@ -41,7 +41,7 @@ namespace WordSearch
             this.pos.Y = pos.Y;
         }
 
-        public bool MouseOver(Vector2 posMouse)
+        public bool Update(Vector2 posMouse)
         {
             if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + MainGame.spriteLetters.WidthSprite
                 && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.X + MainGame.spriteLetters.HeightSprite)

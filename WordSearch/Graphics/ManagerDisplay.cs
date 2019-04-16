@@ -5,7 +5,7 @@ namespace WordSearch
 {
     public class ManagerDisplay
     {
-        public Matrix ScaleMatrix;
+        public static Matrix ScaleMatrix;
 
         private int widthTarget;
         private int heightTarget;
@@ -66,7 +66,7 @@ namespace WordSearch
             gdManager.IsFullScreen = true;
             gdManager.ApplyChanges();
 
-            // Used in Sprite.cs to draw sprites in scale
+            // Used in Tile.cs to draw sprites in scale
             ScaleMatrix = Matrix.CreateScale(scaleWidthSprite, scaleHeightSprite, 1f);
         }
     }

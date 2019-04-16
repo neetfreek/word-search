@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 
 namespace WordSearch
 {
-    public class Sprite
+    public class Tile
     {
         // Fields: sprite atlas setup
         private int columns;
@@ -37,7 +37,7 @@ namespace WordSearch
         private Texture2D texture;
 
         // Constructor
-        public Sprite(Texture2D texture, int rows, int columns)
+        public Tile(Texture2D texture, int rows, int columns)
         {
             this.texture = texture;
             this.rows = rows;
@@ -75,13 +75,13 @@ namespace WordSearch
             int posCol = indexSprite * widthSprite;
 
             // Set rectangle from sprite atlas texture to draw
-            Rectangle rectangleSource = new Rectangle(posCol, posRow, heightSprite, widthSprite);
+            Rectangle rectangleSource = new Rectangle(posCol, posRow, widthSprite, heightSprite);
             // Set rectangle on screen where texture is drawn
             Rectangle rectangleDesination = new Rectangle((int)location.X, (int)location.Y, HeightSprite, WidthSprite);
 
             // Setup spriteBatch
             spriteBatch.Begin(SpriteSortMode.Texture,
-            BlendState.AlphaBlend, SamplerState.PointWrap, transformMatrix: MainGame.managerDisplay.ScaleMatrix);
+            BlendState.AlphaBlend, SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
             // Draw sprite on screen
             spriteBatch.Draw(texture, rectangleDesination, rectangleSource, Color.White);
             spriteBatch.End();
