@@ -7,8 +7,8 @@
 *  TO TEST:                                                     *
 *===============================================================*
 * TO TEST GAME: ENABLE HandleSetupGameScreen("Mammals", 16),    *
-*   DISABLE SetupMenu() IN HandleSetup()                        *
-* TO TEST MENU; ENABLE SetupMenu(), DISABLE                     *
+*   DISABLE HandleSetupMenu() IN HandleSetup()                        *
+* TO TEST MENU; ENABLE HandleSetupMenu(), DISABLE                     *
 *   HandleSetupGameScreen("Mammals", 16) IN HandleSetup()       *
 * ==============================================================*/
 
@@ -60,8 +60,9 @@ namespace WordSearch
         private SpriteRectangle backgroundMenu;
         // State
         public static bool InGame;
-        public static ButtonMenu ButtonMousedOver, ButtonClicked;
+        public static ButtonMenu ButtonMousedOver, ButtonClicked, selectedCategory;
         public static SelectedMenu SelectedMenu;
+        public static SettingsSize selectedSize;
 
         /*==============* 
         *  Manage Game  *
@@ -106,7 +107,7 @@ namespace WordSearch
             fontWords = Content.Load<SpriteFont>("fontWords");
             fontHeadings = Content.Load<SpriteFont>("fontHeadings");
 
-            HandleSetup();
+            HandleSetupMenu();
         }
         protected override void UnloadContent()
         {
@@ -116,17 +117,13 @@ namespace WordSearch
         {
             Exit();
         }
-        private void HandleSetup()
-        {
-            SetupMenu();
-            //HandleSetupGameScreen("Mammals", 16);
-        }  
                                       
         /*==============*
         *  Setup Menu   *
         *===============*/
-        private void SetupMenu()
+        public void HandleSetupMenu()
         {
+            InGame = false;
             scaleBackgroundMenu = new Vector2(2f, 10f);
             backgroundMenu = new SpriteRectangle(Utility.nameBackground, textureButtonMenu, scaleBackgroundMenu, "");
             SetupListButtonsMenuStart();
@@ -144,8 +141,7 @@ namespace WordSearch
             List<string> lists = ManagerData.AllLists();
             foreach (string list in lists)
             {
-                System.Console.WriteLine($"Should add {list} to categoriesList");
-                listButtonsCategories.Add(new SpriteRectangle(list.ToLower(), textureButtonMenu, scaleDefault, list));
+                listButtonsCategories.Add(new SpriteRectangle(list.ToLower(), textureButtonMenu, scaleDefault, Helper.UppercaseFirst(list)));
             }
             listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
         }
@@ -155,6 +151,12 @@ namespace WordSearch
             listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault, Utility.textButtonMedium));
             listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault, Utility.textButtonLarge));
             listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
+        }
+        public void ClearLists()
+        {
+            listButtonsMenuStart.Clear();
+            listButtonsCategories.Clear();
+            listButtonsSizes.Clear();
         }
 
         // true == maximise, false == minimise buttons
@@ -181,8 +183,9 @@ namespace WordSearch
         /*======================*
         *  Setup Game Screen    *
         *=======================*/
-        private void HandleSetupGameScreen(string listChosen, int sizeChosen)
+        public void HandleSetupGameScreen(string listChosen, int sizeChosen)
         {
+            Console.WriteLine($"READY  TO START WITH {listChosen}, {sizeChosen}");
             grid.SetupGridGame(listChosen, sizeChosen);
             Utility.nameHeadingNameList = listChosen;
 
@@ -413,7 +416,6 @@ namespace WordSearch
         {
             // Draw
             textureCursor.Draw(sb, '0', managerInput.PosMouse, scale);
-            //textureCursor.Draw(sb, '0', new Vector2(posMouse.X, posMouse.Y), scale);
         }       
     }
 }

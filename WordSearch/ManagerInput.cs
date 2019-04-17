@@ -99,9 +99,18 @@ namespace WordSearch
                 switch (MainGame.ButtonClicked)
                 {
                     case ButtonMenu.start:
-                        MainGame.SelectedMenu = SelectedMenu.categories;
-                        game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, false);
-                        game.ToggleSizeListButtons(MainGame.listButtonsCategories, true);
+                        if (MainGame.InGame)
+                        {
+                            //MainGame.InGame = false;
+                            MainGame.SelectedMenu = SelectedMenu.start;
+                            game.HandleSetupMenu();
+                        }
+                        else
+                        {
+                            MainGame.SelectedMenu = SelectedMenu.categories;
+                            game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, false);
+                            game.ToggleSizeListButtons(MainGame.listButtonsCategories, true);
+                        }
                         break;
                     case ButtonMenu.menu:
                         MainGame.SelectedMenu = SelectedMenu.start;
@@ -115,26 +124,38 @@ namespace WordSearch
                     case ButtonMenu.instruments:
                         game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
                         game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
+                        MainGame.selectedCategory = MainGame.ButtonClicked;
                         MainGame.SelectedMenu = SelectedMenu.sizes;
                         break;
                     case ButtonMenu.mammals:
                         game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
                         game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
+                        MainGame.selectedCategory = MainGame.ButtonClicked;
                         MainGame.SelectedMenu = SelectedMenu.sizes;
                         break;
                     case ButtonMenu.occupations:
                         game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
                         game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
+                        MainGame.selectedCategory = MainGame.ButtonClicked;
                         MainGame.SelectedMenu = SelectedMenu.sizes;
                         break;
                     case ButtonMenu.small:
-                        MainGame.InGame = true;
+                        MainGame.selectedSize = SettingsSize.small;
+                        game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
+                        game.HandleSetupGameScreen(MainGame.selectedCategory.ToString(), (int)MainGame.selectedSize);
+                        game.ClearLists();
                         break;
                     case ButtonMenu.medium:
-                        MainGame.InGame = true;
+                        game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
+                        MainGame.selectedSize = SettingsSize.medium;
+                        game.HandleSetupGameScreen(MainGame.selectedCategory.ToString(), (int)MainGame.selectedSize);
+                        game.ClearLists();
                         break;
                     case ButtonMenu.large:
-                        MainGame.InGame = true;
+                        game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
+                        MainGame.selectedSize = SettingsSize.large;
+                        game.HandleSetupGameScreen(MainGame.selectedCategory.ToString(), (int)MainGame.selectedSize);
+                        game.ClearLists();
                         break;
                 }
                 cooldownClick = true;
@@ -143,24 +164,8 @@ namespace WordSearch
 
         private void CooldownClickStart()
         {
-            //cooldownClick = true;
-
-            //double targetElapsed = 500;
-
-            //Stopwatch stopWatch = new Stopwatch();
-            //while (targetElapsed > 0)
-            //{
-            //    targetElapsed -= stopWatch.ElapsedMilliseconds;
-            //    Console.WriteLine($"Waiting... {targetElapsed}");
-            //}
-            //stopWatch.Reset();
-            //Console.WriteLine("DONE!");
-
-            ////System.Threading.Thread.Sleep(250);
-
             cooldownRunning = true;
-            Console.WriteLine("Start...");
-            Task.Delay(500).ContinueWith(t => CooldownClickEnd());
+            Task.Delay(300).ContinueWith(t => CooldownClickEnd());
         }
         private void CooldownClickEnd()
         {
