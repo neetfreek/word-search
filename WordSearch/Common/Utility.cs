@@ -1,23 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+
 
 namespace WordSearch.Common
 {
     static class Utility
     {
-        // Global constants
         public const float SCALE_CURSOR = 0.3f, SCALE_TILES = 0.6f;
+        // Names
         public const string nameHeadingWordsList = "List of Words:";
-        public const string nameBackground = "backgroundMenu", nameButtonStart = "Start Game", nameButtonBack = "Back",
-            nameButtonCategory = "Select a category", nameButtonSize = "Select a Size:", nameButtonQuit = "Quit Game",
-            nameButtonSmall = "6 Words", nameButtonMedium = "10 Words", nameButtonLarge = "16 Words";
-        
-        // Text values
         public static string nameHeadingNameList = "";
+        public const string nameBackground = "backgroundMenu", nameButtonStart = "start", nameButtonBack = "back",
+            nameButtonCategory = "categories", nameButtonSize = "sizes", nameButtonQuit = "quit",
+            nameButtonSmall = "small", nameButtonMedium = "medium", nameButtonLarge = "large";
+        // Text 
+        public const string textButtonStart = "Start Game", textButtonBack = "Back",
+            textButtonCategory = "Select a category", textButtonSize = "Select a Size:", textButtonQuit = "Quit Game",
+            textButtonSmall = "6 Words", textButtonMedium = "10 Words", textButtonLarge = "16 Words";
     }
 }
 
