@@ -6,7 +6,7 @@ namespace WordSearch.Common
 {
     static class Utility
     {
-        public const float SCALE_CURSOR = 0.3f, SCALE_TILES = 0.6f;
+        public const float SCALE_CURSOR = 0.3f, SCALE_TILES = 0.55f;
         // Names
         public const string nameHeadingWordsList = "List of Words:";
         public static string nameHeadingNameList = "";
@@ -16,7 +16,7 @@ namespace WordSearch.Common
         // Text 
         public const string textButtonStart = "Start Game", textbuttonMenu = "Menu",
             textButtonCategory = "Select a category", textButtonSize = "Select a Size:", textButtonQuit = "Quit Game",
-            textButtonSmall = "6 Words", textButtonMedium = "10 Words", textButtonLarge = "16 Words";
+            textButtonSmall = "4 Words", textButtonMedium = "8 Words", textButtonLarge = "12 Words";
     }
 }
 
@@ -43,7 +43,7 @@ public enum SelectedMenu
 
 public enum SettingsSize
 {
-    small = 6,
-    medium = 10,
-    large = 16,
+    small = 4,
+    medium = 8,
+    large = 12,
 }
