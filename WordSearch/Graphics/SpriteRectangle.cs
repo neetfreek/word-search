@@ -58,7 +58,6 @@ namespace WordSearch
 
         public void Update(Vector2 posMouse)
         {
-            //System.Console.WriteLine($"{Name} scale: {Scale}");
             if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + TextureButtonMenu.Width * Scale.X
                 && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.Y + TextureButtonMenu.Height * Scale.Y)
             {

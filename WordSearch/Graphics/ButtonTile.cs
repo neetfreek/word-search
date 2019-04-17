@@ -46,7 +46,6 @@ namespace WordSearch
             if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + MainGame.spriteLetters.WidthSprite
                 && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.X + MainGame.spriteLetters.HeightSprite)
             {
-                System.Console.WriteLine($"Mouse over {Name}");
                 return true;
             }
             return false;

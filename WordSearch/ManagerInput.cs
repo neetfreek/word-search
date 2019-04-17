@@ -54,9 +54,6 @@ namespace WordSearch
                 HandleClickButton(mouseState, game);
             }
 
-            //Console.WriteLine($"Mousing over {MainGame.ButtonMousedOver}, selectedMenu {MainGame.SelectedMenu}");
-
-
             MainGame.ButtonMousedOver = ButtonMenu.none;
             MainGame.ButtonClicked = ButtonMenu.none;
         }
@@ -90,34 +87,33 @@ namespace WordSearch
 
         private void HandleClickButton(MouseState mouseState, MainGame game)
         {
-            Console.WriteLine($"Mousing over {MainGame.ButtonMousedOver}");
 
             if (MainGame.ButtonMousedOver != ButtonMenu.none && mouseState.LeftButton == ButtonState.Pressed)
             {
                 MainGame.ButtonClicked = MainGame.ButtonMousedOver;
-                Console.WriteLine($"Clicked {MainGame.ButtonClicked}");
+
                 switch (MainGame.ButtonClicked)
                 {
                     case ButtonMenu.start:
+                        MainGame.SelectedMenu = SelectedMenu.categories;
+                        game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, false);
+                        game.ToggleSizeListButtons(MainGame.listButtonsCategories, true);
+
+                        break;
+                    case ButtonMenu.menu:
                         if (MainGame.InGame)
                         {
-                            //MainGame.InGame = false;
                             game.ClearListsGame();
                             MainGame.SelectedMenu = SelectedMenu.start;
                             game.HandleSetupMenu();
                         }
                         else
                         {
-                            MainGame.SelectedMenu = SelectedMenu.categories;
-                            game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, false);
-                            game.ToggleSizeListButtons(MainGame.listButtonsCategories, true);
+                            MainGame.SelectedMenu = SelectedMenu.start;
+                            game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
+                            game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
+                            game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, true);
                         }
-                        break;
-                    case ButtonMenu.menu:
-                        MainGame.SelectedMenu = SelectedMenu.start;
-                        game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                        game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                        game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, true);
                         break;
                     case ButtonMenu.quit:
                         game.Quit();
@@ -172,7 +168,6 @@ namespace WordSearch
         {
             cooldownClick = false;
             cooldownRunning = false;
-            Console.WriteLine("DONE!");
         }
 
         public void UpdateInputKeyboard(MainGame game)

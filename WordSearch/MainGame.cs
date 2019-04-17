@@ -185,7 +185,6 @@ namespace WordSearch
         *=======================*/
         public void HandleSetupGameScreen(string listChosen, int sizeChosen)
         {
-            Console.WriteLine($"READY  TO START WITH {listChosen}, {sizeChosen}");
             grid.SetupGridGame(listChosen, sizeChosen);
             Utility.nameHeadingNameList = listChosen;
 
