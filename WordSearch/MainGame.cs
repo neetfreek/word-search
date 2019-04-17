@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WordSearch.Common;
 using System.Collections.Generic;
+using System;
 
 namespace WordSearch
 {
@@ -58,8 +59,9 @@ namespace WordSearch
         // Menu background
         private SpriteRectangle backgroundMenu;
         // State
-        public static bool inGame;
-        public static ButtonMenu mouseOver;
+        public static bool InGame;
+        public static ButtonMenu ButtonMousedOver, ButtonClicked;
+        public static SelectedMenu SelectedMenu;
 
         /*==============* 
         *  Manage Game  *
@@ -110,6 +112,10 @@ namespace WordSearch
         {
             // TODO: Unload any non ContentManager content here
         }
+        public void Quit()
+        {
+            Exit();
+        }
         private void HandleSetup()
         {
             SetupMenu();
@@ -134,19 +140,42 @@ namespace WordSearch
         }
         private void SetupListCategories()
         {
-            // Get names, number of buttons from XML
-
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonSmall, textureButtonMenu, scaleDefault, Utility.textButtonSmall));
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault, Utility.textButtonMedium));
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault, Utility.textButtonLarge));
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonBack, textureButtonMenu, scaleDefault, Utility.textButtonBack));
+            // Get names, number of buttons from XML            
+            List<string> lists = ManagerData.AllLists();
+            foreach (string list in lists)
+            {
+                System.Console.WriteLine($"Should add {list} to categoriesList");
+                listButtonsCategories.Add(new SpriteRectangle(list.ToLower(), textureButtonMenu, scaleDefault, list));
+            }
+            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
         }
         private void SetupListSizes()
         {
             listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonSmall, textureButtonMenu, scaleDefault, Utility.textButtonSmall));
             listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault, Utility.textButtonMedium));
             listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault, Utility.textButtonLarge));
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonBack, textureButtonMenu, scaleDefault, Utility.textButtonBack));
+            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
+        }
+
+        // true == maximise, false == minimise buttons
+        public void ToggleSizeListButtons(List<SpriteRectangle> list, bool maximise)
+        {
+            Vector2 scale;
+
+            if (maximise)
+            {
+                scale = new Vector2(1f, 1f);
+            }
+            else
+            {
+                scale = new Vector2(0f, 0f);
+
+            }
+
+            foreach (SpriteRectangle button in list)
+            {
+                button.Scale = scale;
+            }
         }
 
         /*======================*
@@ -160,7 +189,7 @@ namespace WordSearch
             // Create buttons, place in listLettersGrid list
             SetupListLettersGrid();
             SetupListButtonsGame();
-            inGame = true;
+            InGame = true;
         }
         private void SetupListLettersGrid()
         {
@@ -189,7 +218,7 @@ namespace WordSearch
             managerInput.UpdateInputMouse(this);
             managerInput.UpdateInputKeyboard(this);
 
-            //mouseOver = ButtonMenu.none;
+            //ButtonMousedOver = ButtonMenu.none;
             base.Update(gameTime);
         }
         private void UpdatePositions()
@@ -199,7 +228,7 @@ namespace WordSearch
             posMidScreen.X = (sizeScreen.X * 0.5f);
             posMidScreen.Y = (sizeScreen.Y * 0.5f);
 
-            if (inGame)
+            if (InGame)
             {
                 // Number columns * width of letter sprites
                 widthGrid = grid.GridGame.GetLength(0) * spriteLetters.WidthSprite;
@@ -231,24 +260,37 @@ namespace WordSearch
         {
             GraphicsDevice.Clear(Color.Teal);
 
-            if (inGame)
+            if (InGame)
             {
-                DrawGrid(sb, spriteLetters, Utility.SCALE_TILES);
-                DrawButtonsGame(sb);
-                DrawHeadings(sb);
-                DrawWordsList(sb);
+                DrawGrid(spriteLetters, Utility.SCALE_TILES);
+                DrawButtonsGame();
+                DrawHeadings();
+                DrawWordsList();
             }
             else
             {
-                DrawMenu(sb, listButtonsSizes);
+                switch (SelectedMenu)
+                {
+                    case SelectedMenu.start:
+                        DrawMenu(listButtonsMenuStart);
+                        break;
+                    case SelectedMenu.categories:
+                        DrawMenu(listButtonsCategories);
+                        break;
+                    case SelectedMenu.sizes:
+                        DrawMenu(listButtonsSizes);
+                        break;
+
+                }
+                //DrawMenu(listButtonsSizes);
             }
 
-            DrawMouse(sb, spriteCursor, Utility.SCALE_CURSOR);
+            DrawMouse(spriteCursor, Utility.SCALE_CURSOR);
 
             base.Draw(gameTime);
         }
 
-        private void DrawMenu(SpriteBatch sb, List<SpriteRectangle> list)
+        public void DrawMenu(List<SpriteRectangle> list)
         {
             // Background
             backgroundMenu.Draw(sb, new Vector2(posBackgroundMenu.X, posBackgroundMenu.Y));
@@ -268,7 +310,7 @@ namespace WordSearch
                 newPos.Y += gapButtons;
             }
         }
-        private void DrawHeadings(SpriteBatch sb)
+        public void DrawHeadings()
         {
             string wordLongest = Helper.LongestWord(grid.WordsGame);
             // screen width - grid width + half length of longest word
@@ -288,7 +330,7 @@ namespace WordSearch
 
             sb.End();
         }
-        private void DrawWordsList(SpriteBatch sb)
+        public void DrawWordsList()
         {
             // For aligning all words in list
             string wordLongest = $"  .{Helper.LongestWord(grid.WordsGame)}";
@@ -313,7 +355,7 @@ namespace WordSearch
             }
             sb.End();
         }
-        private void DrawButtonsGame(SpriteBatch sb)
+        public void DrawButtonsGame()
         {
             // Set up position
             float posHeightStart = (sizeScreen.Y * 0.1f);
@@ -324,7 +366,7 @@ namespace WordSearch
             listButtonsGame[0].Draw(sb, new Vector2(posButtonGame.X, posHeightStart));
             listButtonsGame[1].Draw(sb, new Vector2(posButtonGame.X, posHeightQuit));
         }
-        private void DrawGrid(SpriteBatch sb, SpriteTile spriteLetters, float scale)
+        public void DrawGrid(SpriteTile spriteLetters, float scale)
         {
             int numCols = grid.GridGame.GetLength(0);
             int numRows = grid.GridGame.GetLength(1);
@@ -367,16 +409,11 @@ namespace WordSearch
                 }
             }
         }
-        private void DrawMouse(SpriteBatch sb, SpriteTile textureCursor, float scale)
+        public void DrawMouse(SpriteTile textureCursor, float scale)
         {
             // Draw
             textureCursor.Draw(sb, '0', managerInput.PosMouse, scale);
             //textureCursor.Draw(sb, '0', new Vector2(posMouse.X, posMouse.Y), scale);
         }       
-
-        public void Quit()
-        {
-            Exit();
-        }
     }
 }
