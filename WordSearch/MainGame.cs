@@ -3,12 +3,13 @@
 *===============================================================*
 * Must apply scaling to add buttons, calculations relating  *   *
 *   to their placement                                          *
+* Change game sizes; grid sometimes too large for screen        *
 /*==============================================================*
 *  TO TEST:                                                     *
 *===============================================================*
 * TO TEST GAME: ENABLE HandleSetupGameScreen("Mammals", 16),    *
-*   DISABLE HandleSetupMenu() IN HandleSetup()                        *
-* TO TEST MENU; ENABLE HandleSetupMenu(), DISABLE                     *
+*   DISABLE HandleSetupMenu() IN HandleSetup()                  *
+* TO TEST MENU; ENABLE HandleSetupMenu(), DISABLE               *
 *   HandleSetupGameScreen("Mammals", 16) IN HandleSetup()       *
 * ==============================================================*/
 
@@ -321,18 +322,18 @@ namespace WordSearch
         {
             string wordLongest = Helper.LongestWord(grid.WordsGame);
             // screen width - grid width + half length of longest word
-            posHeadingWordsList.X = (posMidScreen.X - widthGrid) + fontHeadings.MeasureString(wordLongest).X / 2;
+            posHeadingWordsList.X = (int)((posMidScreen.X - widthGrid) * 0.5) + fontHeadings.MeasureString(wordLongest).X / 2;
             // 10% screen height
-            posHeadingWordsList.Y = sizeScreen.Y * 0.1f;
+            posHeadingWordsList.Y = sizeScreen.Y * 0.175f;
             // half screen width - half heading text width
             posHeadingNameCategoryList.X = posMidScreen.X - (fontHeadings.MeasureString(Utility.nameHeadingNameList).X * 0.5f);
             // half screen height - half height of grid - half heading text height
-            posHeadingNameCategoryList.Y = posMidScreen.Y - (heightGrid * 0.5f) - fontHeadings.MeasureString(Utility.nameHeadingNameList).Y;
+            posHeadingNameCategoryList.Y = posMidScreen.Y - (heightGrid * 0.5f) - fontHeadings.MeasureString(Utility.nameHeadingNameList).Y * 1.1f;
 
             // Draw
             sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
                 SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
-            sb.DrawString(fontHeadings, Utility.nameHeadingNameList, posHeadingNameCategoryList, Color.Cornsilk);
+            sb.DrawString(fontHeadings, Helper.UppercaseFirst(Utility.nameHeadingNameList), posHeadingNameCategoryList, Color.Cornsilk);
             sb.DrawString(fontHeadings, Utility.nameHeadingWordsList, posHeadingWordsList, Color.Cornsilk);
 
             sb.End();
@@ -343,8 +344,8 @@ namespace WordSearch
             string wordLongest = $"  .{Helper.LongestWord(grid.WordsGame)}";
             // Set up position
             Vector2 position = new Vector2(0f, 0f);
-            float posWidth = (posMidScreen.X - (widthGrid)) + fontWords.MeasureString(wordLongest).X / 2;
-            float posHeight = (sizeScreen.Y * 0.175f);
+            float posWidth = (int)((posMidScreen.X - widthGrid) * 0.5) + fontHeadings.MeasureString(wordLongest).X / 2;
+            float posHeight = (sizeScreen.Y * 0.25f);
 
             // Draw
             sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
