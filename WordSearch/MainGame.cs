@@ -36,7 +36,7 @@ namespace WordSearch
         private Texture2D textureLetters;
         private Texture2D textureLines;
         private Texture2D textureButtonMenu;
-        private SpriteFont fontWords;
+        public static SpriteFont fontWords;
         private SpriteFont fontHeadings;
         // Positions
         private Vector2 posBackgroundMenu, posButtonGame, posButtonMenu;
@@ -111,8 +111,8 @@ namespace WordSearch
         }
         private void HandleSetup()
         {
-            SetupMenu();
-            //HandleSetupGameScreen("Mammals", 16);
+            //SetupMenu();
+            HandleSetupGameScreen("Mammals", 16);
         }  
                                       
         /*==============*
@@ -121,31 +121,31 @@ namespace WordSearch
         private void SetupMenu()
         {
             scaleBackgroundMenu = new Vector2(2f, 10f);
-            backgroundMenu = new SpriteRectangle(Utility.nameBackground, textureButtonMenu, scaleBackgroundMenu);
+            backgroundMenu = new SpriteRectangle(Utility.nameBackground, textureButtonMenu, scaleBackgroundMenu, "");
             SetupListButtonsMenuStart();
             SetupListCategories();
             SetupListSizes();
         }
         private void SetupListButtonsMenuStart()
         {
-            listButtonsMenuStart.Add(new SpriteRectangle(Utility.nameButtonStart, textureButtonMenu, scaleDefault));
-            listButtonsMenuStart.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault));
+            listButtonsMenuStart.Add(new SpriteRectangle(Utility.nameButtonStart, textureButtonMenu, scaleDefault, Utility.textButtonStart));
+            listButtonsMenuStart.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
         }
         private void SetupListCategories()
         {
             // Get names, number of buttons from XML
 
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonSmall, textureButtonMenu, scaleDefault));
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault));
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault));
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonBack, textureButtonMenu, scaleDefault));
+            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonSmall, textureButtonMenu, scaleDefault, Utility.textButtonSmall));
+            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault, Utility.textButtonMedium));
+            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault, Utility.textButtonLarge));
+            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonBack, textureButtonMenu, scaleDefault, Utility.textButtonBack));
         }
         private void SetupListSizes()
         {
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonSmall, textureButtonMenu, scaleDefault));
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault));
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault));
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonBack, textureButtonMenu, scaleDefault));
+            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonSmall, textureButtonMenu, scaleDefault, Utility.textButtonSmall));
+            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault, Utility.textButtonMedium));
+            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault, Utility.textButtonLarge));
+            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonBack, textureButtonMenu, scaleDefault, Utility.textButtonBack));
         }
 
         /*======================*
@@ -175,8 +175,8 @@ namespace WordSearch
         private void SetupListButtonsGame()
         {
             // Set up game menu buttons
-            listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonStart, textureButtonMenu, scaleDefault));
-            listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault));
+            listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonStart, textureButtonMenu, scaleDefault, Utility.textButtonStart));
+            listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
         }
 
         /*==========*
@@ -372,7 +372,7 @@ namespace WordSearch
                     gridStartY + (counterRow - 1) * spriteLetters.HeightSprite);
                 // Draw sprite
                 spriteLetters.Draw(sb, toDraw, position, scale);
-                // Update letter pos
+                // Update letter posSprite
                 listLettersGrid[counter].Pos = position;
 
             counterCol++;

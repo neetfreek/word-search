@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using WordSearch.Common;
 /*==========================================================*
 *  Clickable rectangle sprites for drawing buttons, menus   *
 *===========================================================*/
@@ -9,27 +8,22 @@ namespace WordSearch
     public class SpriteRectangle
     {
         private readonly string name;
-        private string nameDraw;
-        private Vector2 pos;
+        private Vector2 posSprite;
+        private Vector2 posText;
         private Rectangle rectangle;
         public string Name
         {
             get { return name; }
         }
-        private Color color = Color.White;
-        // Name without letters, used for Draw calls
-        public string NameDraw
+        private Color colorSprite = Color.White;
+        public string Text;
+        public Vector2 PosSprite
         {
-            get { return nameDraw; }
-            set { nameDraw = value; }
-        }
-        public Vector2 Pos
-        {
-            get { return pos; }
+            get { return posSprite; }
             set
             {
-                pos = value;
-                rectangle = new Rectangle((int)pos.X, (int)pos.Y,
+                posSprite = value;
+                rectangle = new Rectangle((int)posSprite.X, (int)posSprite.Y,
                     (int)(TextureButtonMenu.Width),
                     (int)(TextureButtonMenu.Height));
             }
@@ -42,21 +36,21 @@ namespace WordSearch
         // Field: scale sprite
         public Vector2 Scale;
 
-        public SpriteRectangle(string name, Texture2D texture , Vector2 scale)
+        public SpriteRectangle(string name, Texture2D texture , Vector2 scale, string text)
         {
             this.name = name;
-            nameDraw = Helper.RemoveNonLetters(Name);
+            Text = text;
             TextureButtonMenu = texture;
-            Pos = new Vector2(0f, 0f);
+            PosSprite = new Vector2(0f, 0f);
             this.Scale = scale;
 
-            if (Name == Utility.nameBackground)
+            if (Text == "")
             {
-                color = Color.CadetBlue;
+                colorSprite = Color.CadetBlue;
             }
             else
             {
-                color = Color.BlanchedAlmond;
+                colorSprite = Color.BlanchedAlmond;
             }
         }
 
@@ -74,16 +68,22 @@ namespace WordSearch
         public void Draw(SpriteBatch sb, Vector2 position)
         {
             // Set base sprite draw Scale
-            Pos = position;
+            PosSprite = position;
             // Set rectangle from sprite atlas texture to draw
             Rectangle rectangleSource = new Rectangle(0, 0, TextureButtonMenu.Width, TextureButtonMenu.Height);
             // Set rectangle on screen where texture is drawn
-            Rectangle rectangleDesination = new Rectangle((int)Pos.X, (int)Pos.Y, TextureButtonMenu.Width * (int)Scale.X, TextureButtonMenu.Height * (int)Scale.Y);
+            Rectangle rectangleDesination = new Rectangle((int)PosSprite.X, (int)PosSprite.Y, TextureButtonMenu.Width * (int)Scale.X, TextureButtonMenu.Height * (int)Scale.Y);
+            // Set text position
+            // Sprite position + (half button width) - half width of text 
+            posText.X = PosSprite.X + ((TextureButtonMenu.Width * (int)Scale.X) * 0.5f) - (MainGame.fontWords.MeasureString(Text).X * 0.5f);
+            posText.Y = PosSprite.Y + ((TextureButtonMenu.Height * (int)Scale.Y) * 0.5f) - (MainGame.fontWords.MeasureString(Text).Y * 0.5f);
             // Setup spriteBatch
             sb.Begin(SpriteSortMode.Texture,
             BlendState.AlphaBlend, SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
             // Draw sprite on screen
-            sb.Draw(TextureButtonMenu, rectangleDesination, rectangleSource, color);
+            sb.Draw(TextureButtonMenu, rectangleDesination, rectangleSource, colorSprite);
+            // Draw text over sprite
+            sb.DrawString(MainGame.fontWords, Text, posText, Color.DarkSlateGray);
             sb.End();
         }
     }
