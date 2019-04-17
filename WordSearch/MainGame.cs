@@ -207,7 +207,7 @@ namespace WordSearch
         private void SetupListButtonsGame()
         {
             // Set up game menu buttons
-            listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonStart, textureButtonMenu, scaleDefault, Utility.textButtonStart));
+            listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
             listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
         }
         public void ClearListsGame()
@@ -365,7 +365,7 @@ namespace WordSearch
         public void DrawButtonsGame()
         {
             // Set up position
-            float posHeightStart = (sizeScreen.Y * 0.1f);
+            float posHeightStart = (sizeScreen.Y * 0.725f);
             float posHeightQuit = (sizeScreen.Y * 0.825f);
 
             // Draw
