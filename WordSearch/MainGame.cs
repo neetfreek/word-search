@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using WordSearch.Common;
-using System.Collections.Generic;
-
-/*==============================================================*
+﻿/*==============================================================*
 *  ISSUES:                                                      *
 *===============================================================*
 * Must apply scaling to add buttons, calculations relating  *   *
@@ -17,6 +11,11 @@ using System.Collections.Generic;
 * TO TEST MENU; ENABLE SetupMenu(), DISABLE                     *
 *   HandleSetupGameScreen("Mammals", 16) IN HandleSetup()       *
 * ==============================================================*/
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using WordSearch.Common;
+using System.Collections.Generic;
 
 namespace WordSearch
 {
@@ -31,6 +30,8 @@ namespace WordSearch
         public static SpriteTile spriteCursor;
         public static SpriteTile spriteLetters;
         public static SpriteTile spriteLines;
+        // Input Manager 
+        public static ManagerInput managerInput;
         // Textures
         private Texture2D textureCursor;
         private Texture2D textureLetters;
@@ -46,8 +47,6 @@ namespace WordSearch
         // Dimensions
         private Vector2 scaleBackgroundMenu, scaleDefault, sizeScreen, sizeMenu;
         private int widthGrid, heightGrid;
-
-
         // Button Lists
         public static List<ButtonTile> listLettersGrid = new List<ButtonTile>();
         public static List<SpriteRectangle> listButtonsGame = new List<SpriteRectangle>();
@@ -59,7 +58,8 @@ namespace WordSearch
         // Menu background
         private SpriteRectangle backgroundMenu;
         // State
-        private bool inGame;
+        public static bool inGame;
+        public static ButtonMenu mouseOver;
 
         /*==============* 
         *  Manage Game  *
@@ -76,7 +76,8 @@ namespace WordSearch
             gdManager = new GraphicsDeviceManager(this);
             gdManager.ApplyChanges();
             managerDisplay = new ManagerDisplay(gdManager);
-            // Setup mouse
+            // Setup input
+            managerInput = new ManagerInput();
             posMouse = new Vector2(gdManager.GraphicsDevice.Viewport.Width * 0.5f,
                 gdManager.GraphicsDevice.Viewport.Height * 0.5f);
             // Setup grid
@@ -111,8 +112,8 @@ namespace WordSearch
         }
         private void HandleSetup()
         {
-            //SetupMenu();
-            HandleSetupGameScreen("Mammals", 16);
+            SetupMenu();
+            //HandleSetupGameScreen("Mammals", 16);
         }  
                                       
         /*==============*
@@ -185,8 +186,10 @@ namespace WordSearch
         protected override void Update(GameTime gameTime)
         {
             UpdatePositions();
-            UpdateInput();
+            managerInput.UpdateInputMouse(this);
+            managerInput.UpdateInputKeyboard(this);
 
+            //mouseOver = ButtonMenu.none;
             base.Update(gameTime);
         }
         private void UpdatePositions()
@@ -218,28 +221,6 @@ namespace WordSearch
 
                 posButtonMenu.X = posBackgroundMenu.X + (int)(sizeMenu.X * 0.5f) - (textureButtonMenu.Width * 0.5f);
                 posButtonMenu.Y = posBackgroundMenu.Y + (sizeMenu.Y * 0.1f);
-            }
-        }
-        private void UpdateInput()
-        {
-            // Mouse input
-            MouseState mouseState = Mouse.GetState();
-            posMouse.X = mouseState.X;
-            posMouse.Y = mouseState.Y;
-
-            foreach (ButtonTile button in listLettersGrid)
-            {
-                button.Update(posMouse);
-            }
-            foreach (SpriteRectangle button in listButtonsGame)
-            {
-                button.Update(posMouse);
-            }
-
-            // Keyboard input
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                Exit();
             }
         }
 
@@ -389,7 +370,13 @@ namespace WordSearch
         private void DrawMouse(SpriteBatch sb, SpriteTile textureCursor, float scale)
         {
             // Draw
-            textureCursor.Draw(sb, '0', new Vector2(posMouse.X, posMouse.Y), scale);
+            textureCursor.Draw(sb, '0', managerInput.PosMouse, scale);
+            //textureCursor.Draw(sb, '0', new Vector2(posMouse.X, posMouse.Y), scale);
         }       
+
+        public void Quit()
+        {
+            Exit();
+        }
     }
 }
