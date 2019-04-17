@@ -40,3 +40,10 @@ public enum SelectedMenu
     categories,
     sizes,
 }
+
+public enum SettingsSize
+{
+    small = 6,
+    medium = 10,
+    large = 16,
+}
