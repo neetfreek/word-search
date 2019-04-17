@@ -23,7 +23,7 @@ namespace WordSearch.Common
         *===========================================*/
         public static string[] HandleListLoad(string nameList, int sizeList)
         {
-            string wordsString = LoadListWords(nameList);
+            string wordsString = LoadListWordsString(nameList);
             string wordsStringSanitised = Helper.RemoveNonLetters(wordsString);
             //string wordsStringSanitised = SanitiseWords(wordsString);
             string[] wordsSeperated = SeperateWords(wordsStringSanitised);
@@ -33,23 +33,7 @@ namespace WordSearch.Common
             return words;
         }
 
-        // TEST RETURN DATA TO MAINGAME.cs
-        public static string TestLoad()
-        {
-            string listContents = "TEST TEST";
-
-            XElement dataWords = XElement.Parse(Properties.Resources.dataWords);
-
-            string list = (string)
-                (from el in dataWords.Elements("Mammals")
-                 select el).First();
-
-            listContents = list;
-
-            return listContents;
-        }
-
-        private static string LoadListWords(string nameListWords)
+        private static string LoadListWordsString(string nameListWords)
         {
             XElement dataWords = XElement.Parse(Properties.Resources.dataWords);
 
@@ -59,6 +43,7 @@ namespace WordSearch.Common
 
             return list;
         }
+
         private static string SanitiseWords(string listWords)
         {
             string wordsSanitised = Regex.Replace(listWords, "[^A-Za-z ]", "");
@@ -99,7 +84,7 @@ namespace WordSearch.Common
         /*==========================*
         *  2. Return all word lists *
         *===========================*/
-        public static string[] AllLists()
+        public static List<string> AllLists()
         {
             XElement dataWords = XElement.Parse(Properties.Resources.dataWords);
             var xElements = dataWords.Elements();
@@ -109,9 +94,8 @@ namespace WordSearch.Common
             {
                 listOfLists.Add(item.Name.ToString());
             }
-            string[] lists = listOfLists.ToArray();
 
-            return lists;
+            return listOfLists;
         }
     }
 }
