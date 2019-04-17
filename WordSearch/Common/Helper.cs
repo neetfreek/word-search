@@ -149,5 +149,13 @@ namespace WordSearch.Common
 
             return wordsSanitised;
         }
+
+        public static string UppercaseFirst(string word)
+        {
+            string upperCase = word;
+            char.ToUpper(upperCase[0]);
+
+            return char.ToUpper(upperCase[0]) + upperCase.Substring(1);
+        }
     }
 }
