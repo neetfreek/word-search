@@ -102,6 +102,7 @@ namespace WordSearch
                         if (MainGame.InGame)
                         {
                             //MainGame.InGame = false;
+                            game.ClearListsGame();
                             MainGame.SelectedMenu = SelectedMenu.start;
                             game.HandleSetupMenu();
                         }
@@ -143,19 +144,19 @@ namespace WordSearch
                         MainGame.selectedSize = SettingsSize.small;
                         game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
                         game.HandleSetupGameScreen(MainGame.selectedCategory.ToString(), (int)MainGame.selectedSize);
-                        game.ClearLists();
+                        game.ClearListsMenu();
                         break;
                     case ButtonMenu.medium:
                         game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
                         MainGame.selectedSize = SettingsSize.medium;
                         game.HandleSetupGameScreen(MainGame.selectedCategory.ToString(), (int)MainGame.selectedSize);
-                        game.ClearLists();
+                        game.ClearListsMenu();
                         break;
                     case ButtonMenu.large:
                         game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
                         MainGame.selectedSize = SettingsSize.large;
                         game.HandleSetupGameScreen(MainGame.selectedCategory.ToString(), (int)MainGame.selectedSize);
-                        game.ClearLists();
+                        game.ClearListsMenu();
                         break;
                 }
                 cooldownClick = true;

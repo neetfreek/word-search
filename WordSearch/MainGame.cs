@@ -152,7 +152,7 @@ namespace WordSearch
             listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault, Utility.textButtonLarge));
             listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
         }
-        public void ClearLists()
+        public void ClearListsMenu()
         {
             listButtonsMenuStart.Clear();
             listButtonsCategories.Clear();
@@ -210,6 +210,11 @@ namespace WordSearch
             // Set up game menu buttons
             listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonStart, textureButtonMenu, scaleDefault, Utility.textButtonStart));
             listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
+        }
+        public void ClearListsGame()
+        {
+            listLettersGrid.Clear();
+            listButtonsGame.Clear();
         }
 
         /*==========*
