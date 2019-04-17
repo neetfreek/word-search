@@ -1,8 +1,11 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-/*==========================================================*
+﻿/*==========================================================*
 *  Clickable rectangle sprites for drawing buttons, menus   *
 *===========================================================*/
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+
 namespace WordSearch
 {
     public class SpriteRectangle
@@ -24,8 +27,7 @@ namespace WordSearch
             {
                 posSprite = value;
                 rectangle = new Rectangle((int)posSprite.X, (int)posSprite.Y,
-                    (int)(TextureButtonMenu.Width),
-                    (int)(TextureButtonMenu.Height));
+                    (int)(TextureButtonMenu.Width * Scale.X), (int)(TextureButtonMenu.Height * Scale.Y));
             }
         }
         public Rectangle Rectangle
@@ -54,15 +56,13 @@ namespace WordSearch
             }
         }
 
-        public bool Update(Vector2 posMouse)
+        public void Update(Vector2 posMouse)
         {
-            if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + TextureButtonMenu.Width
-                && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.X + TextureButtonMenu.Height)
+            if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + TextureButtonMenu.Width * Scale.X
+                && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.Y + TextureButtonMenu.Height * Scale.Y)
             {
-                System.Console.WriteLine($"Mouse over {Name}");
-                return true;
+                MainGame.mouseOver = (ButtonMenu)Enum.Parse(typeof(ButtonMenu), Name);
             }
-            return false;
         }
 
         public void Draw(SpriteBatch sb, Vector2 position)

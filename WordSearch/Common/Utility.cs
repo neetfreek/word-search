@@ -1,5 +1,6 @@
-﻿using Microsoft.Xna.Framework;
-
+﻿/*==================================*
+*  Contain global variables, enums  *
+*===================================*/
 
 namespace WordSearch.Common
 {
@@ -19,3 +20,13 @@ namespace WordSearch.Common
     }
 }
 
+public enum ButtonMenu
+{
+    none,
+    start,
+    back,
+    quit,
+    small,
+    medium,
+    large,
+}
