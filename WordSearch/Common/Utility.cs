@@ -6,7 +6,7 @@ namespace WordSearch.Common
 {
     static class Utility
     {
-        public const float SCALE_CURSOR = 0.3f, SCALE_TILES = 0.55f;
+        public const float SCALE_CURSOR = 0.3f, SCALE_TILES = 0.55f, CLICK_COOLDOWN_MENU = 300;
         // Names
         public const string nameHeadingWordsList = "List of Words:";
         public static string nameHeadingNameList = "";
