@@ -22,17 +22,10 @@ namespace WordSearch
         public Vector2 Pos
         {
             get { return pos; }
-            // Same origin as tile
-            //set
-            //{
-            //    pos = value;
-            //    rectangle = new Rectangle((int)pos.X, (int)pos.Y,
-            //        (int)(MainGame.spriteLetters.WidthSprite),
-            //        (int)(MainGame.spriteLetters.HeightSprite));
-            //}
             set
             {
                 pos = value;
+                // rectangle (collider) reduced to 50% size of tile
                 rectangle = new Rectangle((int)InnerRectangleOrigin().X, (int)InnerRectangleOrigin().Y,
                 (int)(MainGame.spriteLetters.WidthSprite * 0.5),
                     (int)(MainGame.spriteLetters.HeightSprite * 0.5));
@@ -55,11 +48,11 @@ namespace WordSearch
         {
             if (rectangle.Contains(posMouse.X, posMouse.Y))
             {
-                //System.Console.WriteLine($"Mousing over {this.Name} Rect. info: size={rectangle.Width},{rectangle.Height} loc={rectangle.Location}");
                 MainGame.MousedOverTile = this;
             }
         }
 
+        // rectangle (collider) pos move 25% right, 25% down
         private Vector2 InnerRectangleOrigin()
         {
             Vector2 midPoint;
