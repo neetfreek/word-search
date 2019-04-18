@@ -98,7 +98,7 @@ namespace WordSearch
             // Left-click grid letter tiles
             if (MainGame.MousedOverTile != null && mouseState.LeftButton == ButtonState.Pressed)
             {
-                ManagerSelectTile.SelectTile();
+                ManagerSelectTile.SelectTile(game);
             }
             // Right-click grid letter tiles
             if (MainGame.MousedOverTile != null && mouseState.RightButton == ButtonState.Pressed)

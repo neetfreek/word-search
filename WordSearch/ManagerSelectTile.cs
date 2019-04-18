@@ -2,6 +2,7 @@
 *  Handle actions for selecting tiles with mouse in-game    *
 *===========================================================*/
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
 namespace WordSearch
@@ -12,13 +13,13 @@ namespace WordSearch
         private static float distanceOld;
         private static bool distanceOldSet;
 
-        public static void SelectTile()
+        public static void SelectTile(MainGame game)
         {
             MainGame.ClickedTile = MainGame.MousedOverTile;
 
             // If > 0 tiles in listTilesTemporary
             if (!MainGame.listTilesTemporary.Contains(MainGame.ClickedTile) &&
-                MainGame.listTilesTemporary.Count > 0  && TileAdjacentToAdded())
+                MainGame.listTilesTemporary.Count > 0 && TileAdjacentToAdded())
             {
                 // Third+ tiles
                 if (MainGame.listTilesTemporary.Count > 1)
@@ -43,6 +44,7 @@ namespace WordSearch
 
         public static void UnselectTile()
         {
+            MainGame.listTileHighlight.Clear();
             MainGame.ClickedTile = MainGame.MousedOverTile;
             RemoveTileListTilesTemporary();
         }
@@ -56,9 +58,19 @@ namespace WordSearch
 
         private static void AddTileListTilesTemporary()
         {
+            MainGame.listTileHighlight.Clear();
+            MainGame.listTileHighlight.Add(MainGame.ClickedTile);
+
+
             if (!MainGame.listTilesTemporary.Contains(MainGame.ClickedTile))
             {
                 MainGame.listTilesTemporary.Add(MainGame.ClickedTile);
+                MainGame.wordTilesTemporary += MainGame.ClickedTile.NameDraw;
+                if (SelectionIsWord())
+                {
+                    AddSelectionToPermanent();
+                    ClearTemporary();
+                }
             }
         }
 
@@ -67,6 +79,8 @@ namespace WordSearch
             if (MainGame.listTilesTemporary.Contains((MainGame.ClickedTile)))
             {
                 MainGame.listTilesTemporary.Remove(MainGame.ClickedTile);
+                MainGame.wordTilesTemporary = MainGame.wordTilesTemporary.Substring(0, MainGame.wordTilesTemporary.Length-1);
+                Console.WriteLine($"{MainGame.wordTilesTemporary}");
 
                 if (MainGame.listTilesTemporary.Count == 0)
                 {
@@ -118,6 +132,39 @@ namespace WordSearch
             }
 
             return false;
+        }
+
+        private static bool SelectionIsWord()
+        {
+            foreach (string word in MainGame.listWordsToFind)
+            {
+                if (word == MainGame.wordTilesTemporary)
+                {                    
+                    return true;
+                }
+            }
+
+
+            return false;
+        }
+
+        private static void AddSelectionToPermanent()
+        {
+            for (int counter = 0; counter < MainGame.listTilesTemporary.Count; counter++)
+            {
+                MainGame.listTileHighlight.Add(MainGame.listTilesTemporary[counter]);
+                MainGame.listTilesPermanent.Add(MainGame.listTilesTemporary[counter]);
+            }
+
+            //MainGame.listTilesPermanent = new List<ButtonTile>(MainGame.listTilesTemporary);
+            Console.WriteLine($"Seem to be getting somewhere");
+        }
+
+        private static void ClearTemporary()
+        {
+            ResetValues();
+            MainGame.listTilesTemporary.Clear();
+            MainGame.wordTilesTemporary = "";
         }
     }
 }

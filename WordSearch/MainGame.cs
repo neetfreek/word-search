@@ -41,12 +41,16 @@ namespace WordSearch
         // Dimensions
         private Vector2 scaleBackgroundMenu, scaleDefault, sizeScreen, sizeMenu;
         private int widthGrid, heightGrid;
-        // Contains all grid tiles
+        // Contain all grid tiles
         public static List<ButtonTile> listLettersGrid = new List<ButtonTile>();
-        // Contains currently selected tiles to draw lines over
+        public static List<string> listWordsToFind = new List<string>();
+        // Contain currently selected tiles to draw lines over
         public static List<ButtonTile> listTilesTemporary = new List<ButtonTile>();
-        // Contains tiles of found word to always draw lines over
+        public static string wordTilesTemporary;
+        // Contain tiles of found word to always draw lines over
         public static List<ButtonTile> listTilesPermanent = new List<ButtonTile>();
+        // Contain tile clicked to highlight
+        public static List<ButtonTile> listTileHighlight = new List<ButtonTile>();
         // Contain menu buttons
         public static List<SpriteRectangle> listButtonsGame = new List<SpriteRectangle>();
         public static List<SpriteRectangle> listButtonsMenuStart = new List<SpriteRectangle>();
@@ -189,9 +193,17 @@ namespace WordSearch
             Utility.nameHeadingNameList = listChosen;
 
             // Create buttons, place in listLettersGrid list
+            SetupListWordsToFind();
             SetupListLettersGrid();
             SetupListButtonsGame();
             InGame = true;
+        }
+        private void SetupListWordsToFind()
+        {
+            foreach (string word in grid.WordsGame)
+            {
+                listWordsToFind.Add(word);
+            }
         }
         private void SetupListLettersGrid()
         {
@@ -215,6 +227,9 @@ namespace WordSearch
             listLettersGrid.Clear();
             listButtonsGame.Clear();
             listTilesTemporary.Clear();
+            listTilesPermanent.Clear();
+            listTileHighlight.Clear();
+            wordTilesTemporary = "";
             ManagerSelectTile.ResetValues();
         }
 
@@ -273,7 +288,9 @@ namespace WordSearch
             {
                 DrawGrid(spriteLetters);
                 DrawButtonsGame();
+                HighlightTile();
                 DrawLines(listTilesTemporary);
+                DrawLines(listTilesPermanent);
                 DrawHeadings();
                 DrawWordsList();
             }
@@ -404,7 +421,7 @@ namespace WordSearch
                 position = new Vector2(gridStartX + counterCol * spriteLetters.WidthSprite,
                     gridStartY + (counterRow - 1) * spriteLetters.HeightSprite);
                 // Draw sprite
-                spriteLetters.Draw(sb, toDraw, position, Utility.SCALE_TILES);
+                spriteLetters.Draw(sb, toDraw, position, Utility.SCALE_TILES, Color.White);
                 // Update letter posSprite
                 listLettersGrid[counter].Pos = position;
 
@@ -423,14 +440,22 @@ namespace WordSearch
         {
             foreach (ButtonTile tile in list)
             {
-                spriteLines.Draw(sb, '-', tile.Pos, Utility.SCALE_TILES);
+                spriteLines.Draw(sb, '-', tile.Pos, Utility.SCALE_TILES, Color.White);
             }
 
         }
         public void DrawMouse(SpriteTile textureCursor, float scale)
         {
             // Draw
-            textureCursor.Draw(sb, '0', managerInput.PosMouse, scale);
+            textureCursor.Draw(sb, '0', managerInput.PosMouse, scale, Color.White);
         }       
+        public void HighlightTile()
+        {
+            foreach (ButtonTile button in listTileHighlight)
+            {
+                spriteLetters.Draw(sb, char.Parse(button.NameDraw), button.Pos, Utility.SCALE_TILES, Color.Green);
+            }
+
+        }
     }
 }
