@@ -15,7 +15,9 @@ namespace WordSearch
                     MainGame.SelectedMenu = SelectedMenu.categories;
                     game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, false);
                     game.ToggleSizeListButtons(MainGame.listButtonsCategories, true);
-
+                    break;
+                case ButtonMenu.quit:
+                    game.Quit();
                     break;
                 case ButtonMenu.menu:
                     if (MainGame.InGame)
@@ -26,14 +28,11 @@ namespace WordSearch
                     }
                     else
                     {
+                        game.ClearListsMenu();
+
                         MainGame.SelectedMenu = SelectedMenu.start;
-                        game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                        game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                        game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, true);
+                        game.HandleSetupMenu();
                     }
-                    break;
-                case ButtonMenu.quit:
-                    game.Quit();
                     break;
                 case ButtonMenu.instruments:
                     game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
