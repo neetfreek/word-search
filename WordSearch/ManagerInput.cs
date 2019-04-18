@@ -21,6 +21,7 @@ namespace WordSearch
             set { posMouse = value; }
         }
         private static bool cooldownClick, cooldownRunning;
+        public static float ClickCooldown;
 
         public ManagerInput()
         {
@@ -88,20 +89,27 @@ namespace WordSearch
 
         private void HandleClickButton(MouseState mouseState, MainGame game)
         {
+            // Left-click menu buttons
             if (MainGame.MousedOverButton != ButtonMenu.none && mouseState.LeftButton == ButtonState.Pressed)
             {
                 MainGame.ClickedButton = MainGame.MousedOverButton;
-                ClickButton(game);
+                ClickLeftButton(game);
                 cooldownClick = true;
             }
+            // Left-click grid letter tiles
             if (MainGame.MousedOverTile != null && mouseState.LeftButton == ButtonState.Pressed)
             {
                 MainGame.ClickedTile = MainGame.MousedOverTile;
-                ClickTile(game);
-                cooldownClick = true;
+                ClickLeftTile(game);
+            }
+            // Right-click grid letter tiles
+            if (MainGame.MousedOverTile != null && mouseState.RightButton == ButtonState.Pressed)
+            {
+                MainGame.ClickedTile = MainGame.MousedOverTile;
+                ClickRightTile(game);
             }
         }
-        private void ClickButton(MainGame game)
+        private void ClickLeftButton(MainGame game)
         {
             switch (MainGame.ClickedButton)
             {
@@ -167,16 +175,18 @@ namespace WordSearch
                     break;
             }
         }
-        private void ClickTile(MainGame game)
+        private void ClickLeftTile(MainGame game)
         {
-            Console.WriteLine($"Clicked {MainGame.ClickedTile.NameDraw}");
-            if (MainGame.listLinesGrid.Contains((MainGame.ClickedTile)))
+            if (!MainGame.listTilesTemporary.Contains(MainGame.ClickedTile))
             {
-                MainGame.listLinesGrid.Remove(MainGame.ClickedTile);
+                MainGame.listTilesTemporary.Add(MainGame.ClickedTile);
             }
-            else
+        }
+        private void ClickRightTile(MainGame game)
+        {
+            if (MainGame.listTilesTemporary.Contains((MainGame.ClickedTile)))
             {
-                MainGame.listLinesGrid.Add(MainGame.ClickedTile);
+                MainGame.listTilesTemporary.Remove(MainGame.ClickedTile);
             }
         }
 

@@ -4,20 +4,12 @@
 * Must apply scaling to add buttons, calculations relating  *   *
 *   to their placement                                          *
 * Change game sizes; grid sometimes too large for screen        *
-/*==============================================================*
-*  TO TEST:                                                     *
-*===============================================================*
-* TO TEST GAME: ENABLE HandleSetupGameScreen("Mammals", 16),    *
-*   DISABLE HandleSetupMenu() IN HandleSetup()                  *
-* TO TEST MENU; ENABLE HandleSetupMenu(), DISABLE               *
-*   HandleSetupGameScreen("Mammals", 16) IN HandleSetup()       *
-* ==============================================================*/
+/*=============================================================*/
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WordSearch.Common;
 using System.Collections.Generic;
-using System;
 
 namespace WordSearch
 {
@@ -49,9 +41,13 @@ namespace WordSearch
         // Dimensions
         private Vector2 scaleBackgroundMenu, scaleDefault, sizeScreen, sizeMenu;
         private int widthGrid, heightGrid;
-        // Button Lists
+        // Contains all grid tiles
         public static List<ButtonTile> listLettersGrid = new List<ButtonTile>();
-        public static List<ButtonTile> listLinesGrid = new List<ButtonTile>();
+        // Contains currently selected tiles to draw lines over
+        public static List<ButtonTile> listTilesTemporary = new List<ButtonTile>();
+        // Contains tiles of found word to always draw lines over
+        public static List<ButtonTile> listTilesPermanent = new List<ButtonTile>();
+        // Contain menu buttons
         public static List<SpriteRectangle> listButtonsGame = new List<SpriteRectangle>();
         public static List<SpriteRectangle> listButtonsMenuStart = new List<SpriteRectangle>();
         public static List<SpriteRectangle> listButtonsSizes = new List<SpriteRectangle>();
@@ -127,6 +123,7 @@ namespace WordSearch
         public void HandleSetupMenu()
         {
             InGame = false;
+            ManagerInput.ClickCooldown = Utility.CLICK_COOLDOWN_MENU;
             scaleBackgroundMenu = new Vector2(2f, 10f);
             backgroundMenu = new SpriteRectangle(Utility.nameBackground, textureButtonMenu, scaleBackgroundMenu, "");
             SetupListButtonsMenuStart();
@@ -217,7 +214,7 @@ namespace WordSearch
         {
             listLettersGrid.Clear();
             listButtonsGame.Clear();
-            listLinesGrid.Clear();
+            listTilesTemporary.Clear();
         }
 
         /*==========*
@@ -275,7 +272,7 @@ namespace WordSearch
             {
                 DrawGrid(spriteLetters);
                 DrawButtonsGame();
-                DrawLines(listLinesGrid);
+                DrawLines(listTilesTemporary);
                 DrawHeadings();
                 DrawWordsList();
             }
