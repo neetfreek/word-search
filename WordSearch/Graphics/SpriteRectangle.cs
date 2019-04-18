@@ -61,7 +61,7 @@ namespace WordSearch
             if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + TextureButtonMenu.Width * Scale.X
                 && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.Y + TextureButtonMenu.Height * Scale.Y)
             {
-                MainGame.ButtonMousedOver = (ButtonMenu)Enum.Parse(typeof(ButtonMenu), Name);
+                MainGame.MousedOverButton = (ButtonMenu)Enum.Parse(typeof(ButtonMenu), Name);
             }
         }
 

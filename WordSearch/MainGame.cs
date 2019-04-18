@@ -51,6 +51,7 @@ namespace WordSearch
         private int widthGrid, heightGrid;
         // Button Lists
         public static List<ButtonTile> listLettersGrid = new List<ButtonTile>();
+        public static List<ButtonTile> listLinesGrid = new List<ButtonTile>();
         public static List<SpriteRectangle> listButtonsGame = new List<SpriteRectangle>();
         public static List<SpriteRectangle> listButtonsMenuStart = new List<SpriteRectangle>();
         public static List<SpriteRectangle> listButtonsSizes = new List<SpriteRectangle>();
@@ -61,7 +62,8 @@ namespace WordSearch
         private SpriteRectangle backgroundMenu;
         // State
         public static bool InGame;
-        public static ButtonMenu ButtonMousedOver, ButtonClicked, selectedCategory;
+        public static ButtonMenu MousedOverButton, ClickedButton, SelectedCategory;
+        public static ButtonTile MousedOverTile, ClickedTile;
         public static SelectedMenu SelectedMenu;
         public static SettingsSize selectedSize;
 
@@ -215,6 +217,7 @@ namespace WordSearch
         {
             listLettersGrid.Clear();
             listButtonsGame.Clear();
+            listLinesGrid.Clear();
         }
 
         /*==========*
@@ -226,7 +229,7 @@ namespace WordSearch
             managerInput.UpdateInputMouse(this);
             managerInput.UpdateInputKeyboard(this);
 
-            //ButtonMousedOver = ButtonMenu.none;
+            //MousedOverButton = ButtonMenu.none;
             base.Update(gameTime);
         }
         private void UpdatePositions()
@@ -270,8 +273,9 @@ namespace WordSearch
 
             if (InGame)
             {
-                DrawGrid(spriteLetters, Utility.SCALE_TILES);
+                DrawGrid(spriteLetters);
                 DrawButtonsGame();
+                DrawLines(listLinesGrid);
                 DrawHeadings();
                 DrawWordsList();
             }
@@ -374,7 +378,7 @@ namespace WordSearch
             listButtonsGame[0].Draw(sb, new Vector2(posButtonGame.X, posHeightStart));
             listButtonsGame[1].Draw(sb, new Vector2(posButtonGame.X, posHeightQuit));
         }
-        public void DrawGrid(SpriteTile spriteLetters, float scale)
+        public void DrawGrid(SpriteTile spriteLetters)
         {
             int numCols = grid.GridGame.GetLength(0);
             int numRows = grid.GridGame.GetLength(1);
@@ -402,7 +406,7 @@ namespace WordSearch
                 position = new Vector2(gridStartX + counterCol * spriteLetters.WidthSprite,
                     gridStartY + (counterRow - 1) * spriteLetters.HeightSprite);
                 // Draw sprite
-                spriteLetters.Draw(sb, toDraw, position, scale);
+                spriteLetters.Draw(sb, toDraw, position, Utility.SCALE_TILES);
                 // Update letter posSprite
                 listLettersGrid[counter].Pos = position;
 
@@ -416,6 +420,14 @@ namespace WordSearch
                     counterRow++;
                 }
             }
+        }
+        public void DrawLines(List<ButtonTile> list)
+        {
+            foreach (ButtonTile tile in list)
+            {
+                spriteLines.Draw(sb, '-', tile.Pos, Utility.SCALE_TILES);
+            }
+
         }
         public void DrawMouse(SpriteTile textureCursor, float scale)
         {

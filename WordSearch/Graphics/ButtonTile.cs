@@ -41,14 +41,14 @@ namespace WordSearch
             this.pos.Y = pos.Y;
         }
 
-        public bool Update(Vector2 posMouse)
+        public void Update(Vector2 posMouse)
         {
             if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + MainGame.spriteLetters.WidthSprite
                 && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.X + MainGame.spriteLetters.HeightSprite)
             {
-                return true;
+                MainGame.MousedOverTile = this;
+                //System.Console.WriteLine($"Mousing over {Name}");
             }
-            return false;
         }
     }
 }
