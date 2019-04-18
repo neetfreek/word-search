@@ -43,11 +43,9 @@ namespace WordSearch
 
         public void Update(Vector2 posMouse)
         {
-            if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + MainGame.spriteLetters.WidthSprite
-                && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.X + MainGame.spriteLetters.HeightSprite)
+            if (rectangle.Contains(posMouse.X, posMouse.Y))
             {
                 MainGame.MousedOverTile = this;
-                //System.Console.WriteLine($"Mousing over {Name}");
             }
         }
     }

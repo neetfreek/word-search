@@ -58,8 +58,7 @@ namespace WordSearch
 
         public void Update(Vector2 posMouse)
         {
-            if (posMouse.X >= Rectangle.X && posMouse.X <= Rectangle.X + TextureButtonMenu.Width * Scale.X
-                && posMouse.Y >= Rectangle.Y && posMouse.Y <= Rectangle.Y + TextureButtonMenu.Height * Scale.Y)
+            if (rectangle.Contains(posMouse.X, posMouse.Y))
             {
                 MainGame.MousedOverButton = (ButtonMenu)Enum.Parse(typeof(ButtonMenu), Name);
             }
