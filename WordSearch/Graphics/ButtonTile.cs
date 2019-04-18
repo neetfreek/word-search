@@ -22,10 +22,20 @@ namespace WordSearch
         public Vector2 Pos
         {
             get { return pos; }
-            set { pos = value;
-                rectangle = new Rectangle((int)pos.X, (int)pos.Y,
-                    (int)(MainGame.spriteLetters.WidthSprite),
-                    (int)(MainGame.spriteLetters.HeightSprite));
+            // Same origin as tile
+            //set
+            //{
+            //    pos = value;
+            //    rectangle = new Rectangle((int)pos.X, (int)pos.Y,
+            //        (int)(MainGame.spriteLetters.WidthSprite),
+            //        (int)(MainGame.spriteLetters.HeightSprite));
+            //}
+            set
+            {
+                pos = value;
+                rectangle = new Rectangle((int)InnerRectangleOrigin().X, (int)InnerRectangleOrigin().Y,
+                (int)(MainGame.spriteLetters.WidthSprite * 0.5),
+                    (int)(MainGame.spriteLetters.HeightSprite * 0.5));
             }
         }
         public Rectangle Rectangle
@@ -45,8 +55,18 @@ namespace WordSearch
         {
             if (rectangle.Contains(posMouse.X, posMouse.Y))
             {
+                //System.Console.WriteLine($"Mousing over {this.Name} Rect. info: size={rectangle.Width},{rectangle.Height} loc={rectangle.Location}");
                 MainGame.MousedOverTile = this;
             }
+        }
+
+        private Vector2 InnerRectangleOrigin()
+        {
+            Vector2 midPoint;
+            midPoint.X = Pos.X + (float)(MainGame.spriteLetters.WidthSprite * 0.25);
+            midPoint.Y = Pos.Y + (float)(MainGame.spriteLetters.HeightSprite * 0.25);
+
+            return midPoint;
         }
     }
 }
