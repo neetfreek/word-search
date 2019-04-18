@@ -210,11 +210,12 @@ namespace WordSearch
             listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
             listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
         }
-        public void ClearListsGame()
+        public void ClearGame()
         {
             listLettersGrid.Clear();
             listButtonsGame.Clear();
             listTilesTemporary.Clear();
+            ManagerSelectTile.ResetValues();
         }
 
         /*==========*

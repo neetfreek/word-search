@@ -22,7 +22,7 @@ namespace WordSearch
                 case ButtonMenu.menu:
                     if (MainGame.InGame)
                     {
-                        game.ClearListsGame();
+                        game.ClearGame();
                         MainGame.SelectedMenu = SelectedMenu.start;
                         game.HandleSetupMenu();
                     }
