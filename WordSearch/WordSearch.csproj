@@ -54,6 +54,8 @@
     <Compile Include="Graphics\ManagerDisplay.cs" />
     <Compile Include="MainGame.cs" />
     <Compile Include="ManagerInput.cs" />
+    <Compile Include="ManagerSelectButton.cs" />
+    <Compile Include="ManagerSelectTile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

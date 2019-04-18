@@ -3,12 +3,9 @@
 *===============================================================*
 * Called by MainGame.Update()                                   *
 * ==============================================================*/
-
-using System;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using WordSearch.Common;
 
 namespace WordSearch
 {
@@ -44,14 +41,14 @@ namespace WordSearch
             {
                 if (MainGame.InGame)
                 {
-                    HandleMouseButtonsGame(game);
+                    UpdateClickablesGame(game);
                 }
                 else
                 {
-                    HandleMouseButtonsMenu(game);
+                    UpdateClickablesMenu(game);
                 }
 
-                HandleClickButton(mouseState, game);
+                HandleMouseClicks(mouseState, game);
             }
 
             MainGame.MousedOverButton = ButtonMenu.none;
@@ -60,7 +57,8 @@ namespace WordSearch
             MainGame.ClickedTile = null;
         }
 
-        private void HandleMouseButtonsMenu(MainGame game)
+        // Call update on anything clickable in menu, game
+        private void UpdateClickablesMenu(MainGame game)
         {
             foreach (SpriteRectangle button in MainGame.listButtonsMenuStart)
             {
@@ -75,7 +73,7 @@ namespace WordSearch
                 button.Update(posMouse);
             }
         }
-        private void HandleMouseButtonsGame(MainGame game)
+        private void UpdateClickablesGame(MainGame game)
         {
             foreach (ButtonTile tile in MainGame.listLettersGrid)
             {
@@ -87,109 +85,29 @@ namespace WordSearch
             }
         }
 
-        private void HandleClickButton(MouseState mouseState, MainGame game)
+        // Routes to ManagerSelectButton.cs, ManagerSelectTile based on clicked object
+        private void HandleMouseClicks(MouseState mouseState, MainGame game)
         {
             // Left-click menu buttons
             if (MainGame.MousedOverButton != ButtonMenu.none && mouseState.LeftButton == ButtonState.Pressed)
             {
                 MainGame.ClickedButton = MainGame.MousedOverButton;
-                ClickLeftButton(game);
+                ManagerSelectButton.SelectButton(game);
                 cooldownClick = true;
             }
             // Left-click grid letter tiles
             if (MainGame.MousedOverTile != null && mouseState.LeftButton == ButtonState.Pressed)
             {
-                MainGame.ClickedTile = MainGame.MousedOverTile;
-                ClickLeftTile(game);
+                ManagerSelectTile.SelectTile();
             }
             // Right-click grid letter tiles
             if (MainGame.MousedOverTile != null && mouseState.RightButton == ButtonState.Pressed)
             {
-                MainGame.ClickedTile = MainGame.MousedOverTile;
-                ClickRightTile(game);
-            }
-        }
-        private void ClickLeftButton(MainGame game)
-        {
-            switch (MainGame.ClickedButton)
-            {
-                case ButtonMenu.start:
-                    MainGame.SelectedMenu = SelectedMenu.categories;
-                    game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, false);
-                    game.ToggleSizeListButtons(MainGame.listButtonsCategories, true);
-
-                    break;
-                case ButtonMenu.menu:
-                    if (MainGame.InGame)
-                    {
-                        game.ClearListsGame();
-                        MainGame.SelectedMenu = SelectedMenu.start;
-                        game.HandleSetupMenu();
-                    }
-                    else
-                    {
-                        MainGame.SelectedMenu = SelectedMenu.start;
-                        game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                        game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                        game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, true);
-                    }
-                    break;
-                case ButtonMenu.quit:
-                    game.Quit();
-                    break;
-                case ButtonMenu.instruments:
-                    game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
-                    MainGame.SelectedCategory = MainGame.ClickedButton;
-                    MainGame.SelectedMenu = SelectedMenu.sizes;
-                    break;
-                case ButtonMenu.mammals:
-                    game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
-                    MainGame.SelectedCategory = MainGame.ClickedButton;
-                    MainGame.SelectedMenu = SelectedMenu.sizes;
-                    break;
-                case ButtonMenu.occupations:
-                    game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
-                    MainGame.SelectedCategory = MainGame.ClickedButton;
-                    MainGame.SelectedMenu = SelectedMenu.sizes;
-                    break;
-                case ButtonMenu.small:
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                    MainGame.selectedSize = SettingsSize.small;
-                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.selectedSize);
-                    game.ClearListsMenu();
-                    break;
-                case ButtonMenu.medium:
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                    MainGame.selectedSize = SettingsSize.medium;
-                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.selectedSize);
-                    game.ClearListsMenu();
-                    break;
-                case ButtonMenu.large:
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                    MainGame.selectedSize = SettingsSize.large;
-                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.selectedSize);
-                    game.ClearListsMenu();
-                    break;
-            }
-        }
-        private void ClickLeftTile(MainGame game)
-        {
-            if (!MainGame.listTilesTemporary.Contains(MainGame.ClickedTile))
-            {
-                MainGame.listTilesTemporary.Add(MainGame.ClickedTile);
-            }
-        }
-        private void ClickRightTile(MainGame game)
-        {
-            if (MainGame.listTilesTemporary.Contains((MainGame.ClickedTile)))
-            {
-                MainGame.listTilesTemporary.Remove(MainGame.ClickedTile);
+                ManagerSelectTile.UnselectTile();
             }
         }
 
+        // Handle waiting period between clicks in menus to avoid multiple clicks on same button
         private void CooldownClickStart()
         {
             cooldownRunning = true;
