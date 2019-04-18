@@ -48,7 +48,7 @@ namespace WordSearch
             numberSprites = rows * columns;
         }
 
-        public void Draw(SpriteBatch spriteBatch, char letter, Vector2 location, float scale)
+        public void Draw(SpriteBatch spriteBatch, char letter, Vector2 location, float scale, Color colour)
         {
             // Set base sprite draw scale
             scaleSprite = scale;
@@ -84,7 +84,7 @@ namespace WordSearch
             spriteBatch.Begin(SpriteSortMode.Texture,
             BlendState.AlphaBlend, SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
             // Draw sprite on screen
-            spriteBatch.Draw(texture, rectangleDesination, rectangleSource, Color.White);
+            spriteBatch.Draw(texture, rectangleDesination, rectangleSource, colour);
             spriteBatch.End();
         }
     }
