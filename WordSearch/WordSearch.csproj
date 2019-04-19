@@ -51,7 +51,7 @@
     <Compile Include="Classes\Common\Helper.cs" />
     <Compile Include="Classes\Common\DictionaryTextures.cs" />
     <Compile Include="Classes\Game\Grid.cs" />
-    <Compile Include="Classes\Display\ManagerDisplay.cs" />
+    <Compile Include="Classes\Managers\ManagerDisplay.cs" />
     <Compile Include="Classes\Game\MainGame.cs" />
     <Compile Include="Classes\Managers\ManagerInput.cs" />
     <Compile Include="Classes\Managers\ManagerSelectButton.cs" />
