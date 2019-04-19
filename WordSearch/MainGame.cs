@@ -370,7 +370,7 @@ namespace WordSearch
             sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
                 SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
             int counter = 0;
-            foreach (string word in grid.WordsGame)
+            foreach (string word in listWordsToFind)
             {
                 // Modify position for each word in list
                 position.X = posWidth;
