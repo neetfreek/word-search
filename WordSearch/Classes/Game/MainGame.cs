@@ -34,12 +34,12 @@ namespace WordSearch
         public static SpriteFont FontWords;
         private SpriteFont fontHeadings;
         // Positions
-        private Vector2 posBackgroundMenu, posButtonGame, posButtonMenu;
+        private Vector2 posBackgroundMenu, posBackgroundMessageWin, posButtonGame, posButtonMenu;
         private Vector2 posMidScreen;
         private Vector2 posMouse;
         private Vector2 posHeadingNameCategoryList, posHeadingWordsList;
         // Dimensions
-        private Vector2 scaleBackgroundMenu, scaleDefault, sizeScreen, sizeMenu;
+        private Vector2 scaleDefault, sizeScreen, sizeMenu, sizeMessageWin;
         private int widthGrid, heightGrid;
         // Contain all grid tiles
         public static List<ButtonTile> ListLettersGrid = new List<ButtonTile>();
@@ -63,8 +63,9 @@ namespace WordSearch
         // Grid
         private Grid grid;
         // Menu background
-        private SpriteRectangle backgroundMenu;
+        private SpriteRectangle backgroundMenu, backgroundMessageWin;
         // State
+        public static bool InGame, WonGame;
         public static ButtonMenu MousedOverButton, ClickedButton, SelectedCategory;
         public static ButtonTile MousedOverTile, ClickedTile;
         public static SelectedMenu SelectedMenu;
@@ -133,7 +134,7 @@ namespace WordSearch
             System.Console.WriteLine($"selectedMenu: {SelectedMenu}, selectedSize: {SelectedSize}");
             InGame = false;
             ManagerInput.ClickCooldown = Utility.CLICK_COOLDOWN_MENU;
-            scaleBackgroundMenu = new Vector2(2f, 10f);
+            Vector2 scaleBackgroundMenu = new Vector2(2f, 10f);
             backgroundMenu = new SpriteRectangle(Utility.nameBackground, textureButtonMenu, scaleBackgroundMenu, "");
             SetupListButtonsMenuStart();
             SetupListCategories();
@@ -196,7 +197,8 @@ namespace WordSearch
         {
             grid.SetupGridGame(listChosen, sizeChosen);
             Utility.nameHeadingNameList = listChosen;
-
+            Vector2 scaleBackgroundMessage = new Vector2(4f, 3f);
+            backgroundMessageWin = new SpriteRectangle(Utility.nameBackground, textureButtonMenu, scaleBackgroundMessage, Utility.textMessageWin);
             // Create buttons, place in ListLettersGrid list
             SetupListWordsToFind();
             SetupListLettersGrid();
@@ -274,6 +276,17 @@ namespace WordSearch
 
                 // Screen width - (quarter difference between screen width and grid width) - half texture width
                 posButtonGame.X = (sizeScreen.X - ((sizeScreen.X - widthGrid) * 0.25f)) - (textureButtonMenu.Width * 0.5f) * ManagerDisplay.ScaleWidth;
+
+                if (WonGame)
+                {
+                    sizeMessageWin.X = backgroundMessageWin.TextureButtonMenu.Width * backgroundMessageWin.Scale.X;
+                    sizeMessageWin.Y = backgroundMessageWin.TextureButtonMenu.Height * backgroundMessageWin.Scale.Y;
+
+                    // Mid screen - half scaled width of texture
+                    posBackgroundMessageWin.X = posMidScreen.X - (sizeMessageWin.X * 0.5f);
+                    // Mid screen - half scaled height of texture
+                    posBackgroundMessageWin.Y = posMidScreen.Y - (sizeMessageWin.Y * 0.5f);
+                }
             }
             else
             {
@@ -287,6 +300,14 @@ namespace WordSearch
 
                 posButtonMenu.X = posBackgroundMenu.X + (int)(sizeMenu.X * 0.5f) - (textureButtonMenu.Width * 0.5f);
                 posButtonMenu.Y = posBackgroundMenu.Y + (sizeMenu.Y * 0.1f);
+            }
+        }
+        private void CheckWonGame()
+        {
+            if (InGame == true && ListWordsToFind.Count == 0)
+            {
+                WonGame = true;
+                
             }
         }
 
@@ -312,7 +333,7 @@ namespace WordSearch
 
                 if (WonGame)
                 {
-
+                    DrawMessageWin();
                 }
             }
             else
@@ -375,7 +396,6 @@ namespace WordSearch
                 SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
             sb.DrawString(fontHeadings, Helper.UppercaseFirst(Utility.nameHeadingNameList), posHeadingNameCategoryList, Color.Cornsilk);
             sb.DrawString(fontHeadings, Utility.nameHeadingWordsList, posHeadingWordsList, Color.Cornsilk);
-
             sb.End();
         }
         public void DrawWordsList()
@@ -402,6 +422,10 @@ namespace WordSearch
                 counter++;
             }
             sb.End();
+        }
+        public void DrawMessageWin()
+        {
+            backgroundMessageWin.Draw(sb, new Vector2(posBackgroundMessageWin.X, posBackgroundMessageWin.Y));
         }
 
         public void DrawButtonsGame()
