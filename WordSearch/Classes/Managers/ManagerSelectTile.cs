@@ -20,13 +20,13 @@ namespace WordSearch
         {
             MainGame.ClickedTile = MainGame.MousedOverTile;
 
-            // If > 0 tiles in listTilesTemporary
-            if (!MainGame.listTilesTemporary.Contains(MainGame.ClickedTile) &&
-                MainGame.listTilesTemporary.Count > 0 && TileAdjacentToAdded())
+            // If > 0 tiles in ListTilesTemporary
+            if (!MainGame.ListTilesTemporary.Contains(MainGame.ClickedTile) &&
+                MainGame.ListTilesTemporary.Count > 0 && TileAdjacentToAdded())
             {
                 SetBearing();
                 // Third+ tiles
-                if (MainGame.listTilesTemporary.Count > 1)
+                if (MainGame.ListTilesTemporary.Count > 1)
                 {
                     if (SameBearing())
                     {
@@ -34,13 +34,13 @@ namespace WordSearch
                     }
                 }
                 // Second tile
-                else if (MainGame.listTilesTemporary.Count == 1)
+                else if (MainGame.ListTilesTemporary.Count == 1)
                 {
                     HandleNewSelectedTile();
                 }
             }
             // First tile
-            else if (MainGame.listTilesTemporary.Count == 0)
+            else if (MainGame.ListTilesTemporary.Count == 0)
             {
                 HandleNewSelectedTile();
             }
@@ -48,9 +48,9 @@ namespace WordSearch
         public static void UnselectTile()
         {
             // if right-clicked tile one of previously selected
-            if (MainGame.listTilesTemporary.Contains(MainGame.MousedOverTile))
+            if (MainGame.ListTilesTemporary.Contains(MainGame.MousedOverTile))
             {
-                MainGame.listTileHighlight.Clear();
+                MainGame.ListTileHighlight.Clear();
                 MainGame.ClickedTile = MainGame.MousedOverTile;
                 RemoveTileListTilesTemporary();
             }
@@ -67,13 +67,13 @@ namespace WordSearch
 
         private static void HandleNewSelectedTile()
         {
-            MainGame.listTileHighlight.Clear();
-            MainGame.listTileHighlight.Add(MainGame.ClickedTile);
+            MainGame.ListTileHighlight.Clear();
+            MainGame.ListTileHighlight.Add(MainGame.ClickedTile);
             
-            if (!MainGame.listTilesTemporary.Contains(MainGame.ClickedTile))
+            if (!MainGame.ListTilesTemporary.Contains(MainGame.ClickedTile))
             {
-                MainGame.listTilesTemporary.Add(MainGame.ClickedTile);
-                MainGame.wordTilesTemporary += MainGame.ClickedTile.NameDraw;
+                MainGame.ListTilesTemporary.Add(MainGame.ClickedTile);
+                MainGame.WordTilesTemporary += MainGame.ClickedTile.NameDraw;
                 if (SelectionIsWord())
                 {
                     AddSelectionToPermanent();
@@ -84,12 +84,12 @@ namespace WordSearch
         }
         private static void RemoveTileListTilesTemporary()
         {
-            if (MainGame.listTilesTemporary.Contains((MainGame.ClickedTile)))
+            if (MainGame.ListTilesTemporary.Contains((MainGame.ClickedTile)))
             {
-                MainGame.listTilesTemporary.Remove(MainGame.ClickedTile);
-                MainGame.wordTilesTemporary = MainGame.wordTilesTemporary.Substring(0, MainGame.wordTilesTemporary.Length-1);
+                MainGame.ListTilesTemporary.Remove(MainGame.ClickedTile);
+                MainGame.WordTilesTemporary = MainGame.WordTilesTemporary.Substring(0, MainGame.WordTilesTemporary.Length-1);
 
-                if (MainGame.listTilesTemporary.Count == 0)
+                if (MainGame.ListTilesTemporary.Count == 0)
                 {
                     ResetValues();
                 }
@@ -97,11 +97,11 @@ namespace WordSearch
         }
         private static void AddSelectionToPermanent()
         {
-            for (int counter = 0; counter < MainGame.listTilesTemporary.Count; counter++)
+            for (int counter = 0; counter < MainGame.ListTilesTemporary.Count; counter++)
             {
-                AddSelectionToDrawLines().Add(MainGame.listTilesTemporary[counter]);
-                MainGame.listTileHighlight.Add(MainGame.listTilesTemporary[counter]);
-                MainGame.listTilesPermanent.Add(MainGame.listTilesTemporary[counter]);
+                AddSelectionToDrawLines().Add(MainGame.ListTilesTemporary[counter]);
+                MainGame.ListTileHighlight.Add(MainGame.ListTilesTemporary[counter]);
+                MainGame.ListTilesPermanent.Add(MainGame.ListTilesTemporary[counter]);
             }
         }
         private static List<ButtonTile> AddSelectionToDrawLines()
@@ -109,45 +109,45 @@ namespace WordSearch
             switch (bearingChar)
             {
                 case '-':
-                    return MainGame.listLineTilesHorizontal;
+                    return MainGame.ListLineTilesHorizontal;
                 case '|':
-                    return MainGame.listLineTilesVertical;
+                    return MainGame.ListLineTilesVertical;
                 case '\\':
-                    return MainGame.listLineTilesDownRight;
+                    return MainGame.ListLineTilesDownRight;
                 case '/':
-                    return MainGame.listLineTilesUpRight;
+                    return MainGame.ListLineTilesUpRight;
             }
             return null;
         }
         private static void RemoveWordFromListWordsToFind()
         {
-            if (MainGame.listWordsToFind.Contains(MainGame.wordTilesTemporary))
+            if (MainGame.ListWordsToFind.Contains(MainGame.WordTilesTemporary))
             {
-                MainGame.listWordsToFind.Remove(MainGame.wordTilesTemporary);
+                MainGame.ListWordsToFind.Remove(MainGame.WordTilesTemporary);
             }
         }
         private static void ClearTemporary()
         {
             ResetValues();
-            MainGame.listTilesTemporary.Clear();
-            MainGame.wordTilesTemporary = "";
+            MainGame.ListTilesTemporary.Clear();
+            MainGame.WordTilesTemporary = "";
         }
 
 
         // Check selection is adjacenet to prior
         private static bool TileAdjacentToAdded()
         {
-            ButtonTile tileCompare = MainGame.listTilesTemporary[ MainGame.listTilesTemporary.Count - 1];
+            ButtonTile tileCompare = MainGame.ListTilesTemporary[ MainGame.ListTilesTemporary.Count - 1];
 
-            float sizeTile = (MainGame.spriteLetters.WidthSprite + MainGame.spriteLetters.HeightSprite) * 0.5f;
+            float sizeTile = (MainGame.SpriteLetters.WidthSprite + MainGame.SpriteLetters.HeightSprite) * 0.5f;
 
 
-            tilePosMidSelected.X = MainGame.ClickedTile.Pos.X + (float)(MainGame.spriteLetters.WidthSprite * 0.5);
-            tilePosMidSelected.Y = MainGame.ClickedTile.Pos.Y + (float)(MainGame.spriteLetters.HeightSprite * 0.5);
+            tilePosMidSelected.X = MainGame.ClickedTile.Pos.X + (float)(MainGame.SpriteLetters.WidthSprite * 0.5);
+            tilePosMidSelected.Y = MainGame.ClickedTile.Pos.Y + (float)(MainGame.SpriteLetters.HeightSprite * 0.5);
 
             // get center pos of clicked tile
-            tilePosMidCompare.X = tileCompare.Pos.X + (float)(MainGame.spriteLetters.WidthSprite * 0.5);
-            tilePosMidCompare.Y = tileCompare.Pos.Y + (float)(MainGame.spriteLetters.HeightSprite * 0.5);
+            tilePosMidCompare.X = tileCompare.Pos.X + (float)(MainGame.SpriteLetters.WidthSprite * 0.5);
+            tilePosMidCompare.Y = tileCompare.Pos.Y + (float)(MainGame.SpriteLetters.HeightSprite * 0.5);
 
             // get distance between tiles
             Vector2 distanceVector;
@@ -211,9 +211,9 @@ namespace WordSearch
         // Check if current selected work matches word to find
         private static bool SelectionIsWord()
         {
-            foreach (string word in MainGame.listWordsToFind)
+            foreach (string word in MainGame.ListWordsToFind)
             {
-                if (word == MainGame.wordTilesTemporary)
+                if (word == MainGame.WordTilesTemporary)
                 {                    
                     return true;
                 }

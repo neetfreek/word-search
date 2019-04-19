@@ -60,26 +60,26 @@ namespace WordSearch
         // Call update on anything clickable in menu, game
         private void UpdateClickablesMenu(MainGame game)
         {
-            foreach (SpriteRectangle button in MainGame.listButtonsMenuStart)
+            foreach (SpriteRectangle button in MainGame.ListButtonsMenuStart)
             {
                 button.Update(posMouse);
             }
-            foreach (SpriteRectangle button in MainGame.listButtonsCategories)
+            foreach (SpriteRectangle button in MainGame.ListButtonsCategories)
             {
                 button.Update(posMouse);
             }
-            foreach (SpriteRectangle button in MainGame.listButtonsSizes)
+            foreach (SpriteRectangle button in MainGame.ListButtonsSizes)
             {
                 button.Update(posMouse);
             }
         }
         private void UpdateClickablesGame(MainGame game)
         {
-            foreach (ButtonTile tile in MainGame.listLettersGrid)
+            foreach (ButtonTile tile in MainGame.ListLettersGrid)
             {
                 tile.Update(posMouse);
             }
-            foreach (SpriteRectangle button in MainGame.listButtonsGame)
+            foreach (SpriteRectangle button in MainGame.ListButtonsGame)
             {
                 button.Update(posMouse);
             }

@@ -13,8 +13,8 @@ namespace WordSearch
             {
                 case ButtonMenu.start:
                     MainGame.SelectedMenu = SelectedMenu.categories;
-                    game.ToggleSizeListButtons(MainGame.listButtonsMenuStart, false);
-                    game.ToggleSizeListButtons(MainGame.listButtonsCategories, true);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsMenuStart, false);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsCategories, true);
                     break;
                 case ButtonMenu.quit:
                     game.Quit();
@@ -35,37 +35,37 @@ namespace WordSearch
                     }
                     break;
                 case ButtonMenu.instruments:
-                    game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsCategories, false);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsSizes, true);
                     MainGame.SelectedCategory = MainGame.ClickedButton;
                     MainGame.SelectedMenu = SelectedMenu.sizes;
                     break;
                 case ButtonMenu.mammals:
-                    game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsCategories, false);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsSizes, true);
                     MainGame.SelectedCategory = MainGame.ClickedButton;
                     MainGame.SelectedMenu = SelectedMenu.sizes;
                     break;
                 case ButtonMenu.occupations:
-                    game.ToggleSizeListButtons(MainGame.listButtonsCategories, false);
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, true);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsCategories, false);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsSizes, true);
                     MainGame.SelectedCategory = MainGame.ClickedButton;
                     MainGame.SelectedMenu = SelectedMenu.sizes;
                     break;
                 case ButtonMenu.small:
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsSizes, false);
                     MainGame.SelectedSize = SettingsSize.small;
                     game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.SelectedSize);
                     game.ClearListsMenu();
                     break;
                 case ButtonMenu.medium:
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsSizes, false);
                     MainGame.SelectedSize = SettingsSize.medium;
                     game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.SelectedSize);
                     game.ClearListsMenu();
                     break;
                 case ButtonMenu.large:
-                    game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsSizes, false);
                     MainGame.SelectedSize = SettingsSize.large;
                     game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.SelectedSize);
                     game.ClearListsMenu();

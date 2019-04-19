@@ -27,8 +27,8 @@ namespace WordSearch
                 pos = value;
                 // rectangle (collider) reduced to 50% size of tile
                 rectangle = new Rectangle((int)InnerRectangleOrigin().X, (int)InnerRectangleOrigin().Y,
-                (int)(MainGame.spriteLetters.WidthSprite * 0.5),
-                    (int)(MainGame.spriteLetters.HeightSprite * 0.5));
+                (int)(MainGame.SpriteLetters.WidthSprite * 0.5),
+                    (int)(MainGame.SpriteLetters.HeightSprite * 0.5));
             }
         }
         public Rectangle Rectangle
@@ -56,8 +56,8 @@ namespace WordSearch
         private Vector2 InnerRectangleOrigin()
         {
             Vector2 midPoint;
-            midPoint.X = Pos.X + (float)(MainGame.spriteLetters.WidthSprite * 0.25);
-            midPoint.Y = Pos.Y + (float)(MainGame.spriteLetters.HeightSprite * 0.25);
+            midPoint.X = Pos.X + (float)(MainGame.SpriteLetters.WidthSprite * 0.25);
+            midPoint.Y = Pos.Y + (float)(MainGame.SpriteLetters.HeightSprite * 0.25);
 
             return midPoint;
         }

@@ -44,26 +44,26 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Common\Utility.cs" />
-    <Compile Include="Graphics\ButtonTile.cs" />
-    <Compile Include="Graphics\SpriteRectangle.cs" />
-    <Compile Include="Managers\ManagerData.cs" />
-    <Compile Include="Common\Helper.cs" />
-    <Compile Include="Common\DictionaryTextures.cs" />
-    <Compile Include="Game\Grid.cs" />
-    <Compile Include="Graphics\ManagerDisplay.cs" />
-    <Compile Include="Game\MainGame.cs" />
-    <Compile Include="Managers\ManagerInput.cs" />
-    <Compile Include="Managers\ManagerSelectButton.cs" />
-    <Compile Include="Managers\ManagerSelectTile.cs" />
-    <Compile Include="Game\Program.cs" />
+    <Compile Include="Classes\Common\Utility.cs" />
+    <Compile Include="Classes\Display\ButtonTile.cs" />
+    <Compile Include="Classes\Display\SpriteRectangle.cs" />
+    <Compile Include="Classes\Managers\ManagerData.cs" />
+    <Compile Include="Classes\Common\Helper.cs" />
+    <Compile Include="Classes\Common\DictionaryTextures.cs" />
+    <Compile Include="Classes\Game\Grid.cs" />
+    <Compile Include="Classes\Display\ManagerDisplay.cs" />
+    <Compile Include="Classes\Game\MainGame.cs" />
+    <Compile Include="Classes\Managers\ManagerInput.cs" />
+    <Compile Include="Classes\Managers\ManagerSelectButton.cs" />
+    <Compile Include="Classes\Managers\ManagerSelectTile.cs" />
+    <Compile Include="Classes\Game\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Graphics\SpriteTile.cs" />
+    <Compile Include="Classes\Display\SpriteTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">

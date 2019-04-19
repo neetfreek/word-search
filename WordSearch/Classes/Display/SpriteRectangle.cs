@@ -74,15 +74,15 @@ namespace WordSearch
             Rectangle rectangleDesination = new Rectangle((int)PosSprite.X, (int)PosSprite.Y, TextureButtonMenu.Width * (int)Scale.X, TextureButtonMenu.Height * (int)Scale.Y);
             // Set text position
             // Sprite position + (half button width) - half width of text 
-            posText.X = PosSprite.X + ((TextureButtonMenu.Width * (int)Scale.X) * 0.5f) - (MainGame.fontWords.MeasureString(Text).X * 0.5f);
-            posText.Y = PosSprite.Y + ((TextureButtonMenu.Height * (int)Scale.Y) * 0.5f) - (MainGame.fontWords.MeasureString(Text).Y * 0.5f);
+            posText.X = PosSprite.X + ((TextureButtonMenu.Width * (int)Scale.X) * 0.5f) - (MainGame.FontWords.MeasureString(Text).X * 0.5f);
+            posText.Y = PosSprite.Y + ((TextureButtonMenu.Height * (int)Scale.Y) * 0.5f) - (MainGame.FontWords.MeasureString(Text).Y * 0.5f);
             // Setup spriteBatch
             sb.Begin(SpriteSortMode.Texture,
             BlendState.AlphaBlend, SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
             // Draw sprite on screen
             sb.Draw(TextureButtonMenu, rectangleDesination, rectangleSource, colorSprite);
             // Draw text over sprite
-            sb.DrawString(MainGame.fontWords, Text, posText, Color.DarkSlateGray);
+            sb.DrawString(MainGame.FontWords, Text, posText, Color.DarkSlateGray);
             sb.End();
         }
     }

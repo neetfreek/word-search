@@ -6,10 +6,10 @@
 * Change game sizes; grid sometimes too large for screen        *
 /*=============================================================*/
 
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using WordSearch.Common;
-using System.Collections.Generic;
 
 namespace WordSearch
 {
@@ -18,20 +18,20 @@ namespace WordSearch
         // Display
         private GraphicsDeviceManager gdManager;
         private SpriteBatch sb;
-        public static ManagerDisplay managerDisplay;
+        public static ManagerDisplay ManagerDisplay;
         // Texture Managers
-        public static SpriteRectangle spriteButton;
-        public static SpriteTile spriteCursor;
-        public static SpriteTile spriteLetters;
-        public static SpriteTile spriteLines;
+        public static SpriteRectangle SpriteButton;
+        public static SpriteTile SpriteCursor;
+        public static SpriteTile SpriteLetters;
+        public static SpriteTile SpriteLines;
         // Input Manager 
-        public static ManagerInput managerInput;
+        public static ManagerInput ManagerInput;
         // Textures
         private Texture2D textureCursor;
         private Texture2D textureLetters;
         private Texture2D textureLines;
         private Texture2D textureButtonMenu;
-        public static SpriteFont fontWords;
+        public static SpriteFont FontWords;
         private SpriteFont fontHeadings;
         // Positions
         private Vector2 posBackgroundMenu, posButtonGame, posButtonMenu;
@@ -42,30 +42,29 @@ namespace WordSearch
         private Vector2 scaleBackgroundMenu, scaleDefault, sizeScreen, sizeMenu;
         private int widthGrid, heightGrid;
         // Contain all grid tiles
-        public static List<ButtonTile> listLettersGrid = new List<ButtonTile>();
-        public static List<string> listWordsToFind = new List<string>();
+        public static List<ButtonTile> ListLettersGrid = new List<ButtonTile>();
+        public static List<string> ListWordsToFind = new List<string>();
         // Contain currently selected tiles to draw lines over
-        public static List<ButtonTile> listTilesTemporary = new List<ButtonTile>();
-        public static string wordTilesTemporary;
+        public static List<ButtonTile> ListTilesTemporary = new List<ButtonTile>();
+        public static string WordTilesTemporary;
         // Contain tiles of found word to always draw lines over
-        public static List<ButtonTile> listTilesPermanent = new List<ButtonTile>();
+        public static List<ButtonTile> ListTilesPermanent = new List<ButtonTile>();
         // Contain tile clicked to highlight
-        public static List<ButtonTile> listTileHighlight = new List<ButtonTile>();
-        public static List<ButtonTile> listLineTilesHorizontal = new List<ButtonTile>();
-        public static List<ButtonTile> listLineTilesVertical = new List<ButtonTile>();
-        public static List<ButtonTile> listLineTilesDownRight = new List<ButtonTile>();
-        public static List<ButtonTile> listLineTilesUpRight = new List<ButtonTile>();
+        public static List<ButtonTile> ListTileHighlight = new List<ButtonTile>();
+        public static List<ButtonTile> ListLineTilesHorizontal = new List<ButtonTile>();
+        public static List<ButtonTile> ListLineTilesVertical = new List<ButtonTile>();
+        public static List<ButtonTile> ListLineTilesDownRight = new List<ButtonTile>();
+        public static List<ButtonTile> ListLineTilesUpRight = new List<ButtonTile>();
         // Contain menu buttons
-        public static List<SpriteRectangle> listButtonsGame = new List<SpriteRectangle>();
-        public static List<SpriteRectangle> listButtonsMenuStart = new List<SpriteRectangle>();
-        public static List<SpriteRectangle> listButtonsSizes = new List<SpriteRectangle>();
-        public static List<SpriteRectangle> listButtonsCategories = new List<SpriteRectangle>();
+        public static List<SpriteRectangle> ListButtonsGame = new List<SpriteRectangle>();
+        public static List<SpriteRectangle> ListButtonsMenuStart = new List<SpriteRectangle>();
+        public static List<SpriteRectangle> ListButtonsSizes = new List<SpriteRectangle>();
+        public static List<SpriteRectangle> ListButtonsCategories = new List<SpriteRectangle>();
         // Grid
         private Grid grid;
         // Menu background
         private SpriteRectangle backgroundMenu;
         // State
-        public static bool InGame;
         public static ButtonMenu MousedOverButton, ClickedButton, SelectedCategory;
         public static ButtonTile MousedOverTile, ClickedTile;
         public static SelectedMenu SelectedMenu;
@@ -85,9 +84,9 @@ namespace WordSearch
             // Setup display
             gdManager = new GraphicsDeviceManager(this);
             gdManager.ApplyChanges();
-            managerDisplay = new ManagerDisplay(gdManager);
+            ManagerDisplay = new ManagerDisplay(gdManager);
             // Setup input
-            managerInput = new ManagerInput();
+            ManagerInput = new ManagerInput();
             posMouse = new Vector2(gdManager.GraphicsDevice.Viewport.Width * 0.5f,
                 gdManager.GraphicsDevice.Viewport.Height * 0.5f);
             // Setup grid
@@ -106,12 +105,12 @@ namespace WordSearch
             // SetupScale sprite atlas textures for drawing sprites
             textureButtonMenu = Content.Load<Texture2D>("button");
             textureCursor = Content.Load<Texture2D>("cursor");
-            spriteCursor = new SpriteTile(textureCursor, 1, 1);
+            SpriteCursor = new SpriteTile(textureCursor, 1, 1);
             textureLetters = Content.Load<Texture2D>("alphabet");
-            spriteLetters = new SpriteTile(textureLetters, 2, 13);
+            SpriteLetters = new SpriteTile(textureLetters, 2, 13);
             textureLines = Content.Load<Texture2D>("lines");
-            spriteLines = new SpriteTile(textureLines, 1, 4);
-            fontWords = Content.Load<SpriteFont>("fontWords");
+            SpriteLines = new SpriteTile(textureLines, 1, 4);
+            FontWords = Content.Load<SpriteFont>("fontWords");
             fontHeadings = Content.Load<SpriteFont>("fontHeadings");
 
             HandleSetupMenu();
@@ -142,8 +141,8 @@ namespace WordSearch
         }
         private void SetupListButtonsMenuStart()
         {
-            listButtonsMenuStart.Add(new SpriteRectangle(Utility.nameButtonStart, textureButtonMenu, scaleDefault, Utility.textButtonStart));
-            listButtonsMenuStart.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
+            ListButtonsMenuStart.Add(new SpriteRectangle(Utility.nameButtonStart, textureButtonMenu, scaleDefault, Utility.textButtonStart));
+            ListButtonsMenuStart.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
         }
         private void SetupListCategories()
         {
@@ -151,22 +150,22 @@ namespace WordSearch
             List<string> lists = ManagerData.AllLists();
             foreach (string list in lists)
             {
-                listButtonsCategories.Add(new SpriteRectangle(list.ToLower(), textureButtonMenu, scaleDefault, Helper.UppercaseFirst(list)));
+                ListButtonsCategories.Add(new SpriteRectangle(list.ToLower(), textureButtonMenu, scaleDefault, Helper.UppercaseFirst(list)));
             }
-            listButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
+            ListButtonsCategories.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
         }
         private void SetupListSizes()
         {
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonSmall, textureButtonMenu, scaleDefault, Utility.textButtonSmall));
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault, Utility.textButtonMedium));
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault, Utility.textButtonLarge));
-            listButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
+            ListButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonSmall, textureButtonMenu, scaleDefault, Utility.textButtonSmall));
+            ListButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMedium, textureButtonMenu, scaleDefault, Utility.textButtonMedium));
+            ListButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonLarge, textureButtonMenu, scaleDefault, Utility.textButtonLarge));
+            ListButtonsSizes.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
         }
         public void ClearListsMenu()
         {
-            listButtonsMenuStart.Clear();
-            listButtonsCategories.Clear();
-            listButtonsSizes.Clear();
+            ListButtonsMenuStart.Clear();
+            ListButtonsCategories.Clear();
+            ListButtonsSizes.Clear();
         }
 
         // true == maximise, false == minimise buttons
@@ -198,7 +197,7 @@ namespace WordSearch
             grid.SetupGridGame(listChosen, sizeChosen);
             Utility.nameHeadingNameList = listChosen;
 
-            // Create buttons, place in listLettersGrid list
+            // Create buttons, place in ListLettersGrid list
             SetupListWordsToFind();
             SetupListLettersGrid();
             SetupListButtonsGame();
@@ -208,7 +207,7 @@ namespace WordSearch
         {
             foreach (string word in grid.WordsGame)
             {
-                listWordsToFind.Add(word);
+                ListWordsToFind.Add(word);
             }
         }
         private void SetupListLettersGrid()
@@ -217,7 +216,7 @@ namespace WordSearch
 
             foreach (char letter in grid.GridGame)
             {
-                listLettersGrid.Add(new ButtonTile(letter.ToString() + counter.ToString(),
+                ListLettersGrid.Add(new ButtonTile(letter.ToString() + counter.ToString(),
                     new Vector2(0f, 0f)));
                 counter++;
             }
@@ -225,22 +224,22 @@ namespace WordSearch
         private void SetupListButtonsGame()
         {
             // Set up game menu buttons
-            listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
-            listButtonsGame.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
+            ListButtonsGame.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
+            ListButtonsGame.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
         }
         public void ClearGame()
         {
-            listLettersGrid.Clear();
-            listButtonsGame.Clear();
-            listTilesTemporary.Clear();
-            listTilesPermanent.Clear();
-            listTileHighlight.Clear();
-            listLineTilesHorizontal.Clear();
-            listLineTilesVertical.Clear();
-            listLineTilesDownRight.Clear();
-            listLineTilesUpRight.Clear();
-            listWordsToFind.Clear();
-            wordTilesTemporary = "";
+            ListLettersGrid.Clear();
+            ListButtonsGame.Clear();
+            ListTilesTemporary.Clear();
+            ListTilesPermanent.Clear();
+            ListTileHighlight.Clear();
+            ListLineTilesHorizontal.Clear();
+            ListLineTilesVertical.Clear();
+            ListLineTilesDownRight.Clear();
+            ListLineTilesUpRight.Clear();
+            ListWordsToFind.Clear();
+            WordTilesTemporary = "";
             SelectedMenu = SelectedMenu.start;
             SelectedSize = 0;
             ManagerSelectTile.ResetValues();
@@ -252,8 +251,9 @@ namespace WordSearch
         protected override void Update(GameTime gameTime)
         {
             UpdatePositions();
-            managerInput.UpdateInputMouse(this);
-            managerInput.UpdateInputKeyboard(this);
+            ManagerInput.UpdateInputMouse(this);
+            ManagerInput.UpdateInputKeyboard(this);
+            CheckWonGame();
 
             //MousedOverButton = ButtonMenu.none;
             base.Update(gameTime);
@@ -268,12 +268,12 @@ namespace WordSearch
             if (InGame)
             {
                 // Number columns * width of letter sprites
-                widthGrid = grid.GridGame.GetLength(0) * spriteLetters.WidthSprite;
+                widthGrid = grid.GridGame.GetLength(0) * SpriteLetters.WidthSprite;
                 // Number rows * width of letter sprites
-                heightGrid = grid.GridGame.GetLength(1) * spriteLetters.HeightSprite;
+                heightGrid = grid.GridGame.GetLength(1) * SpriteLetters.HeightSprite;
 
                 // Screen width - (quarter difference between screen width and grid width) - half texture width
-                posButtonGame.X = (sizeScreen.X - ((sizeScreen.X - widthGrid) * 0.25f)) - (textureButtonMenu.Width * 0.5f) * managerDisplay.ScaleWidth;
+                posButtonGame.X = (sizeScreen.X - ((sizeScreen.X - widthGrid) * 0.25f)) - (textureButtonMenu.Width * 0.5f) * ManagerDisplay.ScaleWidth;
             }
             else
             {
@@ -299,36 +299,40 @@ namespace WordSearch
 
             if (InGame)
             {
-                DrawGrid(spriteLetters);
+                DrawGrid(SpriteLetters);
                 DrawButtonsGame();
                 HighlightTile();
-                DrawLinesCurrentSelection(listTilesTemporary);
-                DrawLinesHorizontal(listLineTilesHorizontal);
-                DrawLinesVertical(listLineTilesVertical);
-                DrawLinesUpRight(listLineTilesUpRight);
-                DrawLinesDownRight(listLineTilesDownRight);
+                DrawLinesCurrentSelection(ListTilesTemporary);
+                DrawLinesHorizontal(ListLineTilesHorizontal);
+                DrawLinesVertical(ListLineTilesVertical);
+                DrawLinesUpRight(ListLineTilesUpRight);
+                DrawLinesDownRight(ListLineTilesDownRight);
                 DrawHeadings();
                 DrawWordsList();
+
+                if (WonGame)
+                {
+
+                }
             }
             else
             {
                 switch (SelectedMenu)
                 {
                     case SelectedMenu.start:
-                        DrawMenu(listButtonsMenuStart);
+                        DrawMenu(ListButtonsMenuStart);
                         break;
                     case SelectedMenu.categories:
-                        DrawMenu(listButtonsCategories);
+                        DrawMenu(ListButtonsCategories);
                         break;
                     case SelectedMenu.sizes:
-                        DrawMenu(listButtonsSizes);
+                        DrawMenu(ListButtonsSizes);
                         break;
 
                 }
-                //DrawMenu(listButtonsSizes);
             }
 
-            DrawMouse(spriteCursor, Utility.SCALE_CURSOR);
+            DrawMouse(SpriteCursor, Utility.SCALE_CURSOR);
 
             base.Draw(gameTime);
         }
@@ -387,13 +391,13 @@ namespace WordSearch
             sb.Begin(SpriteSortMode.Texture, BlendState.AlphaBlend,
                 SamplerState.PointWrap, transformMatrix: ManagerDisplay.ScaleMatrix);
             int counter = 0;
-            foreach (string word in listWordsToFind)
+            foreach (string word in ListWordsToFind)
             {
                 // Modify position for each word in list
                 position.X = posWidth;
-                position.Y = posHeight + (fontWords.LineSpacing * counter);
+                position.Y = posHeight + (FontWords.LineSpacing * counter);
 
-                sb.DrawString(fontWords, $"{(counter + 1).ToString()}. {word}" , position, Color.Cornsilk);
+                sb.DrawString(FontWords, $"{(counter + 1).ToString()}. {word}" , position, Color.Cornsilk);
 
                 counter++;
             }
@@ -408,8 +412,8 @@ namespace WordSearch
 
             // Draw
             // screenWidth - ((screenWidth - widthGrid) / 2) - buttonWidth
-            listButtonsGame[0].Draw(sb, new Vector2(posButtonGame.X, posHeightStart));
-            listButtonsGame[1].Draw(sb, new Vector2(posButtonGame.X, posHeightQuit));
+            ListButtonsGame[0].Draw(sb, new Vector2(posButtonGame.X, posHeightStart));
+            ListButtonsGame[1].Draw(sb, new Vector2(posButtonGame.X, posHeightQuit));
         }
 
         public void DrawGrid(SpriteTile spriteLetters)
@@ -426,7 +430,7 @@ namespace WordSearch
             float gridStartX = (sizeScreen.X * 0.5f)- (numCols * spriteLetters.WidthSprite * 0.5f);
             float gridStartY = (sizeScreen.Y * 0.5f) - (numRows * spriteLetters.HeightSprite * 0.5f);
 
-            for (int counter = 0; counter < listLettersGrid.Count; counter++)
+            for (int counter = 0; counter < ListLettersGrid.Count; counter++)
             {
                 //Fix counterRow for moving to next rown once enumerated enough columns
                 if (counter == 0)
@@ -435,14 +439,14 @@ namespace WordSearch
                 }
 
                 // Convert letter NameDraw to char
-                char.TryParse(listLettersGrid[counter].NameDraw, out char toDraw);
+                char.TryParse(ListLettersGrid[counter].NameDraw, out char toDraw);
                 // Get position to place letter
                 position = new Vector2(gridStartX + counterCol * spriteLetters.WidthSprite,
                     gridStartY + (counterRow - 1) * spriteLetters.HeightSprite);
                 // Draw sprite
                 spriteLetters.Draw(sb, toDraw, position, Utility.SCALE_TILES, Color.White);
                 // Update letter posSprite
-                listLettersGrid[counter].Pos = position;
+                ListLettersGrid[counter].Pos = position;
 
             counterCol++;
             counterNewLine++;
@@ -457,9 +461,9 @@ namespace WordSearch
         }
         public void HighlightTile()
         {
-            foreach (ButtonTile button in listTileHighlight)
+            foreach (ButtonTile button in ListTileHighlight)
             {
-                spriteLetters.Draw(sb, char.Parse(button.NameDraw), button.Pos, Utility.SCALE_TILES, Color.Green);
+                SpriteLetters.Draw(sb, char.Parse(button.NameDraw), button.Pos, Utility.SCALE_TILES, Color.Green);
             }
         }
 
@@ -467,7 +471,7 @@ namespace WordSearch
         {
             foreach (ButtonTile tile in list)
             {
-                spriteLines.Draw(sb, ManagerSelectTile.bearingChar, tile.Pos, Utility.SCALE_TILES, Color.LightGreen);
+                SpriteLines.Draw(sb, ManagerSelectTile.bearingChar, tile.Pos, Utility.SCALE_TILES, Color.LightGreen);
             }
 
         }
@@ -475,7 +479,7 @@ namespace WordSearch
         {
             foreach (ButtonTile tile in list)
             {
-                spriteLines.Draw(sb, '-', tile.Pos, Utility.SCALE_TILES, Color.White);
+                SpriteLines.Draw(sb, '-', tile.Pos, Utility.SCALE_TILES, Color.White);
             }
 
         }
@@ -483,7 +487,7 @@ namespace WordSearch
         {
             foreach (ButtonTile tile in list)
             {
-                spriteLines.Draw(sb, '|', tile.Pos, Utility.SCALE_TILES, Color.White);
+                SpriteLines.Draw(sb, '|', tile.Pos, Utility.SCALE_TILES, Color.White);
             }
 
         }
@@ -491,7 +495,7 @@ namespace WordSearch
         {
             foreach (ButtonTile tile in list)
             {
-                spriteLines.Draw(sb, '/', tile.Pos, Utility.SCALE_TILES, Color.White);
+                SpriteLines.Draw(sb, '/', tile.Pos, Utility.SCALE_TILES, Color.White);
             }
 
         }
@@ -499,7 +503,7 @@ namespace WordSearch
         {
             foreach (ButtonTile tile in list)
             {
-                spriteLines.Draw(sb, '\\', tile.Pos, Utility.SCALE_TILES, Color.White);
+                SpriteLines.Draw(sb, '\\', tile.Pos, Utility.SCALE_TILES, Color.White);
             }
 
         }
@@ -507,7 +511,7 @@ namespace WordSearch
         public void DrawMouse(SpriteTile textureCursor, float scale)
         {
             // Draw
-            textureCursor.Draw(sb, '0', managerInput.PosMouse, scale, Color.White);
+            textureCursor.Draw(sb, '0', ManagerInput.PosMouse, scale, Color.White);
         }       
     }
 }
