@@ -26,22 +26,21 @@ namespace WordSearch
                 {
                     if (SameBearing())
                     {
-                        AddTileListTilesTemporary();
+                        HandleNewSelectedTile();
                     }
                 }
                 // Second tile
                 else if (MainGame.listTilesTemporary.Count == 1)
                 {
-                    AddTileListTilesTemporary();
+                    HandleNewSelectedTile();
                 }
             }
             // First tile
             else if (MainGame.listTilesTemporary.Count == 0)
             {
-                AddTileListTilesTemporary();
+                HandleNewSelectedTile();
             }
         }
-
         public static void UnselectTile()
         {
             MainGame.listTileHighlight.Clear();
@@ -56,12 +55,11 @@ namespace WordSearch
             distanceOldSet = false;
         }
 
-        private static void AddTileListTilesTemporary()
+        private static void HandleNewSelectedTile()
         {
             MainGame.listTileHighlight.Clear();
             MainGame.listTileHighlight.Add(MainGame.ClickedTile);
-
-
+            
             if (!MainGame.listTilesTemporary.Contains(MainGame.ClickedTile))
             {
                 MainGame.listTilesTemporary.Add(MainGame.ClickedTile);
@@ -69,18 +67,17 @@ namespace WordSearch
                 if (SelectionIsWord())
                 {
                     AddSelectionToPermanent();
+                    RemoveWordFromListWordsToFind();
                     ClearTemporary();
                 }
             }
         }
-
         private static void RemoveTileListTilesTemporary()
         {
             if (MainGame.listTilesTemporary.Contains((MainGame.ClickedTile)))
             {
                 MainGame.listTilesTemporary.Remove(MainGame.ClickedTile);
                 MainGame.wordTilesTemporary = MainGame.wordTilesTemporary.Substring(0, MainGame.wordTilesTemporary.Length-1);
-                Console.WriteLine($"{MainGame.wordTilesTemporary}");
 
                 if (MainGame.listTilesTemporary.Count == 0)
                 {
@@ -88,7 +85,30 @@ namespace WordSearch
                 }
             }
         }
+        private static void AddSelectionToPermanent()
+        {
+            for (int counter = 0; counter < MainGame.listTilesTemporary.Count; counter++)
+            {
+                MainGame.listTileHighlight.Add(MainGame.listTilesTemporary[counter]);
+                MainGame.listTilesPermanent.Add(MainGame.listTilesTemporary[counter]);
+            }
+        }
+        private static void RemoveWordFromListWordsToFind()
+        {
+            if (MainGame.listWordsToFind.Contains(MainGame.wordTilesTemporary))
+            {
+                MainGame.listWordsToFind.Remove(MainGame.wordTilesTemporary);
+            }
+        }
+        private static void ClearTemporary()
+        {
+            ResetValues();
+            MainGame.listTilesTemporary.Clear();
+            MainGame.wordTilesTemporary = "";
+        }
 
+
+        // Check selection is adjacenet to prior
         private static bool TileAdjacentToAdded()
         {
             ButtonTile tileCompare = MainGame.listTilesTemporary[ MainGame.listTilesTemporary.Count - 1];
@@ -120,8 +140,7 @@ namespace WordSearch
             }
             return false;
         }
-
-        // Check if next tile chosen is along the same bearing as previous selections
+        // Check if next tile chosen is same bearing (horizontal, diagonal direction) as prior
         private static bool SameBearing()
         {
             Console.WriteLine($"distance: {distance}, distanceOld: {distanceOld}");
@@ -133,7 +152,7 @@ namespace WordSearch
 
             return false;
         }
-
+        // Check if current selected work matches word to find
         private static bool SelectionIsWord()
         {
             foreach (string word in MainGame.listWordsToFind)
@@ -146,25 +165,6 @@ namespace WordSearch
 
 
             return false;
-        }
-
-        private static void AddSelectionToPermanent()
-        {
-            for (int counter = 0; counter < MainGame.listTilesTemporary.Count; counter++)
-            {
-                MainGame.listTileHighlight.Add(MainGame.listTilesTemporary[counter]);
-                MainGame.listTilesPermanent.Add(MainGame.listTilesTemporary[counter]);
-            }
-
-            //MainGame.listTilesPermanent = new List<ButtonTile>(MainGame.listTilesTemporary);
-            Console.WriteLine($"Seem to be getting somewhere");
-        }
-
-        private static void ClearTemporary()
-        {
-            ResetValues();
-            MainGame.listTilesTemporary.Clear();
-            MainGame.wordTilesTemporary = "";
         }
     }
 }
