@@ -10,8 +10,6 @@ namespace WordSearch
     public static class ManagerSelectTile
     {
         private static float distance;
-        private static float distanceOld;
-        private static bool distanceOldSet;
         private static bool bearingOldSet;
         private static Vector2 tilePosMidSelected;
         private static Vector2 tilePosMidCompare;
@@ -55,8 +53,6 @@ namespace WordSearch
         public static void ResetValues()
         {
             distance = 0;
-            distanceOld = 0;
-            distanceOldSet = false;
             bearingOldSet = false;
             tilePosMidSelected = new Vector2(0f, 0f);
         }
@@ -139,11 +135,6 @@ namespace WordSearch
             Vector2 distanceVector;
             distanceVector = tilePosMidSelected - tilePosMidCompare;
             distance = Vector2.Distance(tilePosMidSelected, tilePosMidCompare);
-            if (!distanceOldSet)
-            {
-                distanceOld = distance;
-                distanceOldSet = true;
-            }
             // if tiles close enough return
             if (distance < sizeTile * 2)
             {
