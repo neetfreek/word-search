@@ -12,6 +12,10 @@ namespace WordSearch
         private static float distance;
         private static float distanceOld;
         private static bool distanceOldSet;
+        private static bool bearingOldSet;
+        private static Vector2 tilePosMidSelected;
+        private static Vector2 tilePosMidCompare;
+        private static Vector2 bearingOld;
 
         public static void SelectTile(MainGame game)
         {
@@ -53,6 +57,8 @@ namespace WordSearch
             distance = 0;
             distanceOld = 0;
             distanceOldSet = false;
+            bearingOldSet = false;
+            tilePosMidSelected = new Vector2(0f, 0f);
         }
 
         private static void HandleNewSelectedTile()
@@ -112,11 +118,15 @@ namespace WordSearch
         private static bool TileAdjacentToAdded()
         {
             ButtonTile tileCompare = MainGame.listTilesTemporary[ MainGame.listTilesTemporary.Count - 1];
-            Vector2 tilePosMidSelected;
-            Vector2 tilePosMidCompare;
-            Vector2 distanceVector;
-            //float distance;
+
             float sizeTile = (MainGame.spriteLetters.WidthSprite + MainGame.spriteLetters.HeightSprite) * 0.5f;
+
+            // get bearingOld 
+            if (!bearingOldSet && tilePosMidSelected != new Vector2(0f, 0f))
+            {
+                bearingOld = tilePosMidSelected - tilePosMidCompare;
+                bearingOldSet = true;
+            }
 
             tilePosMidSelected.X = MainGame.ClickedTile.Pos.X + (float)(MainGame.spriteLetters.WidthSprite * 0.5);
             tilePosMidSelected.Y = MainGame.ClickedTile.Pos.Y + (float)(MainGame.spriteLetters.HeightSprite * 0.5);
@@ -124,13 +134,14 @@ namespace WordSearch
             // get center pos of clicked tile
             tilePosMidCompare.X = tileCompare.Pos.X + (float)(MainGame.spriteLetters.WidthSprite * 0.5);
             tilePosMidCompare.Y = tileCompare.Pos.Y + (float)(MainGame.spriteLetters.HeightSprite * 0.5);
+
             // get distance between tiles
+            Vector2 distanceVector;
             distanceVector = tilePosMidSelected - tilePosMidCompare;
             distance = Vector2.Distance(tilePosMidSelected, tilePosMidCompare);
             if (!distanceOldSet)
             {
                 distanceOld = distance;
-                Console.WriteLine("DISTANCE OLD SET");
                 distanceOldSet = true;
             }
             // if tiles close enough return
@@ -143,9 +154,10 @@ namespace WordSearch
         // Check if next tile chosen is same bearing (horizontal, diagonal direction) as prior
         private static bool SameBearing()
         {
-            Console.WriteLine($"distance: {distance}, distanceOld: {distanceOld}");
+            Console.WriteLine($"bearing: {tilePosMidSelected - tilePosMidCompare}, bearingOld: {bearingOld}");
 
-            if (distance == distanceOld)
+            if (bearingOld == tilePosMidSelected - tilePosMidCompare)
+            //if (distance == distanceOld)
             {
                 return true;
             }
