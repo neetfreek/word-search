@@ -38,6 +38,7 @@ This project a word search game written in C# using MonoGame (a C# framework imp
 - Word highlight too brief
 
 ## ToDo
+- Draw lines in different directions depending on direction of selected letter tiles
 - On find all words display completion message
 - Fix bugs
 - Make prettier	
