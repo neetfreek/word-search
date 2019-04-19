@@ -22,4 +22,22 @@ This project a word search game written in C# using MonoGame (a C# framework imp
 	- On selecting category, size game begins
 		- Draw chosen list including chosen number of words to find
 		- Draw heading, list of words to find, buttons to return to menu, quit
-	- Cursor to move about, detects mousing over different letters, menu buttons (no click functionality yet)
+	- Selection 
+		- Left-click to select menu buttons Menu, Quit
+		- Left-click(/drag) to select letter tiles in grid
+			- Highlight selected tile
+			- Draw line through tile
+		- Right-click to unselect letter tiles
+	- On find words
+		- Remove word from list
+		- Briefly highlight word found
+		- Draw letter tile lines permanently
+		
+## Bugs
+- Grid sometimes to small to accommodate all words (most recreatable in Occupations, Small)
+- Word highlight too brief
+
+## ToDo
+- On find all words display completion message
+- Fix bugs
+- Make prettier	
