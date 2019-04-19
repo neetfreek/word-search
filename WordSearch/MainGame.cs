@@ -235,7 +235,6 @@ namespace WordSearch
             listTilesTemporary.Clear();
             listTilesPermanent.Clear();
             listTileHighlight.Clear();
-            listTileHighlight.Clear();
             listLineTilesHorizontal.Clear();
             listLineTilesVertical.Clear();
             listLineTilesDownRight.Clear();
@@ -468,7 +467,7 @@ namespace WordSearch
         {
             foreach (ButtonTile tile in list)
             {
-                spriteLines.Draw(sb, ManagerSelectTile.bearingChar, tile.Pos, Utility.SCALE_TILES, Color.White);
+                spriteLines.Draw(sb, ManagerSelectTile.bearingChar, tile.Pos, Utility.SCALE_TILES, Color.LightGreen);
             }
 
         }
