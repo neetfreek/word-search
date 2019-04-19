@@ -16,7 +16,7 @@ namespace WordSearch.Common
         // Text 
         public const string textButtonStart = "Start Game", textbuttonMenu = "Menu",
             textButtonCategory = "Select a category", textButtonSize = "Select a Size:", textButtonQuit = "Quit Game",
-            textButtonSmall = "4 Words", textButtonMedium = "8 Words", textButtonLarge = "12 Words";
+            textButtonSmall = "4 Words", textButtonMedium = "8 Words", textButtonLarge = "12 Words", textMessageWin = "You found all the words!";
     }
 }
 
