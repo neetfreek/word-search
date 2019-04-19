@@ -10,10 +10,11 @@ namespace WordSearch
     public static class ManagerSelectTile
     {
         private static float distance;
-        private static bool bearingOldSet;
+        private static bool bearingSet;
         private static Vector2 tilePosMidSelected;
         private static Vector2 tilePosMidCompare;
-        private static Vector2 bearingOld;
+        private static Vector2 bearing;
+        public static char bearingChar;
 
         public static void SelectTile(MainGame game)
         {
@@ -23,6 +24,7 @@ namespace WordSearch
             if (!MainGame.listTilesTemporary.Contains(MainGame.ClickedTile) &&
                 MainGame.listTilesTemporary.Count > 0 && TileAdjacentToAdded())
             {
+                SetBearing();
                 // Third+ tiles
                 if (MainGame.listTilesTemporary.Count > 1)
                 {
@@ -45,16 +47,22 @@ namespace WordSearch
         }
         public static void UnselectTile()
         {
-            MainGame.listTileHighlight.Clear();
-            MainGame.ClickedTile = MainGame.MousedOverTile;
-            RemoveTileListTilesTemporary();
+            // if right-clicked tile one of previously selected
+            if (MainGame.listTilesTemporary.Contains(MainGame.MousedOverTile))
+            {
+                MainGame.listTileHighlight.Clear();
+                MainGame.ClickedTile = MainGame.MousedOverTile;
+                RemoveTileListTilesTemporary();
+            }
         }
 
         public static void ResetValues()
         {
             distance = 0;
-            bearingOldSet = false;
+            bearingSet = false;
             tilePosMidSelected = new Vector2(0f, 0f);
+            tilePosMidCompare = new Vector2(0f, 0f);
+            bearing = new Vector2(0f, 0f);
         }
 
         private static void HandleNewSelectedTile()
@@ -91,9 +99,25 @@ namespace WordSearch
         {
             for (int counter = 0; counter < MainGame.listTilesTemporary.Count; counter++)
             {
+                AddSelectionToDrawLines().Add(MainGame.listTilesTemporary[counter]);
                 MainGame.listTileHighlight.Add(MainGame.listTilesTemporary[counter]);
                 MainGame.listTilesPermanent.Add(MainGame.listTilesTemporary[counter]);
             }
+        }
+        private static List<ButtonTile> AddSelectionToDrawLines()
+        {
+            switch (bearingChar)
+            {
+                case '-':
+                    return MainGame.listLineTilesHorizontal;
+                case '|':
+                    return MainGame.listLineTilesVertical;
+                case '\\':
+                    return MainGame.listLineTilesDownRight;
+                case '/':
+                    return MainGame.listLineTilesUpRight;
+            }
+            return null;
         }
         private static void RemoveWordFromListWordsToFind()
         {
@@ -117,12 +141,6 @@ namespace WordSearch
 
             float sizeTile = (MainGame.spriteLetters.WidthSprite + MainGame.spriteLetters.HeightSprite) * 0.5f;
 
-            // get bearingOld 
-            if (!bearingOldSet && tilePosMidSelected != new Vector2(0f, 0f))
-            {
-                bearingOld = tilePosMidSelected - tilePosMidCompare;
-                bearingOldSet = true;
-            }
 
             tilePosMidSelected.X = MainGame.ClickedTile.Pos.X + (float)(MainGame.spriteLetters.WidthSprite * 0.5);
             tilePosMidSelected.Y = MainGame.ClickedTile.Pos.Y + (float)(MainGame.spriteLetters.HeightSprite * 0.5);
@@ -143,17 +161,52 @@ namespace WordSearch
             return false;
         }
         // Check if next tile chosen is same bearing (horizontal, diagonal direction) as prior
+        private static void SetBearing()
+        {
+            // get bearing 
+            if (!bearingSet && tilePosMidCompare != new Vector2(0f, 0f))
+            {
+                bearing = tilePosMidSelected - tilePosMidCompare;
+                bearingSet = true;
+                bearingChar = BearingLine();
+            }
+        }
         private static bool SameBearing()
         {
-            Console.WriteLine($"bearing: {tilePosMidSelected - tilePosMidCompare}, bearingOld: {bearingOld}");
+            Console.WriteLine($"bearingNew: {tilePosMidSelected - tilePosMidCompare}, bearingSet: {bearing}");
 
-            if (bearingOld == tilePosMidSelected - tilePosMidCompare)
+            if (bearing == tilePosMidSelected - tilePosMidCompare)
             //if (distance == distanceOld)
             {
                 return true;
             }
 
             return false;
+        }
+        private static char BearingLine()
+        {
+            char bearingChar = ' ';
+            if (bearing.X < 0 && bearing.Y < 0 ||
+                bearing.X > 0 && bearing.Y > 0)
+            {
+                bearingChar = '\\';
+            }
+            if (bearing.X > 0 && bearing.Y < 0 ||
+                bearing.X < 0 && bearing.Y > 0)
+            {
+                bearingChar = '/';
+            }
+            if (bearing.X == 0 && bearing.Y < 0 ||
+                bearing.X == 0 && bearing.Y > 0)
+            {
+                bearingChar = '|';
+            }
+            if (bearing.X < 0 && bearing.Y == 0 ||
+                bearing.X > 0 && bearing.Y == 0)
+            {
+                bearingChar = '-';
+            }
+            return bearingChar;
         }
         // Check if current selected work matches word to find
         private static bool SelectionIsWord()

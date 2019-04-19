@@ -51,6 +51,10 @@ namespace WordSearch
         public static List<ButtonTile> listTilesPermanent = new List<ButtonTile>();
         // Contain tile clicked to highlight
         public static List<ButtonTile> listTileHighlight = new List<ButtonTile>();
+        public static List<ButtonTile> listLineTilesHorizontal = new List<ButtonTile>();
+        public static List<ButtonTile> listLineTilesVertical = new List<ButtonTile>();
+        public static List<ButtonTile> listLineTilesDownRight = new List<ButtonTile>();
+        public static List<ButtonTile> listLineTilesUpRight = new List<ButtonTile>();
         // Contain menu buttons
         public static List<SpriteRectangle> listButtonsGame = new List<SpriteRectangle>();
         public static List<SpriteRectangle> listButtonsMenuStart = new List<SpriteRectangle>();
@@ -231,6 +235,11 @@ namespace WordSearch
             listTilesTemporary.Clear();
             listTilesPermanent.Clear();
             listTileHighlight.Clear();
+            listTileHighlight.Clear();
+            listLineTilesHorizontal.Clear();
+            listLineTilesVertical.Clear();
+            listLineTilesDownRight.Clear();
+            listLineTilesUpRight.Clear();
             listWordsToFind.Clear();
             wordTilesTemporary = "";
             SelectedMenu = SelectedMenu.start;
@@ -294,8 +303,11 @@ namespace WordSearch
                 DrawGrid(spriteLetters);
                 DrawButtonsGame();
                 HighlightTile();
-                DrawLines(listTilesTemporary);
-                DrawLines(listTilesPermanent);
+                DrawLinesCurrentSelection(listTilesTemporary);
+                DrawLinesHorizontal(listLineTilesHorizontal);
+                DrawLinesVertical(listLineTilesVertical);
+                DrawLinesUpRight(listLineTilesUpRight);
+                DrawLinesDownRight(listLineTilesDownRight);
                 DrawHeadings();
                 DrawWordsList();
             }
@@ -342,6 +354,7 @@ namespace WordSearch
                 newPos.Y += gapButtons;
             }
         }
+
         public void DrawHeadings()
         {
             string wordLongest = Helper.LongestWord(grid.WordsGame);
@@ -387,6 +400,7 @@ namespace WordSearch
             }
             sb.End();
         }
+
         public void DrawButtonsGame()
         {
             // Set up position
@@ -398,6 +412,7 @@ namespace WordSearch
             listButtonsGame[0].Draw(sb, new Vector2(posButtonGame.X, posHeightStart));
             listButtonsGame[1].Draw(sb, new Vector2(posButtonGame.X, posHeightQuit));
         }
+
         public void DrawGrid(SpriteTile spriteLetters)
         {
             int numCols = grid.GridGame.GetLength(0);
@@ -441,7 +456,23 @@ namespace WordSearch
                 }
             }
         }
-        public void DrawLines(List<ButtonTile> list)
+        public void HighlightTile()
+        {
+            foreach (ButtonTile button in listTileHighlight)
+            {
+                spriteLetters.Draw(sb, char.Parse(button.NameDraw), button.Pos, Utility.SCALE_TILES, Color.Green);
+            }
+        }
+
+        public void DrawLinesCurrentSelection(List<ButtonTile> list)
+        {
+            foreach (ButtonTile tile in list)
+            {
+                spriteLines.Draw(sb, ManagerSelectTile.bearingChar, tile.Pos, Utility.SCALE_TILES, Color.White);
+            }
+
+        }
+        public void DrawLinesHorizontal(List<ButtonTile> list)
         {
             foreach (ButtonTile tile in list)
             {
@@ -449,18 +480,35 @@ namespace WordSearch
             }
 
         }
+        public void DrawLinesVertical(List<ButtonTile> list)
+        {
+            foreach (ButtonTile tile in list)
+            {
+                spriteLines.Draw(sb, '|', tile.Pos, Utility.SCALE_TILES, Color.White);
+            }
+
+        }
+        public void DrawLinesUpRight(List<ButtonTile> list)
+        {
+            foreach (ButtonTile tile in list)
+            {
+                spriteLines.Draw(sb, '/', tile.Pos, Utility.SCALE_TILES, Color.White);
+            }
+
+        }
+        public void DrawLinesDownRight(List<ButtonTile> list)
+        {
+            foreach (ButtonTile tile in list)
+            {
+                spriteLines.Draw(sb, '\\', tile.Pos, Utility.SCALE_TILES, Color.White);
+            }
+
+        }
+
         public void DrawMouse(SpriteTile textureCursor, float scale)
         {
             // Draw
             textureCursor.Draw(sb, '0', managerInput.PosMouse, scale, Color.White);
         }       
-        public void HighlightTile()
-        {
-            foreach (ButtonTile button in listTileHighlight)
-            {
-                spriteLetters.Draw(sb, char.Parse(button.NameDraw), button.Pos, Utility.SCALE_TILES, Color.Green);
-            }
-
-        }
     }
 }
