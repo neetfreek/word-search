@@ -54,20 +54,20 @@ namespace WordSearch
                     break;
                 case ButtonMenu.small:
                     game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                    MainGame.selectedSize = SettingsSize.small;
-                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.selectedSize);
+                    MainGame.SelectedSize = SettingsSize.small;
+                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.SelectedSize);
                     game.ClearListsMenu();
                     break;
                 case ButtonMenu.medium:
                     game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                    MainGame.selectedSize = SettingsSize.medium;
-                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.selectedSize);
+                    MainGame.SelectedSize = SettingsSize.medium;
+                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.SelectedSize);
                     game.ClearListsMenu();
                     break;
                 case ButtonMenu.large:
                     game.ToggleSizeListButtons(MainGame.listButtonsSizes, false);
-                    MainGame.selectedSize = SettingsSize.large;
-                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.selectedSize);
+                    MainGame.SelectedSize = SettingsSize.large;
+                    game.HandleSetupGameScreen(MainGame.SelectedCategory.ToString(), (int)MainGame.SelectedSize);
                     game.ClearListsMenu();
                     break;
             }

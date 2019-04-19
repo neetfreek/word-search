@@ -65,7 +65,7 @@ namespace WordSearch
         public static ButtonMenu MousedOverButton, ClickedButton, SelectedCategory;
         public static ButtonTile MousedOverTile, ClickedTile;
         public static SelectedMenu SelectedMenu;
-        public static SettingsSize selectedSize;
+        public static SettingsSize SelectedSize;
 
         /*==============* 
         *  Manage Game  *
@@ -126,6 +126,8 @@ namespace WordSearch
         *===============*/
         public void HandleSetupMenu()
         {
+
+            System.Console.WriteLine($"selectedMenu: {SelectedMenu}, selectedSize: {SelectedSize}");
             InGame = false;
             ManagerInput.ClickCooldown = Utility.CLICK_COOLDOWN_MENU;
             scaleBackgroundMenu = new Vector2(2f, 10f);
@@ -229,7 +231,10 @@ namespace WordSearch
             listTilesTemporary.Clear();
             listTilesPermanent.Clear();
             listTileHighlight.Clear();
+            listWordsToFind.Clear();
             wordTilesTemporary = "";
+            SelectedMenu = SelectedMenu.start;
+            SelectedSize = 0;
             ManagerSelectTile.ResetValues();
         }
 
