@@ -25,11 +25,9 @@ namespace WordSearch.Common
         {
             string wordsString = LoadListWordsString(nameList);
             string wordsStringSanitised = Helper.RemoveNonLetters(wordsString);
-            //string wordsStringSanitised = SanitiseWords(wordsString);
             string[] wordsSeperated = SeperateWords(wordsStringSanitised);
             string[] wordsSelected = SetSizeList(wordsSeperated, sizeList);
             string[] words = Helper.LowerCase(wordsSelected);
-
             return words;
         }
 
