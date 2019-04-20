@@ -4,7 +4,7 @@ This project a word search game written in C# using MonoGame (a C# framework imp
 ## The Game
 - User selects a category of words to find (Instruments, Mammals, Occupations).
 - User selects the size of grid; Small (4 words), Medium (8 words), Large (12 words).
-- User is presented with a list of words to find, the word search grid, Quit and Menu buttons.
+- User is presented with a list of words to find, the word search grid, How to Play, Quit and Menu buttons.
  - Each game selects different words for the player to find.
  - Grid size is relative to the number of words in the words list. 
  - Words randomly placed in the grid diagonally, horizontally and vertically, both backwards and forwards.
