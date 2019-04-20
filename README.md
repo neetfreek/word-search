@@ -1,5 +1,5 @@
 # Word Search Generator
-This project a word search game written in C# using MonoGame (a C# framework implementing Microsoft XNA 4 API). The back end uses my word-search-generator project, replacing the console interface with a window interface.
+This project a word search game written in C# using MonoGame (a C# framework implementing Microsoft XNA 4 API). The back end uses my word-search-generator project, replacing the console interface with a window interface. **Built for 1920x1080**
 
 ## The Game
 - User selects a category of words to find (Instruments, Mammals, Occupations).
