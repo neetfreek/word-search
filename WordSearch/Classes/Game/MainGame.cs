@@ -242,6 +242,8 @@ namespace WordSearch
             ListLineTilesDownRight.Clear();
             ListLineTilesUpRight.Clear();
             ListWordsToFind.Clear();
+            WonGame = false;
+            HowTo = false;
             WordTilesTemporary = "";
             SelectedMenu = SelectedMenu.start;
             SelectedSize = 0;
