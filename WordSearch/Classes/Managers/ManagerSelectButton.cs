@@ -34,6 +34,9 @@ namespace WordSearch
                         game.HandleSetupMenu();
                     }
                     break;
+                case ButtonMenu.howTo:
+                    MainGame.HowTo = !MainGame.HowTo;
+                    break;
                 case ButtonMenu.instruments:
                     game.ToggleSizeListButtons(MainGame.ListButtonsCategories, false);
                     game.ToggleSizeListButtons(MainGame.ListButtonsSizes, true);

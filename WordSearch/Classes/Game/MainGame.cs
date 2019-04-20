@@ -63,9 +63,9 @@ namespace WordSearch
         // Grid
         private Grid grid;
         // Menu background
-        private SpriteRectangle backgroundMenu, backgroundMessageWin;
+        private SpriteRectangle backgroundMenu, backgroundMessageHowTo, backgroundMessageWin;
         // State
-        public static bool InGame, WonGame;
+        public static bool InGame, HowTo, WonGame;
         public static ButtonMenu MousedOverButton, ClickedButton, SelectedCategory;
         public static ButtonTile MousedOverTile, ClickedTile;
         public static SelectedMenu SelectedMenu;
@@ -197,6 +197,7 @@ namespace WordSearch
             Utility.nameHeadingNameList = listChosen;
             Vector2 scaleBackgroundMessage = new Vector2(4f, 3f);
             backgroundMessageWin = new SpriteRectangle(Utility.nameBackground, textureButtonMenu, scaleBackgroundMessage, Utility.textMessageWin);
+            backgroundMessageHowTo = new SpriteRectangle(Utility.nameBackground, textureButtonMenu, scaleBackgroundMessage, Utility.textMessageHowTo);
             // Create buttons, place in ListLettersGrid list
             SetupListWordsToFind();
             SetupListLettersGrid();
@@ -224,8 +225,10 @@ namespace WordSearch
         private void SetupListButtonsGame()
         {
             // Set up game menu buttons
+            ListButtonsGame.Add(new SpriteRectangle(Utility.nameButtonHowTo, textureButtonMenu, scaleDefault, Utility.textButtonHowTo));
             ListButtonsGame.Add(new SpriteRectangle(Utility.nameButtonMenu, textureButtonMenu, scaleDefault, Utility.textbuttonMenu));
             ListButtonsGame.Add(new SpriteRectangle(Utility.nameButtonQuit, textureButtonMenu, scaleDefault, Utility.textButtonQuit));
+
         }
         public void ClearGame()
         {
@@ -273,7 +276,7 @@ namespace WordSearch
                 // Screen width - (quarter difference between screen width and grid width) - half texture width
                 posButtonGame.X = (sizeScreen.X - ((sizeScreen.X - widthGrid) * 0.25f)) - (textureButtonMenu.Width * 0.5f) * ManagerDisplay.ScaleWidth;
 
-                if (WonGame)
+                if (WonGame || HowTo)
                 {
                     sizeMessageWin.X = backgroundMessageWin.TextureButtonMenu.Width * backgroundMessageWin.Scale.X;
                     sizeMessageWin.Y = backgroundMessageWin.TextureButtonMenu.Height * backgroundMessageWin.Scale.Y;
@@ -331,6 +334,10 @@ namespace WordSearch
                 {
                     DrawMessageWin();
                 }
+                if (HowTo)
+                {
+                    DrawHowTo();
+                }
             }
             else
             {
@@ -373,6 +380,14 @@ namespace WordSearch
                 gapButtons = sizeMenu.Y * 0.15f;
                 newPos.Y += gapButtons;
             }
+        }
+        public void DrawMessageWin()
+        {
+            backgroundMessageWin.Draw(sb, new Vector2(posBackgroundMessageWin.X, posBackgroundMessageWin.Y));
+        }
+        public void DrawHowTo()
+        {
+            backgroundMessageHowTo.Draw(sb, new Vector2(posBackgroundMessageWin.X, posBackgroundMessageWin.Y));
         }
 
         public void DrawHeadings()
@@ -419,21 +434,19 @@ namespace WordSearch
             }
             sb.End();
         }
-        public void DrawMessageWin()
-        {
-            backgroundMessageWin.Draw(sb, new Vector2(posBackgroundMessageWin.X, posBackgroundMessageWin.Y));
-        }
 
         public void DrawButtonsGame()
         {
             // Set up position
+            float posHeightHowTo = (sizeScreen.Y * 0.175f);
             float posHeightStart = (sizeScreen.Y * 0.725f);
             float posHeightQuit = (sizeScreen.Y * 0.825f);
 
             // Draw
             // screenWidth - ((screenWidth - widthGrid) / 2) - buttonWidth
-            ListButtonsGame[0].Draw(sb, new Vector2(posButtonGame.X, posHeightStart));
-            ListButtonsGame[1].Draw(sb, new Vector2(posButtonGame.X, posHeightQuit));
+            ListButtonsGame[0].Draw(sb, new Vector2(posButtonGame.X, posHeightHowTo));
+            ListButtonsGame[1].Draw(sb, new Vector2(posButtonGame.X, posHeightStart));
+            ListButtonsGame[2].Draw(sb, new Vector2(posButtonGame.X, posHeightQuit));
         }
 
         public void DrawGrid(SpriteTile spriteLetters)

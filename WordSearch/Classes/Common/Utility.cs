@@ -10,13 +10,13 @@ namespace WordSearch.Common
         // Names
         public const string nameHeadingWordsList = "List of Words:";
         public static string nameHeadingNameList = "";
-        public const string nameBackground = "backgroundMenu", nameButtonStart = "start", nameButtonMenu = "menu",
-            nameButtonCategory = "categories", nameButtonSize = "sizes", nameButtonQuit = "quit",
-            nameButtonSmall = "small", nameButtonMedium = "medium", nameButtonLarge = "large";
+        public const string nameButtonStart = "start", nameButtonQuit = "quit", nameButtonMenu = "menu", nameButtonHowTo = "howTo",
+            nameButtonCategory = "categories", nameButtonSize = "sizes", nameButtonSmall = "small", nameButtonMedium = "medium",
+            nameButtonLarge = "large";
         // Text 
-        public const string textButtonStart = "Start Game", textbuttonMenu = "Menu",
-            textButtonCategory = "Select a category", textButtonSize = "Select a Size:", textButtonQuit = "Quit Game",
-            textButtonSmall = "4 Words", textButtonMedium = "8 Words", textButtonLarge = "12 Words", textMessageWin = "You found all the words!";
+        public const string nameBackground = "backgroundMenu", textButtonStart = "Start Game", textButtonQuit = "Quit Game",
+            textbuttonMenu = "Menu", textButtonHowTo = "How to Play", textButtonCategory = "Select a category", textButtonSize = "Select a Size:",
+            textButtonSmall = "4 Words", textButtonMedium = "8 Words", textButtonLarge = "12 Words", textMessageWin = "You found all the words!", textMessageHowTo = "Left-click to select adjacent tiles to find the words on the list. Right click to deselect tiles.";
     }
 }
 
@@ -26,6 +26,7 @@ public enum ButtonMenu
     start,
     menu,
     quit,
+    howTo,
     instruments,
     mammals,
     occupations,
