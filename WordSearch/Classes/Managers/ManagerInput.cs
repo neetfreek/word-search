@@ -118,13 +118,5 @@ namespace WordSearch
             cooldownClick = false;
             cooldownRunning = false;
         }
-
-        public void UpdateInputKeyboard(MainGame game)
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                game.Quit();
-            }
-        }
     }    
 }

@@ -254,7 +254,6 @@ namespace WordSearch
         {
             UpdatePositions();
             ManagerInput.UpdateInputMouse(this);
-            ManagerInput.UpdateInputKeyboard(this);
             CheckWonGame();
 
             //MousedOverButton = ButtonMenu.none;
