@@ -83,7 +83,7 @@ namespace WordSearch
             int sizeMinGrid = lengthLongestWord * lengthLongestWord;
 
             // add extra GridGame elements to ensure enough space for non-wordCurrent characters
-            int totalElementsGrid = (int)(numCharsInWords * 3.5f);
+            int totalElementsGrid = (int)(numCharsInWords * 4f);
 
             int totalElementsGridSquare = (int)Math.Sqrt(totalElementsGrid);
 
@@ -95,11 +95,6 @@ namespace WordSearch
 
             // get number of rows/cols
             int numRowsCols = (int)Math.Sqrt(sizeMinGrid);
-
-            // optionally add some random rows
-            //Random random = new Random();
-            //int extraRows = random.Next(0, 2);
-            //numRowsCols += extraRows;
 
             return numRowsCols;
         }
