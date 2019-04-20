@@ -278,16 +278,13 @@ namespace WordSearch
                 // Screen width - (quarter difference between screen width and grid width) - half texture width
                 posButtonGame.X = (sizeScreen.X - ((sizeScreen.X - widthGrid) * 0.25f)) - (textureButtonMenu.Width * 0.5f) * ManagerDisplay.ScaleWidth;
 
-                if (WonGame || HowTo)
-                {
-                    sizeMessageWin.X = backgroundMessageWin.TextureButtonMenu.Width * backgroundMessageWin.Scale.X;
-                    sizeMessageWin.Y = backgroundMessageWin.TextureButtonMenu.Height * backgroundMessageWin.Scale.Y;
+                sizeMessageWin.X = backgroundMessageWin.TextureButtonMenu.Width * backgroundMessageWin.Scale.X;
+                sizeMessageWin.Y = backgroundMessageWin.TextureButtonMenu.Height * backgroundMessageWin.Scale.Y;
 
-                    // Mid screen - half scaled width of texture
-                    posBackgroundMessageWin.X = posMidScreen.X - (sizeMessageWin.X * 0.5f);
-                    // Mid screen - half scaled height of texture
-                    posBackgroundMessageWin.Y = posMidScreen.Y - (sizeMessageWin.Y * 0.5f);
-                }
+                // Mid screen - half scaled width of texture
+                posBackgroundMessageWin.X = posMidScreen.X - (sizeMessageWin.X * 0.5f);
+                // Mid screen - half scaled height of texture
+                posBackgroundMessageWin.Y = posMidScreen.Y - (sizeMessageWin.Y * 0.5f);
             }
             else
             {
