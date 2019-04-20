@@ -30,6 +30,7 @@ public enum ButtonMenu
     instruments,
     mammals,
     occupations,
+    colours,
     small,
     medium,
     large,

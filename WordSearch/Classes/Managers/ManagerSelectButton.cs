@@ -55,6 +55,12 @@ namespace WordSearch
                     MainGame.SelectedCategory = MainGame.ClickedButton;
                     MainGame.SelectedMenu = SelectedMenu.sizes;
                     break;
+                case ButtonMenu.colours:
+                    game.ToggleSizeListButtons(MainGame.ListButtonsCategories, false);
+                    game.ToggleSizeListButtons(MainGame.ListButtonsSizes, true);
+                    MainGame.SelectedCategory = MainGame.ClickedButton;
+                    MainGame.SelectedMenu = SelectedMenu.sizes;
+                    break;
                 case ButtonMenu.small:
                     game.ToggleSizeListButtons(MainGame.ListButtonsSizes, false);
                     MainGame.SelectedSize = SettingsSize.small;
