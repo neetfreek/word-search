@@ -173,10 +173,7 @@ namespace WordSearch
         }
         private static bool SameBearing()
         {
-            Console.WriteLine($"bearingNew: {tilePosMidSelected - tilePosMidCompare}, bearingSet: {bearing}");
-
             if (bearing == tilePosMidSelected - tilePosMidCompare)
-            //if (distance == distanceOld)
             {
                 return true;
             }

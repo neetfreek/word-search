@@ -130,8 +130,6 @@ namespace WordSearch
         *===============*/
         public void HandleSetupMenu()
         {
-
-            System.Console.WriteLine($"selectedMenu: {SelectedMenu}, selectedSize: {SelectedSize}");
             InGame = false;
             ManagerInput.ClickCooldown = Utility.CLICK_COOLDOWN_MENU;
             Vector2 scaleBackgroundMenu = new Vector2(2f, 10f);
@@ -256,7 +254,6 @@ namespace WordSearch
             ManagerInput.UpdateInputMouse(this);
             CheckWonGame();
 
-            //MousedOverButton = ButtonMenu.none;
             base.Update(gameTime);
         }
         private void UpdatePositions()
